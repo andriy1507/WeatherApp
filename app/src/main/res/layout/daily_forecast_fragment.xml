@@ -5,6 +5,7 @@
     android:background="@color/colorPrimaryDark">
 
     <TextView
+        android:id="@+id/daily_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
