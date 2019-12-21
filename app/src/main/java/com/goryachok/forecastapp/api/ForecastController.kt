@@ -4,8 +4,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.goryachok.forecastapp.model.forecast.ForecastResponse
-import com.goryachok.forecastapp.model.weather.WeatherResponse
+import com.goryachok.forecastapp.model.ForecastResponse
 import com.goryachok.forecastapp.services.ApiService.Companion.BASE_URL
 import com.goryachok.forecastapp.services.ApiService.Companion.forecastPrefs
 import retrofit2.Call
@@ -30,16 +29,14 @@ class ForecastController(val preferences: SharedPreferences): Callback<ForecastR
     }
 
     fun start(city:String){
-        val gson = GsonBuilder()
-            .setLenient()
-            .create()
-
-        val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
-        val openWeatherMapAPI = retrofit.create(OpenWeatherMapAPI::class.java)
+        val openWeatherMapAPI = OpenWeatherMapAPI.getInstance()
         val call = openWeatherMapAPI.getForecast(city)
+        call.enqueue(this)
+    }
+
+    fun startWithCoord(lat:Float,lon:Float) {
+        val openWeatherMapAPI = OpenWeatherMapAPI.getInstance()
+        val call = openWeatherMapAPI.getForecastByCoord(lat,lon)
         call.enqueue(this)
     }
 }

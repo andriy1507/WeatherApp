@@ -1,4 +1,4 @@
-package com.goryachok.forecastapp.model.weather
+package com.goryachok.forecastapp.model
 
 
 import com.google.gson.annotations.SerializedName

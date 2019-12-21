@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.activities.MainActivity
 import kotlinx.android.synthetic.main.current_weather_fragment.*
-import java.util.*
 
 class CurrentWeatherFragment : Fragment() {
 
@@ -25,10 +24,9 @@ class CurrentWeatherFragment : Fragment() {
         curPress_textView.text = weather.main.pressure.toString()
         curHumid_textView.text = weather.main.humidity.toString()
         curLocation.text = weather.name
+        val time = weather.dt.toLong()+weather.timezone
 
-        val time = Date(weather.dt.toLong()+weather.timezone)
-
-        updateTime.text = time.toGMTString()
+        updateTime.text = time.toString()
         super.onActivityCreated(savedInstanceState)
     }
 }

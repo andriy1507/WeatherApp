@@ -1,4 +1,4 @@
-package com.goryachok.forecastapp.model.forecast
+package com.goryachok.forecastapp.model
 
 
 import com.google.gson.annotations.SerializedName

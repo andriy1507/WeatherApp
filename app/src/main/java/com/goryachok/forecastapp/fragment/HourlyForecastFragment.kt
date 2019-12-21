@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.activities.MainActivity
-import com.goryachok.forecastapp.model.forecast.ForecastResponse
+import com.goryachok.forecastapp.model.ForecastResponse
 import kotlinx.android.synthetic.main.hourly_forecast_fragment.*
 
 class HourlyForecastFragment: Fragment(){
@@ -19,7 +19,8 @@ class HourlyForecastFragment: Fragment(){
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         val forecast = MainActivity.forecast
 
-        hourly_text_view.text = Gson().toJson(forecast,ForecastResponse::class.java)
+        hourly_text_view.text = Gson().toJson(forecast,
+            ForecastResponse::class.java)
 
         super.onActivityCreated(savedInstanceState)
     }

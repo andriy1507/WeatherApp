@@ -7,13 +7,12 @@ import android.os.IBinder
 import com.google.gson.Gson
 import com.goryachok.forecastapp.api.ForecastController
 import com.goryachok.forecastapp.api.WeatherController
-import com.goryachok.forecastapp.model.weather.WeatherResponse
+import com.goryachok.forecastapp.model.WeatherResponse
 
-class ApiService: Service() {
+class ApiService : Service() {
 
 
-
-    companion object{
+    companion object {
         const val preferencesName = "WeatherData"
         const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
         const val weatherPrefs = "Weather"
@@ -28,21 +27,21 @@ class ApiService: Service() {
         val preferences = getSharedPreferences(preferencesName, Context.MODE_PRIVATE)
         val weather = WeatherController(preferences)
         val forecast = ForecastController(preferences)
-        weather.start("Lviv")
-        forecast.start("Lviv")
+        val longitude = intent!!.getDoubleExtra("LON",0.0).toFloat()
+        val latitude = intent.getDoubleExtra("LAT",0.0).toFloat()
 
-        if (!checkLocalData()){
-
+        if (!checkLocalData()) {
+            weather.startWithCoord(latitude,longitude)
+            forecast.startWithCoord(latitude,longitude)
         }
-
         return super.onStartCommand(intent, flags, startId)
     }
 
     private fun checkLocalData(): Boolean {
         val preferences = getSharedPreferences(preferencesName, Context.MODE_PRIVATE)
-        if (preferences.contains(weatherPrefs)&&preferences.contains(forecastPrefs)){
-            val json = preferences.getString(weatherPrefs,"")
-            val weather = Gson().fromJson(json,WeatherResponse::class.java)
+        if (preferences.contains(weatherPrefs) && preferences.contains(forecastPrefs)) {
+            val json = preferences.getString(weatherPrefs, "")
+            val weather = Gson().fromJson(json, WeatherResponse::class.java)
             val age = System.currentTimeMillis() - weather.dt
             if (age < 3600)
                 return true

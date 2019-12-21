@@ -1,9 +1,9 @@
-package com.goryachok.forecastapp.model.forecast
+package com.goryachok.forecastapp.model
 
 
 import com.google.gson.annotations.SerializedName
-import com.goryachok.forecastapp.model.forecast.City
-import com.goryachok.forecastapp.model.forecast.Forecast
+import com.goryachok.forecastapp.model.City
+import com.goryachok.forecastapp.model.Forecast
 
 data class ForecastResponse(
     @SerializedName("city")
