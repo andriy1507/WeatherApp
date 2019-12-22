@@ -40,6 +40,9 @@ class StartActivity : AppCompatActivity() {
             }
         }
 
+
+
+
         val intent = Intent(this, MainActivity::class.java)
         val serviceIntent = Intent(this, ApiService::class.java)
         CoroutineScope(IO).launch {
