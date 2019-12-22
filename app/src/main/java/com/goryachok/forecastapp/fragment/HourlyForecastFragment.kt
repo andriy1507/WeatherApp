@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.gson.Gson
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
+import com.goryachok.forecastapp.adapters.HourlyForecastAdapter
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.activities.MainActivity
-import com.goryachok.forecastapp.model.ForecastResponse
 import kotlinx.android.synthetic.main.hourly_forecast_fragment.*
 
 class HourlyForecastFragment: Fragment(){
@@ -19,8 +21,10 @@ class HourlyForecastFragment: Fragment(){
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         val forecast = MainActivity.forecast
 
-        hourly_text_view.text = Gson().toJson(forecast,
-            ForecastResponse::class.java)
+        hourlyForecast_recyclerView.layoutManager = LinearLayoutManager(this.context)
+        hourlyForecast_recyclerView.adapter = HourlyForecastAdapter(forecast.list)
+        hourlyForecast_recyclerView.addItemDecoration(DividerItemDecoration(this.context,HORIZONTAL))
+        hourlyForecast_cityName_textView.text = "${forecast.city.name}, ${forecast.city.country}"
 
         super.onActivityCreated(savedInstanceState)
     }

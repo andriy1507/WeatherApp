@@ -3,16 +3,11 @@ package com.goryachok.forecastapp.api
 import android.content.SharedPreferences
 import android.util.Log
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.goryachok.forecastapp.model.WeatherResponse
-import com.goryachok.forecastapp.services.ApiService.Companion.BASE_URL
 import com.goryachok.forecastapp.services.ApiService.Companion.weatherPrefs
-import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class WeatherController(val preferences: SharedPreferences): Callback<WeatherResponse> {

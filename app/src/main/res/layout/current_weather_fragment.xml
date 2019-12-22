@@ -2,20 +2,33 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/PageStyle"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/curLocation"
+        style="@style/WeatherText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@id/currentTemp_textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Location" />
 
     <TextView
         android:id="@+id/currentTemp_textView"
+        style="@style/WeatherText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="t"
         android:textSize="75sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="t" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -30,24 +43,24 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/curMinTemp_textView"
-                style="@style/SmallParameters"
-                android:text="min" />
+                android:id="@+id/curWindSpeed_textView"
+                style="@style/WeatherText.SmallParameters"
+                tools:text="speed" />
 
             <TextView
-                android:id="@+id/curMaxTemp_textView"
-                style="@style/SmallParameters"
-                android:text="max" />
+                android:id="@+id/curWindDir_textView"
+                style="@style/WeatherText.SmallParameters"
+                tools:text="dir" />
 
             <TextView
                 android:id="@+id/curHumid_textView"
-                style="@style/SmallParameters"
-                android:text="hum" />
+                style="@style/WeatherText.SmallParameters"
+                tools:text="hum" />
 
             <TextView
                 android:id="@+id/curPress_textView"
-                style="@style/SmallParameters"
-                android:text="pres" />
+                style="@style/WeatherText.SmallParameters"
+                tools:text="pres" />
         </TableRow>
 
         <TableRow
@@ -55,20 +68,20 @@
             android:layout_height="wrap_content">
 
             <TextView
-                style="@style/SmallParameters"
-                android:text="MIN" />
+                style="@style/WeatherText.SmallParameters"
+                android:text="@string/min" />
 
             <TextView
-                style="@style/SmallParameters"
-                android:text="MAX" />
+                style="@style/WeatherText.SmallParameters"
+                android:text="@string/max" />
 
             <TextView
-                style="@style/SmallParameters"
-                android:text="HUM" />
+                style="@style/WeatherText.SmallParameters"
+                android:text="@string/hum" />
 
             <TextView
-                style="@style/SmallParameters"
-                android:text="PRES" />
+                style="@style/WeatherText.SmallParameters"
+                android:text="@string/pres" />
         </TableRow>
 
     </TableLayout>
@@ -83,18 +96,12 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/curLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Location"
-            android:textAlignment="center" />
-
-        <TextView
             android:id="@+id/updateTime"
+            style="@style/WeatherText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Time"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            tools:text="Time" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
