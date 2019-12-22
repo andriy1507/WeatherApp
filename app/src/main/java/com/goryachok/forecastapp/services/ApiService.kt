@@ -24,9 +24,6 @@ class ApiService : Service() {
         const val forecastPrefs = "Forecast"
     }
 
-    private lateinit var locationListener:LocationListener
-    private lateinit var locationManager:LocationManager
-
     override fun onBind(intent: Intent?): IBinder? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -41,12 +38,10 @@ class ApiService : Service() {
             forecast.start(intent.getStringExtra("City"))
         } else {
             if (!checkLocalData()) {
-                startGeo()
                 val latitude = geoLocation.latitude.toFloat()
                 val longitude = geoLocation.longitude.toFloat()
                 weather.startWithCoord(latitude,longitude)
                 forecast.startWithCoord(latitude, longitude)
-                stopGeo()
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -62,34 +57,5 @@ class ApiService : Service() {
                 return true
         }
         return false
-    }
-    @SuppressLint("MissingPermission")
-    private fun startGeo(){
-        locationListener = GeolocationListener()
-        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        locationManager.requestLocationUpdates(
-            LocationManager.GPS_PROVIDER,
-            2500,
-            10F,
-            locationListener
-        )
-
-        locationManager.requestLocationUpdates(
-            LocationManager.NETWORK_PROVIDER,
-            2500,
-            10F,
-            locationListener
-        )
-
-        geoLocation = Location(
-            locationManager.getLastKnownLocation(
-                locationManager.getBestProvider(Criteria(), false)
-            )
-        )
-    }
-
-    private fun stopGeo(){
-        locationManager.removeUpdates(locationListener)
     }
 }

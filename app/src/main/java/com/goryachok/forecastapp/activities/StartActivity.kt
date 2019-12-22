@@ -11,8 +11,6 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.services.ApiService
@@ -28,6 +26,9 @@ import kotlinx.coroutines.withContext
 
 class StartActivity : AppCompatActivity() {
 
+    private lateinit var locationListener:LocationListener
+    private lateinit var locationManager:LocationManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
@@ -39,6 +40,38 @@ class StartActivity : AppCompatActivity() {
                 requestPermissions(arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION), 1)
             }
         }
+
+        locationListener = GeolocationListener()
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        while(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+            startActivityForResult(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS),0)
+        }
+
+        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                2500,
+                10F,
+                locationListener
+            )
+        }
+
+        if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+            locationManager.requestLocationUpdates(
+                LocationManager.NETWORK_PROVIDER,
+                2500,
+                10F,
+                locationListener
+            )
+        }
+
+
+        geoLocation = Location(
+            locationManager.getLastKnownLocation(
+                locationManager.getBestProvider(Criteria(), false)!!
+            )
+        )
 
 
 
@@ -52,5 +85,10 @@ class StartActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+    }
+
+    override fun onDestroy() {
+        locationManager.removeUpdates(locationListener)
+        super.onDestroy()
     }
 }
