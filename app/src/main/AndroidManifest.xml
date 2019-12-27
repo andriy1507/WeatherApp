@@ -27,7 +27,6 @@
         </activity>
         <activity android:name=".activities.MainActivity" />
 
-        <service android:name=".services.ApiService" />
     </application>
 
 </manifest>

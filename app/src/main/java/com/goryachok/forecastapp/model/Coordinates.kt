@@ -3,7 +3,7 @@ package com.goryachok.forecastapp.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Coord(
+data class Coordinates(
     @SerializedName("lat")
     val lat: Double = 0.0,
     @SerializedName("lon")

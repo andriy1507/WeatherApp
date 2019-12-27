@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.model.Forecast
 
-class HourlyForecastAdapter(private val forecast: List<Forecast>) :
+class HourlyForecastAdapter(private var forecast: List<Forecast>) :
     RecyclerView.Adapter<HourlyForecastAdapter.HourlyForecastViewHolder>() {
     class HourlyForecastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val temp: TextView = itemView.findViewById(R.id.temp_textView)
@@ -24,11 +24,16 @@ class HourlyForecastAdapter(private val forecast: List<Forecast>) :
         )
     }
 
-    override fun getItemCount(): Int = 8
+    override fun getItemCount(): Int = forecast.size / 5
 
     override fun onBindViewHolder(holder: HourlyForecastViewHolder, position: Int) {
-        holder.date.text = forecast[position].dtTxt.substringAfter(" ")
+        val context = holder.itemView.context
+        holder.date.text = forecast[position].dateText.substringAfter(" ")
         holder.desc.text = forecast[position].weather[0].description
-        holder.temp.text = forecast[position].main.temp.toString()+"\u00B0"
+        holder.temp.text = context.getString(R.string.temperature_template, forecast[position].main.temp)
+    }
+    fun update(forecast: List<Forecast>){
+        this.forecast = forecast
+        notifyDataSetChanged()
     }
 }

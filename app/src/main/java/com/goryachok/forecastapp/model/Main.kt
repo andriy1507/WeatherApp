@@ -7,7 +7,7 @@ data class Main(
     @SerializedName("feels_like")
     val feelsLike: Double = 0.0,
     @SerializedName("grnd_level")
-    val grndLevel: Int = 0,
+    val groundLevel: Int = 0,
     @SerializedName("humidity")
     val humidity: Int = 0,
     @SerializedName("pressure")

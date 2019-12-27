@@ -5,7 +5,6 @@ import android.location.LocationListener
 import android.os.Bundle
 
 class GeolocationListener:LocationListener {
-
     companion object{
         lateinit var geoLocation:Location
     }
@@ -20,7 +19,6 @@ class GeolocationListener:LocationListener {
 
     override fun onProviderEnabled(provider: String?) {
         geoLocation = Location(provider)
-
     }
 
     override fun onProviderDisabled(provider: String?) {

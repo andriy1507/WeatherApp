@@ -5,27 +5,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
-import com.goryachok.forecastapp.adapters.HourlyForecastAdapter
 import com.goryachok.forecastapp.R
-import com.goryachok.forecastapp.activities.MainActivity
+import com.goryachok.forecastapp.adapters.HourlyForecastAdapter
+import com.goryachok.forecastapp.viewmodel.HourlyForecastViewModel
 import kotlinx.android.synthetic.main.hourly_forecast_fragment.*
 
-class HourlyForecastFragment: Fragment(){
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.hourly_forecast_fragment,container,false)
+class HourlyForecastFragment : Fragment() {
+
+    private val viewModel by lazy { ViewModelProviders.of(this).get(HourlyForecastViewModel::class.java) }
+    private lateinit var adapter: HourlyForecastAdapter
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.hourly_forecast_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        val forecast = MainActivity.forecast
-
-        hourlyForecast_recyclerView.layoutManager = LinearLayoutManager(this.context)
-        hourlyForecast_recyclerView.adapter = HourlyForecastAdapter(forecast.list)
-        hourlyForecast_recyclerView.addItemDecoration(DividerItemDecoration(this.context,HORIZONTAL))
-        hourlyForecast_cityName_textView.text = "${forecast.city.name}, ${forecast.city.country}"
-
         super.onActivityCreated(savedInstanceState)
+        adapter = HourlyForecastAdapter(viewModel.data.value!!.list)
+        hourlyForecast_recyclerView.layoutManager = LinearLayoutManager(context)
+        hourlyForecast_recyclerView.adapter = adapter
+        viewModel.data.observe(this, Observer {
+            adapter.update(it.list)
+            hourlyForecast_cityName_textView.text = getString(R.string.location_template,it.city.name,it.city.country)
+        })
     }
 }
