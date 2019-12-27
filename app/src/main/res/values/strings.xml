@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">ForecastApp</string>
-    <string name="API_KEY">95c833ccc06be137270b7c86710baba8</string>
     <string name="min">SPD</string>
     <string name="max">DIR</string>
     <string name="hum">HUM</string>
@@ -11,4 +10,9 @@
     <string name="logo">Logo</string>
     <string name="search">Search</string>
     <string name="location">location</string>
+    <string name="temperature_template">%.0f \u00B0</string>
+    <string name="windSpeed_template">%.0f m/s</string>
+    <string name="pressure_template">%d hPa</string>
+    <string name="humidity_template">%d %%</string>
+    <string name="location_template">%s, %s</string>
 </resources>
