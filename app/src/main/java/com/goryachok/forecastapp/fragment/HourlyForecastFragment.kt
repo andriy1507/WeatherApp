@@ -32,7 +32,7 @@ class HourlyForecastFragment : Fragment() {
         adapter = HourlyForecastAdapter(viewModel.data.value!!.list)
         hourlyForecast_recyclerView.layoutManager = LinearLayoutManager(context)
         hourlyForecast_recyclerView.adapter = adapter
-        viewModel.data.observe(this, Observer {
+        viewModel.data.observe(viewLifecycleOwner, Observer {
             adapter.update(it.list)
             hourlyForecast_cityName_textView.text = getString(R.string.location_template,it.city.name,it.city.country)
         })

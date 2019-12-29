@@ -29,7 +29,7 @@ class StartActivity : AppCompatActivity() {
         WeatherApplication.repository.initializeData()
         GlobalScope.launch {
             delay(2500)
-            startActivity(Intent(this@StartActivity,MainActivity::class.java))
+            startActivity(Intent(this@StartActivity, MainActivity::class.java))
         }
     }
 
@@ -50,6 +50,7 @@ class StartActivity : AppCompatActivity() {
             }
         }
 
+
         val locationListener = GeolocationListener()
         val providersList = listOf(LocationManager.NETWORK_PROVIDER, LocationManager.GPS_PROVIDER)
         locationManager.apply {
@@ -62,6 +63,7 @@ class StartActivity : AppCompatActivity() {
                         locationManager.getLastKnownLocation(provider) ?: Location(provider)
                 }
             }
+            removeUpdates(locationListener)
         }
     }
 }

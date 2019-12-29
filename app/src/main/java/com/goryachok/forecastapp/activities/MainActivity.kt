@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                //TODO("FIX SEARCH")
                 searchView.clearFocus()
                 searchView.setQuery("", false)
                 searchItem.collapseActionView()
@@ -49,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.geoLocationItem) {
-            WeatherApplication.repository.getCurrentData()
+            WeatherApplication.repository.initializeData()
         }
         return super.onOptionsItemSelected(item)
     }

@@ -23,7 +23,10 @@ const val PREFS_NAME = "WEATHER_PREFERENCES"
 private const val LOCAL_WEATHER_PREFS_NAME = "LOCAL_WEATHER_DATA"
 private const val LOCAL_FORECAST_PREFS_NAME = "LOCAL_FORECAST_DATA"
 
-class WeatherDataRepository(private val api: OpenWeatherMapAPI, prefs: SharedPreferences) {
+class WeatherDataRepository(
+    private val api: OpenWeatherMapAPI,
+    private val prefs: SharedPreferences
+) {
 
     var localWeatherData: MutableLiveData<WeatherResponse> = MutableLiveData()
     var localForecastData: MutableLiveData<ForecastResponse> = MutableLiveData()
@@ -52,7 +55,7 @@ class WeatherDataRepository(private val api: OpenWeatherMapAPI, prefs: SharedPre
         lastSearchWeatherData.value = WeatherResponse()
     }
 
-    fun getCurrentData() {
+    private fun getCurrentData() {
         val lat = GeolocationListener.geoLocation.latitude.toFloat()
         val lon = GeolocationListener.geoLocation.longitude.toFloat()
         CoroutineScope(IO).launch {
@@ -63,6 +66,7 @@ class WeatherDataRepository(private val api: OpenWeatherMapAPI, prefs: SharedPre
                     delay(500)
                     localForecastData.postValue(forecastResponse)
                     localWeatherData.postValue(weatherResponse)
+                    saveToPreferences()
                 }
             } catch (e: NoConnectivityException) {
                 Log.e("Connectivity", "No internet connection", e)
@@ -72,6 +76,17 @@ class WeatherDataRepository(private val api: OpenWeatherMapAPI, prefs: SharedPre
                 Log.e("Timeout", "Failed to connect", e)
             }
         }
+    }
+
+    private fun saveToPreferences() {
+        prefs.edit().putString(
+            LOCAL_FORECAST_PREFS_NAME,
+            Gson().toJson(localForecastData.value, ForecastResponse::class.java)
+        ).apply()
+        prefs.edit().putString(
+            LOCAL_WEATHER_PREFS_NAME,
+            Gson().toJson(localWeatherData.value, WeatherResponse::class.java)
+        ).apply()
     }
 
     fun getSearchedData(city: String) {
@@ -95,14 +110,16 @@ class WeatherDataRepository(private val api: OpenWeatherMapAPI, prefs: SharedPre
     }
 
     fun initializeData() {
-        //TODO("DO SOMETHING WITH RECEIVED TIME")
-        if (isFetchNeeded(ZonedDateTime.now().minusHours(2))) {
+        if (isFetchNeeded(localWeatherData.value!!.date)) {
             getCurrentData()
+        } else {
+            localWeatherData.postValue(localWeatherData.value?.copy())
+            localForecastData.postValue(localForecastData.value?.copy())
         }
     }
 
-    private fun isFetchNeeded(lastFetchTime: ZonedDateTime): Boolean {
-        val oneHourAgo = ZonedDateTime.now().minusHours(1)
-        return lastFetchTime.isBefore(oneHourAgo)
+    private fun isFetchNeeded(lastFetchTime: Long): Boolean {
+        val difference = ZonedDateTime.now().minusHours(1).toEpochSecond() - lastFetchTime
+        return difference > 3600
     }
 }
