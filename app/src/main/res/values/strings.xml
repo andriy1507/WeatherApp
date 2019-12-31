@@ -1,12 +1,11 @@
 <resources>
-    <string name="app_name">ForecastApp</string>
+    <string name="app_name">Forecast App</string>
     <string name="min">SPD</string>
     <string name="max">DIR</string>
     <string name="hum">HUM</string>
     <string name="pres">PRES</string>
     <string name="hourly_forecast">Hourly forecast</string>
     <string name="daily_forecast">Daily Forecast</string>
-    <string name="welcome">WELCOME</string>
     <string name="logo">Logo</string>
     <string name="search">Search</string>
     <string name="location">location</string>

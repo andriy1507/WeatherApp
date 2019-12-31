@@ -23,9 +23,10 @@ class MainActivity : AppCompatActivity() {
         forecast_viewPager.adapter = adapter
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
         menuInflater.inflate(R.menu.search_menu, menu)
+
         val manager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val searchItem = menu?.findItem(R.id.searchItem)
         val searchView = searchItem?.actionView as SearchView
@@ -34,8 +35,10 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchView.clearFocus()
-                searchView.setQuery("", false)
+                searchView.apply{
+                    clearFocus()
+                    setQuery("", false)
+                }
                 searchItem.collapseActionView()
                 WeatherApplication.repository.getSearchedData(query.toString())
                 return true
