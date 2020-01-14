@@ -13,15 +13,21 @@ import androidx.core.content.ContextCompat
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.WeatherApplication
 import com.goryachok.forecastapp.services.GeolocationListener
+import com.goryachok.forecastapp.viewmodel.SplashViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class StartActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
+
+    @Inject lateinit var viewModel: SplashViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
+
+        (applicationContext as WeatherApplication).component.inject(this)
 
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
@@ -29,7 +35,7 @@ class StartActivity : AppCompatActivity() {
         WeatherApplication.repository.initializeData()
         GlobalScope.launch {
             delay(2500)
-            val intent = Intent(this@StartActivity, MainActivity::class.java)
+            val intent = Intent(this@SplashActivity, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
