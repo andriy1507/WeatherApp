@@ -43,6 +43,5 @@ dependencies {
 
     testImplementation appDependencies.test
     androidTestImplementation appDependencies.androidTest
-
 }
 

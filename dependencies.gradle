@@ -1,51 +1,40 @@
 //Android
-
 def appCompatVersion = '1.2.0-alpha01'
 def coreVersion = '1.2.0-rc01'
 
 //Gson
-
 def gsonVersion = '2.8.6'
 
 //UI
-
 def recyclerviewVersion = '1.2.0-alpha01'
 def constraintlayoutVersion = '2.0.0-beta4'
 def legacySupportVersion = '1.0.0'
 def lifecycleVersion = '2.2.0-rc03'
 
 //Coroutines
-
 def coroutinesVersion = '1.3.3'
 
 //Retrofit
-
 def retrofitVersion = '2.7.0'
 
 //OkHttp
-
 def okhttpVersion = '4.2.2'
 
 //ZonedDateTime
-
 def threetenbpVersion = '1.4.0'
 
 //Tests
-
 def junitVersion = '4.13-rc-2'
 def junitAndroidVersion = '1.1.2-alpha03'
 def espressoVersion = '3.3.0-alpha03'
 
 //Gradle
-
 ext.gradleVersion = '3.5.3'
 
 //Kotlin
-
 ext.kotlinVersion = '1.3.61'
 
 //SDK
-
 ext.toolsVer = "29.0.2"
 ext.minSdkVersion = 15
 ext.targetSdkVersion = 29
@@ -58,7 +47,6 @@ ext.appId = "com.goryachok.forecastapp"
 ext.testRunner = "androidx.test.runner.AndroidJUnitRunner"
 
 //Dependencies
-
 ext.appDependencies = [
         'kotlin'     :
                 ["org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"],
