@@ -1,4 +1,4 @@
-package com.goryachok.forecastapp.activities
+package com.goryachok.forecastapp.ui.activities
 
 import android.app.SearchManager
 import android.content.Context
@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.WeatherApplication
-import com.goryachok.forecastapp.adapters.ForecastPagerAdapter
+import com.goryachok.forecastapp.ui.adapters.ForecastPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -19,7 +19,8 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        val adapter = ForecastPagerAdapter(supportFragmentManager)
+        val adapter =
+            ForecastPagerAdapter(supportFragmentManager)
         forecast_viewPager.adapter = adapter
     }
 
@@ -35,12 +36,12 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchView.apply{
+                searchView.apply {
                     clearFocus()
                     setQuery("", false)
                 }
                 searchItem.collapseActionView()
-                WeatherApplication.repository.getSearchedData(query.toString())
+//                WeatherApplication.repository.getSearchedData(query.toString())
                 return true
             }
 
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.geoLocationItem) {
-            WeatherApplication.repository.initializeData()
+            //          WeatherApplication.repository.initializeData()
         }
         return super.onOptionsItemSelected(item)
     }

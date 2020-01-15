@@ -1,4 +1,4 @@
-package com.goryachok.forecastapp.adapters
+package com.goryachok.forecastapp.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.goryachok.forecastapp.R
-import com.goryachok.forecastapp.model.Forecast
+import com.goryachok.forecastapp.pojo.Forecast
 
 class DailyForecastAdapter(private var forecast: List<Forecast>) :
     RecyclerView.Adapter<DailyForecastAdapter.DailyForecastViewHolder>() {
@@ -32,7 +32,7 @@ class DailyForecastAdapter(private var forecast: List<Forecast>) :
 
     override fun onBindViewHolder(holder: DailyForecastViewHolder, position: Int) {
         val context = holder.itemView.context
-        holder.temp.text = context.getString(R.string.temperature_template, forecast[position * 8].main.temp)
+        holder.temp.text = context.getString(R.string.temperature_template, forecast[position * 8].main?.temp)
         holder.desc.text = forecast[position * 8].weather[0].description
         holder.date.text = forecast[position * 8].dateText.substringBefore(" ")
     }

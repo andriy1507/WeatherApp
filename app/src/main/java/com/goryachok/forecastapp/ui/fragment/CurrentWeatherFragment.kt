@@ -1,4 +1,4 @@
-package com.goryachok.forecastapp.fragment
+package com.goryachok.forecastapp.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.viewmodel.CurrentWeatherViewModel
 import kotlinx.android.synthetic.main.current_weather_fragment.*
@@ -14,14 +14,14 @@ import kotlinx.android.synthetic.main.current_weather_fragment.*
 class CurrentWeatherFragment : Fragment() {
 
     private val viewModel by lazy {
-        ViewModelProviders.of(this).get(CurrentWeatherViewModel::class.java)
+        ViewModelProvider(this).get(CurrentWeatherViewModel::class.java)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel.data.observe(this, Observer {
+        viewModel.data.observe(viewLifecycleOwner, Observer {
             currentTemp_textView.text = getString(R.string.temperature_template, it.main.temp)
             curLocation.text = it.city
             curWindSpeed_textView.text = getString(R.string.windSpeed_template, it.wind.speed)

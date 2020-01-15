@@ -1,4 +1,4 @@
-package com.goryachok.forecastapp.adapters
+package com.goryachok.forecastapp.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.goryachok.forecastapp.R
-import com.goryachok.forecastapp.model.Forecast
+import com.goryachok.forecastapp.pojo.Forecast
 
 class HourlyForecastAdapter(private var forecast: List<Forecast>) :
     RecyclerView.Adapter<HourlyForecastAdapter.HourlyForecastViewHolder>() {
@@ -30,7 +30,7 @@ class HourlyForecastAdapter(private var forecast: List<Forecast>) :
         val context = holder.itemView.context
         holder.date.text = forecast[position].dateText.substringAfter(" ")
         holder.desc.text = forecast[position].weather[0].description
-        holder.temp.text = context.getString(R.string.temperature_template, forecast[position].main.temp)
+        holder.temp.text = context.getString(R.string.temperature_template, forecast[position].main?.temp)
     }
     fun update(forecast: List<Forecast>){
         this.forecast = forecast

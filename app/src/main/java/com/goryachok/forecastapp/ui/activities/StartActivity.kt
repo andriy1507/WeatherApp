@@ -1,4 +1,4 @@
-package com.goryachok.forecastapp.activities
+package com.goryachok.forecastapp.ui.activities
 
 import android.Manifest
 import android.content.Context
@@ -26,7 +26,7 @@ class StartActivity : AppCompatActivity() {
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         requestLocationAndPermissions(locationManager)
-        WeatherApplication.repository.initializeData()
+        //WeatherApplication.repository.initializeData()
         GlobalScope.launch {
             delay(2500)
             val intent = Intent(this@StartActivity, MainActivity::class.java)
