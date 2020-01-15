@@ -1,8 +1,11 @@
-package com.goryachok.forecastapp.model
+package com.goryachok.forecastapp.pojo
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Main(
     @SerializedName("feels_like")
     val feelsLike: Double = 0.0,
@@ -22,4 +25,4 @@ data class Main(
     val tempMax: Double = 0.0,
     @SerializedName("temp_min")
     val tempMin: Double = 0.0
-)
+) : Parcelable

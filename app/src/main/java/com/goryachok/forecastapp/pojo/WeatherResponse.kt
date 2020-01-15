@@ -1,8 +1,12 @@
-package com.goryachok.forecastapp.model
+package com.goryachok.forecastapp.pojo
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.goryachok.forecastapp.base.RemoteEntity
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class WeatherResponse(
     val coordinates: Coordinates = Coordinates(),
     @SerializedName("dt")
@@ -17,4 +21,4 @@ data class WeatherResponse(
     val weather: List<Weather> = listOf(Weather()),
     @SerializedName("wind")
     val wind: Wind = Wind()
-)
+) : Parcelable, RemoteEntity

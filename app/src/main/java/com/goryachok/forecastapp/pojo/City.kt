@@ -1,8 +1,11 @@
-package com.goryachok.forecastapp.model
+package com.goryachok.forecastapp.pojo
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class City(
     @SerializedName("coord")
     val coordinates: Coordinates = Coordinates(),
@@ -18,4 +21,4 @@ data class City(
     val sunset: Int = 0,
     @SerializedName("timezone")
     val timezone: Int = 0
-)
+) : Parcelable
