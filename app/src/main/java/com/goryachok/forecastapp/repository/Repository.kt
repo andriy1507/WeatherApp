@@ -6,39 +6,48 @@ import com.goryachok.forecastapp.data.LocalDataSource
 import com.goryachok.forecastapp.data.RemoteDataSource
 import com.goryachok.forecastapp.pojo.ForecastEntity
 import com.goryachok.forecastapp.pojo.WeatherEntity
+import kotlin.reflect.KClass
 
 class Repository(context: Context) {
 
-    val remote: RemoteDataSource = RemoteDataSource()
-    val local = LocalDataSource(context)
+    private val remote: RemoteDataSource = RemoteDataSource()
+    private val local = LocalDataSource(context)
 
-    fun needFetch() = if (local.isDataAvailable()) {
+    private fun needFetch() = if (local.isDataAvailable()) {
         val lastUpdate = local.getWeatherData().date
         val now = System.nanoTime()
         now - lastUpdate > 60 * 60
     } else true
 
-    inline fun <reified T : RemoteEntity> getDataByCoordinates(
+    fun <T : RemoteEntity> getDataByCoordinates(
         lon: Float,
-        lat: Float
-    ): RemoteEntity =
+        lat: Float,
+        type: KClass<T>
+    ): RemoteEntity {
         if (needFetch()) {
-            when (T::class) {
-                WeatherEntity::class -> remote.getWeatherData(lon = lon, lat = lat)
-                ForecastEntity::class -> remote.getForecastData(lon = lon, lat = lat)
+            val remoteData: RemoteEntity = when (type) {
+                WeatherEntity::class -> {
+                    remote.getWeatherData(lon = lon, lat = lat)
+                }
+                ForecastEntity::class -> {
+                    remote.getForecastData(lon = lon, lat = lat)
+                }
                 else -> throw ClassCastException()
             }
+            local.saveData(remoteData)
+            return remoteData
         } else {
-            when (T::class) {
+            return when (type) {
                 WeatherEntity::class -> local.getWeatherData()
                 ForecastEntity::class -> local.getForecastData()
                 else -> throw ClassCastException()
             }
         }
+    }
 
 
-    inline fun <reified T : RemoteEntity> getDataByCity(city: String): RemoteEntity =
-        when (T::class) {
+    fun <T : RemoteEntity> getDataByCity(city: String, type: KClass<T>): RemoteEntity =
+        when (type) {
             WeatherEntity::class -> remote.getWeatherData(city = city)
             ForecastEntity::class -> remote.getForecastData(city = city)
             else -> throw ClassCastException()
