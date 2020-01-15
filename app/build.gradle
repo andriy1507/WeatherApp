@@ -4,16 +4,18 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion targetSdkVer
+    buildToolsVersion toolsVer
     defaultConfig {
-        applicationId "com.goryachok.forecastapp"
-        minSdkVersion 15
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        applicationId appId
+        minSdkVersion minimalSdkVer
+        targetSdkVersion targetSdkVer
+        versionCode versionCode
+        versionName versionName
+        testInstrumentationRunner testRunner
     }
     buildTypes {
         release {
@@ -22,52 +24,30 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = javaVersion
     }
+}
+
+androidExtensions {
+    experimental = true
 }
 
 dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
-    implementation 'androidx.appcompat:appcompat:1.2.0-alpha01'
-    implementation 'androidx.core:core-ktx:1.2.0-rc01'
+    implementation appDependencies.kotlin
+    implementation appDependencies.android
+    implementation appDependencies.ui
+    implementation appDependencies.api
+    implementation appDependencies.coroutines
+    implementation appDependencies.utils
+    implementation appDependencies.dagger
+    kapt appDependencies.daggerCompiler
 
-    //Gson
-
-    implementation 'com.google.code.gson:gson:2.8.6'
-
-    //UI
-
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha01'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-rc03'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-rc03'
-
-    //Coroutines
-
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3'
-
-    //Retrofit
-
-    implementation 'com.squareup.retrofit2:retrofit:2.7.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.7.0'
-
-    //OkHttp
-
-    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
-
-    //ZonedDateTime
-    implementation 'org.threeten:threetenbp:1.4.0'
-
-    testImplementation 'junit:junit:4.13-rc-2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2-alpha03'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha03'
+    testImplementation appDependencies.test
+    androidTestImplementation appDependencies.androidTest
 }
-
