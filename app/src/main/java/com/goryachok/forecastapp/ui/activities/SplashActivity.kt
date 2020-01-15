@@ -1,23 +1,19 @@
 package com.goryachok.forecastapp.ui.activities
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationManager
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.WeatherApplication
-import com.goryachok.forecastapp.di.components.AppComponent
-import com.goryachok.forecastapp.di.components.DaggerAppComponent
-import com.goryachok.forecastapp.di.modules.ViewModelModule
-import com.goryachok.forecastapp.services.GeolocationListener
 import com.goryachok.forecastapp.viewmodel.SplashViewModel
 import javax.inject.Inject
 
 class SplashActivity : AppCompatActivity() {
+
+    private val LOC_PERM_CODE = 101
 
     @Inject
     lateinit var viewModel: SplashViewModel
@@ -26,39 +22,36 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
         (applicationContext as WeatherApplication).component.inject(this)
+        requestLocationPermissions()
     }
 
-    private fun requestLocationAndPermissions(locationManager: LocationManager) {
-
+    private fun requestLocationPermissions() {
+        val permission = arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            while (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_DENIED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                == PackageManager.PERMISSION_DENIED
-            ) {
-                requestPermissions(
-                    arrayOf(
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                    ), 101
-                )
+            if (checkPermissions(permission)){
+                viewModel.getLocation()
             }
         }
+    }
 
-
-        val locationListener = GeolocationListener()
-        val providersList = listOf(LocationManager.NETWORK_PROVIDER, LocationManager.GPS_PROVIDER)
-        locationManager.apply {
-            for (provider in providersList) {
-                if (locationManager.getProvider(provider) != null) {
-                    if (locationManager.isProviderEnabled(provider)) {
-                        requestLocationUpdates(provider, 60000, 1000f, locationListener)
-                    }
-                    GeolocationListener.geoLocation =
-                        locationManager.getLastKnownLocation(provider) ?: Location(provider)
-                }
-            }
-            removeUpdates(locationListener)
-        }
+    @SuppressLint("NewApi")
+    private fun checkPermissions(permissions: Array<String>): Boolean {
+        return false
     }
 }
+
+
+//
+//while (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+//== PackageManager.PERMISSION_DENIED &&
+//ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+//== PackageManager.PERMISSION_DENIED
+//) {
+//    requestPermissions(
+//        arrayOf(
+//            Manifest.permission.ACCESS_FINE_LOCATION,
+//            Manifest.permission.ACCESS_COARSE_LOCATION
+//        ), 101
+//    )
+//}
+//}
