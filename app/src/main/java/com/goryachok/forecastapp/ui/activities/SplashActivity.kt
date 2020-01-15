@@ -1,8 +1,6 @@
 package com.goryachok.forecastapp.ui.activities
 
 import android.Manifest
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
@@ -11,28 +9,23 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.goryachok.forecastapp.R
+import com.goryachok.forecastapp.WeatherApplication
+import com.goryachok.forecastapp.di.components.AppComponent
+import com.goryachok.forecastapp.di.components.DaggerAppComponent
+import com.goryachok.forecastapp.di.modules.ViewModelModule
 import com.goryachok.forecastapp.services.GeolocationListener
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.goryachok.forecastapp.viewmodel.SplashViewModel
+import javax.inject.Inject
 
 class SplashActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var viewModel: SplashViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
-
-        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        requestLocationAndPermissions(locationManager)
-        //WeatherApplication.repository.initializeData()
-        GlobalScope.launch {
-            delay(2500)
-            val intent = Intent(this@SplashActivity, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-        }
+        (applicationContext as WeatherApplication).component.inject(this)
     }
 
     private fun requestLocationAndPermissions(locationManager: LocationManager) {

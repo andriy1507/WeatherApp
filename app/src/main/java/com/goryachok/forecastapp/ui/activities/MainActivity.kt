@@ -19,9 +19,9 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        val adapter =
-            ForecastPagerAdapter(supportFragmentManager)
-        forecast_viewPager.adapter = adapter
+//        val adapter =
+//            ForecastPagerAdapter(supportFragmentManager)
+//        forecast_viewPager.adapter = adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

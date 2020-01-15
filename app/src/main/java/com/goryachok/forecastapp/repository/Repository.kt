@@ -1,17 +1,21 @@
 package com.goryachok.forecastapp.repository
 
-import android.content.Context
+import android.util.Log
 import com.goryachok.forecastapp.base.RemoteEntity
 import com.goryachok.forecastapp.data.LocalDataSource
 import com.goryachok.forecastapp.data.RemoteDataSource
 import com.goryachok.forecastapp.pojo.ForecastEntity
 import com.goryachok.forecastapp.pojo.WeatherEntity
+import javax.inject.Inject
 import kotlin.reflect.KClass
 
-class Repository(context: Context) {
-
-    private val remote: RemoteDataSource = RemoteDataSource()
-    private val local = LocalDataSource(context)
+class Repository @Inject constructor(
+    val remote: RemoteDataSource,
+    val local: LocalDataSource
+) {
+    init {
+        Log.d("DaggerDebug", javaClass.name)
+    }
 
     private fun needFetch() = if (local.isDataAvailable()) {
         val lastUpdate = local.getWeatherData().date

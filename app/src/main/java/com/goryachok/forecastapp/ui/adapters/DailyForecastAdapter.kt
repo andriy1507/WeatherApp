@@ -32,7 +32,9 @@ class DailyForecastAdapter(private var forecast: List<Forecast>) :
 
     override fun onBindViewHolder(holder: DailyForecastViewHolder, position: Int) {
         val context = holder.itemView.context
-        holder.temp.text = context.getString(R.string.temperature_template, forecast[position * 8].main?.temp)
+        holder.temp.text = context.getString(R.string.temperature_template,
+            forecast[position * 8].main.temp
+        )
         holder.desc.text = forecast[position * 8].weather[0].description
         holder.date.text = forecast[position * 8].dateText.substringBefore(" ")
     }

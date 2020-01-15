@@ -1,10 +1,18 @@
 package com.goryachok.forecastapp.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.goryachok.forecastapp.pojo.ForecastEntity
+import androidx.lifecycle.ViewModelProvider
+import com.goryachok.forecastapp.repository.Repository
 
-class HourlyForecastViewModel : ViewModel() {
+class HourlyForecastViewModel : RepoViewModel() {
 
-    var data: MutableLiveData<ForecastEntity> = MutableLiveData()
+    override lateinit var repository: Repository
+
+    @Suppress("UNCHECKED_CAST")
+    class Factory : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return HourlyForecastViewModel() as T
+        }
+
+    }
 }

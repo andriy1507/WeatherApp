@@ -30,7 +30,9 @@ class HourlyForecastAdapter(private var forecast: List<Forecast>) :
         val context = holder.itemView.context
         holder.date.text = forecast[position].dateText.substringAfter(" ")
         holder.desc.text = forecast[position].weather[0].description
-        holder.temp.text = context.getString(R.string.temperature_template, forecast[position].main?.temp)
+        holder.temp.text = context.getString(R.string.temperature_template,
+            forecast[position].main.temp
+        )
     }
     fun update(forecast: List<Forecast>){
         this.forecast = forecast

@@ -1,15 +1,18 @@
 package com.goryachok.forecastapp.data
 
-import com.goryachok.forecastapp.api.ClientBuilder
+import android.util.Log
+import com.goryachok.forecastapp.api.OpenWeatherMapAPI
 import com.goryachok.forecastapp.pojo.ForecastEntity
 import com.goryachok.forecastapp.pojo.WeatherEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RemoteDataSource {
-
-    private val api = ClientBuilder().build()
+class RemoteDataSource @Inject constructor(val api: OpenWeatherMapAPI) {
+    init {
+        Log.d("DaggerDebug", javaClass.name)
+    }
 
     fun getWeatherData(
         city: String? = null,
