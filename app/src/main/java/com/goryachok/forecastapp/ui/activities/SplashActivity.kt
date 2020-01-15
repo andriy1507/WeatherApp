@@ -11,13 +11,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.goryachok.forecastapp.R
-import com.goryachok.forecastapp.WeatherApplication
 import com.goryachok.forecastapp.services.GeolocationListener
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class StartActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +28,7 @@ class StartActivity : AppCompatActivity() {
         //WeatherApplication.repository.initializeData()
         GlobalScope.launch {
             delay(2500)
-            val intent = Intent(this@StartActivity, MainActivity::class.java)
+            val intent = Intent(this@SplashActivity, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)

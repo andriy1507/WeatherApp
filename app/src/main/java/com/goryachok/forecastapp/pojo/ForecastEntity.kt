@@ -7,9 +7,9 @@ import com.goryachok.forecastapp.base.RemoteEntity
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class ForecastResponse(
+data class ForecastEntity(
     @SerializedName("city")
-    val city: City = City(),
+    val city: City,
     @SerializedName("list")
-    val list: List<Forecast> = listOf(Forecast())
+    val list: List<Forecast>
 ) : Parcelable, RemoteEntity

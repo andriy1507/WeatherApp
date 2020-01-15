@@ -8,21 +8,21 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Main(
     @SerializedName("feels_like")
-    val feelsLike: Double = 0.0,
+    val feelsLike: Double,
     @SerializedName("grnd_level")
-    val groundLevel: Int = 0,
+    val groundLevel: Int,
     @SerializedName("humidity")
-    val humidity: Int = 0,
+    val humidity: Int,
     @SerializedName("pressure")
-    val pressure: Int = 0,
+    val pressure: Int,
     @SerializedName("sea_level")
-    val seaLevel: Int = 0,
+    val seaLevel: Int,
     @SerializedName("temp")
-    val temp: Double = 0.0,
+    val temp: Double,
     @SerializedName("temp_kf")
-    val tempKf: Double = 0.0,
+    val tempKf: Double,
     @SerializedName("temp_max")
-    val tempMax: Double = 0.0,
+    val tempMax: Double,
     @SerializedName("temp_min")
-    val tempMin: Double = 0.0
+    val tempMin: Double
 ) : Parcelable

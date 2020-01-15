@@ -8,5 +8,5 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Weather(
     @SerializedName("description")
-    val description: String = ""
+    val description: String
 ) : Parcelable

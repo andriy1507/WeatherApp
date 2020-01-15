@@ -3,8 +3,8 @@ package com.goryachok.forecastapp.data
 import android.content.Context
 import com.google.gson.Gson
 import com.goryachok.forecastapp.base.RemoteEntity
-import com.goryachok.forecastapp.pojo.ForecastResponse
-import com.goryachok.forecastapp.pojo.WeatherResponse
+import com.goryachok.forecastapp.pojo.ForecastEntity
+import com.goryachok.forecastapp.pojo.WeatherEntity
 
 class LocalDataSource(context: Context) {
     private val PREFS_NAME = "WEATHER_PREFERENCES"
@@ -15,24 +15,28 @@ class LocalDataSource(context: Context) {
 
     fun saveData(remoteEntity: RemoteEntity) {
         when (remoteEntity) {
-            is WeatherResponse -> {
-                val str = Gson().toJson(remoteEntity, WeatherResponse::class.java)
+            is WeatherEntity -> {
+                val str = Gson().toJson(remoteEntity, WeatherEntity::class.java)
                 prefs.edit().putString(LOCAL_WEATHER_PREFS_NAME, str).apply()
             }
-            is ForecastResponse -> {
-                val str = Gson().toJson(remoteEntity, ForecastResponse::class.java)
+            is ForecastEntity -> {
+                val str = Gson().toJson(remoteEntity, ForecastEntity::class.java)
                 prefs.edit().putString(LOCAL_FORECAST_PREFS_NAME, str).apply()
             }
         }
     }
 
-    fun getWeatherData():WeatherResponse{
+    fun getWeatherData():WeatherEntity{
         val string = prefs.getString(LOCAL_WEATHER_PREFS_NAME, "")
-        return Gson().fromJson(string, WeatherResponse::class.java)
+        return Gson().fromJson(string, WeatherEntity::class.java)
     }
 
-    fun getForecastData():ForecastResponse{
+    fun getForecastData():ForecastEntity{
         val string = prefs.getString(LOCAL_FORECAST_PREFS_NAME, "")
-        return Gson().fromJson(string, ForecastResponse::class.java)
+        return Gson().fromJson(string, ForecastEntity::class.java)
+    }
+
+    fun isDataAvailable():Boolean{
+        return prefs.contains(LOCAL_WEATHER_PREFS_NAME) && prefs.contains(LOCAL_FORECAST_PREFS_NAME)
     }
 }

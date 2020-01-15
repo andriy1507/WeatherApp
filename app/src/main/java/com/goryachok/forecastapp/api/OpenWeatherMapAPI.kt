@@ -1,8 +1,8 @@
 package com.goryachok.forecastapp.api
 
 
-import com.goryachok.forecastapp.pojo.ForecastResponse
-import com.goryachok.forecastapp.pojo.WeatherResponse
+import com.goryachok.forecastapp.pojo.ForecastEntity
+import com.goryachok.forecastapp.pojo.WeatherEntity
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -17,22 +17,22 @@ interface OpenWeatherMapAPI {
     @GET("data/2.5/weather")
     suspend fun getWeatherByCityAsync(
         @Query("q") city: String
-    ): WeatherResponse
+    ): WeatherEntity
 
     @GET("data/2.5/weather")
     suspend fun getWeatherByCoordinatesAsync(
         @Query("lat") latitude: Float,
         @Query("lon") longitude: Float
-    ): WeatherResponse
+    ): WeatherEntity
 
     @GET("data/2.5/forecast")
     suspend fun getForecastByCityAsync(
         @Query("q") city: String
-    ): ForecastResponse
+    ): ForecastEntity
 
     @GET("data/2.5/forecast")
     suspend fun getForecastByCoordinatesAsync(
         @Query("lat") latitude: Float,
         @Query("lon") longitude: Float
-    ): ForecastResponse
+    ): ForecastEntity
 }

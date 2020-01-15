@@ -2,8 +2,8 @@ package com.goryachok.forecastapp.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.goryachok.forecastapp.pojo.WeatherResponse
+import com.goryachok.forecastapp.pojo.WeatherEntity
 
 class CurrentWeatherViewModel : ViewModel() {
-    var data: MutableLiveData<WeatherResponse> = MutableLiveData()
+    var data: MutableLiveData<WeatherEntity> = MutableLiveData()
 }

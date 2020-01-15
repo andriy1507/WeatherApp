@@ -8,17 +8,17 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class City(
     @SerializedName("coord")
-    val coordinates: Coordinates = Coordinates(),
+    val coordinates: Coordinates,
     @SerializedName("country")
-    val country: String = "",
+    val country: String,
     @SerializedName("id")
-    val id: Int = 0,
+    val id: Int,
     @SerializedName("name")
-    val name: String = "",
+    val name: String,
     @SerializedName("sunrise")
-    val sunrise: Int = 0,
+    val sunrise: Int,
     @SerializedName("sunset")
-    val sunset: Int = 0,
+    val sunset: Int,
     @SerializedName("timezone")
-    val timezone: Int = 0
+    val timezone: Int
 ) : Parcelable
