@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.goryachok.forecastapp.R
-import com.goryachok.forecastapp.pojo.Forecast
+import com.goryachok.forecastapp.model.domain.Forecast
 
 class DailyForecastAdapter(private var forecast: List<Forecast>) :
     RecyclerView.Adapter<DailyForecastAdapter.DailyForecastViewHolder>() {
@@ -27,13 +27,13 @@ class DailyForecastAdapter(private var forecast: List<Forecast>) :
     }
 
     override fun getItemCount(): Int {
-        return forecast.size / 8
+        return forecast.size
     }
 
     override fun onBindViewHolder(holder: DailyForecastViewHolder, position: Int) {
         val context = holder.itemView.context
         holder.temp.text = context.getString(R.string.temperature_template,
-            forecast[position * 8].main.temp
+            forecast[position].main.temp
         )
         holder.desc.text = forecast[position * 8].weather[0].description
         holder.date.text = forecast[position * 8].dateText.substringBefore(" ")

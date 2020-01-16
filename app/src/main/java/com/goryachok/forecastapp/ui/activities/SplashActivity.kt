@@ -1,10 +1,12 @@
 package com.goryachok.forecastapp.ui.activities
 
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.annotation.SuppressLint
-import android.os.Build
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.WeatherApplication
@@ -13,7 +15,9 @@ import javax.inject.Inject
 
 class SplashActivity : AppCompatActivity() {
 
-    private val LOC_PERM_CODE = 101
+    companion object {
+        private const val LOCATION_PERMISSION_CODE = 101
+    }
 
     @Inject
     lateinit var viewModel: SplashViewModel
@@ -22,36 +26,45 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
         (applicationContext as WeatherApplication).component.inject(this)
-        requestLocationPermissions()
+
+        if (!checkForPermissions()) {
+            askForPermissions()
+        }
     }
 
-    private fun requestLocationPermissions() {
-        val permission = arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkPermissions(permission)){
-                viewModel.getLocation()
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            LOCATION_PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    viewModel.initData()
+                    if (viewModel.isDataInitialized())
+                        startActivity(Intent(this, MainActivity::class.java))
+                } else {
+                    alert(getString(R.string.permission_message))
+                    askForPermissions()
+                }
             }
         }
     }
 
-    @SuppressLint("NewApi")
-    private fun checkPermissions(permissions: Array<String>): Boolean {
-        return false
+    private fun alert(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun checkForPermissions(): Boolean {
+        return if (VERSION.SDK_INT >= VERSION_CODES.M)
+            checkSelfPermission(ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        else
+            true
+    }
+
+    private fun askForPermissions() {
+        if (VERSION.SDK_INT >= VERSION_CODES.M)
+            requestPermissions(arrayOf(ACCESS_FINE_LOCATION), LOCATION_PERMISSION_CODE)
     }
 }
-
-
-//
-//while (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//== PackageManager.PERMISSION_DENIED &&
-//ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-//== PackageManager.PERMISSION_DENIED
-//) {
-//    requestPermissions(
-//        arrayOf(
-//            Manifest.permission.ACCESS_FINE_LOCATION,
-//            Manifest.permission.ACCESS_COARSE_LOCATION
-//        ), 101
-//    )
-//}
-//}

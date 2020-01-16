@@ -1,4 +1,4 @@
-package com.goryachok.forecastapp.pojo
+package com.goryachok.forecastapp.model.domain
 
 
 import android.os.Parcelable

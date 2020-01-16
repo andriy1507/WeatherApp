@@ -6,10 +6,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.goryachok.forecastapp.R
-import com.goryachok.forecastapp.pojo.Forecast
+import com.goryachok.forecastapp.model.domain.Forecast
 
 class HourlyForecastAdapter(private var forecast: List<Forecast>) :
     RecyclerView.Adapter<HourlyForecastAdapter.HourlyForecastViewHolder>() {
+
     class HourlyForecastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val temp: TextView = itemView.findViewById(R.id.temp_textView)
         val desc: TextView = itemView.findViewById(R.id.desc_textView)
@@ -24,7 +25,7 @@ class HourlyForecastAdapter(private var forecast: List<Forecast>) :
         )
     }
 
-    override fun getItemCount(): Int = forecast.size / 5
+    override fun getItemCount(): Int = forecast.size
 
     override fun onBindViewHolder(holder: HourlyForecastViewHolder, position: Int) {
         val context = holder.itemView.context
