@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
+
 import com.goryachok.forecastapp.base.PagerModel
 import com.goryachok.forecastapp.model.domain.ForecastEntity
 import com.goryachok.forecastapp.repository.Repository
