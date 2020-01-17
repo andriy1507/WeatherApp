@@ -14,4 +14,5 @@
     <string name="pressure_template">%d hPa</string>
     <string name="humidity_template">%d %%</string>
     <string name="location_template">%s, %s</string>
+    <string name="permission_message">App needs your location to get data. Please grant permission</string>
 </resources>

@@ -1,9 +1,13 @@
 //Android
 def appCompatVersion = '1.2.0-alpha01'
 def coreVersion = '1.2.0-rc01'
+def liveDataVersion = '2.2.0-alpha01'
 
 //Gson
 def gsonVersion = '2.8.6'
+
+//Dagger
+def daggerVersion = '2.25.4'
 
 //UI
 def recyclerviewVersion = '1.2.0-alpha01'
@@ -36,8 +40,8 @@ ext.kotlinVersion = '1.3.61'
 
 //SDK
 ext.toolsVer = "29.0.2"
-ext.minSdkVersion = 15
-ext.targetSdkVersion = 29
+ext.minimalSdkVer = 15
+ext.targetSdkVer = 29
 ext.javaVersion = JavaVersion.VERSION_1_8
 
 //Configurations
@@ -48,13 +52,15 @@ ext.testRunner = "androidx.test.runner.AndroidJUnitRunner"
 
 //Dependencies
 ext.appDependencies = [
-        'kotlin'     :
+        'kotlin'        :
                 ["org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"],
-        'android'    :
+        'android'       :
                 ["androidx.appcompat:appcompat:$appCompatVersion",
 
-                 "androidx.core:core-ktx:$coreVersion"],
-        'api'        :
+                 "androidx.core:core-ktx:$coreVersion",
+
+                 "androidx.lifecycle:lifecycle-livedata-ktx:$liveDataVersion"],
+        'api'           :
                 ["com.squareup.okhttp3:okhttp:$okhttpVersion",
 
                  "com.squareup.retrofit2:retrofit:$retrofitVersion",
@@ -62,13 +68,17 @@ ext.appDependencies = [
                  "com.squareup.retrofit2:converter-gson:$retrofitVersion",
 
                  "com.google.code.gson:gson:$gsonVersion"],
-        'utils'      :
+        'utils'         :
                 ["org.threeten:threetenbp:$threetenbpVersion"],
-        'coroutines' :
+        'dagger'        :
+                ["com.google.dagger:dagger:$daggerVersion"],
+        'daggerCompiler':
+                ["com.google.dagger:dagger-compiler:$daggerVersion"],
+        'coroutines'    :
                 ["org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion",
 
                  "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"],
-        'ui'         :
+        'ui'            :
                 ["androidx.recyclerview:recyclerview:$recyclerviewVersion",
 
                  "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion",
@@ -78,18 +88,17 @@ ext.appDependencies = [
                  "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion",
 
                  "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"],
-        'test'       :
+        'test'          :
                 ["junit:junit:$junitVersion"],
-        'androidTest':
+        'androidTest'   :
                 ["androidx.test.ext:junit:$junitAndroidVersion",
 
                  "androidx.test.espresso:espresso-core:$espressoVersion"]
 ]
 
 ext.buildDependencies = [
-        'gradle'     :
+        'gradle':
                 ["org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion",
 
-                 "com.android.tools.build:gradle:$gradleVersion"
-                ]
+                 "com.android.tools.build:gradle:$gradleVersion"]
 ]

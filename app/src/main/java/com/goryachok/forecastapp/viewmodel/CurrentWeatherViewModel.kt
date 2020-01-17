@@ -1,26 +1,41 @@
 package com.goryachok.forecastapp.viewmodel
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.goryachok.forecastapp.WeatherApplication
-import com.goryachok.forecastapp.model.WeatherResponse
+import androidx.lifecycle.*
+import com.goryachok.forecastapp.base.PagerModel
+import com.goryachok.forecastapp.model.domain.WeatherEntity
+import com.goryachok.forecastapp.repository.Repository
+import com.goryachok.forecastapp.services.GeolocationListener
+import kotlinx.coroutines.Dispatchers.IO
+import javax.inject.Inject
 
-class CurrentWeatherViewModel : ViewModel() {
-    var data: MutableLiveData<WeatherResponse> = MutableLiveData()
-    private val repository by lazy { WeatherApplication.repository }
+class CurrentWeatherViewModel @Inject constructor() : PagerModel(){
+    @Inject
+    lateinit var repository: Repository
 
-    init {
+    private val _data = MutableLiveData<WeatherEntity>()
 
-        data.value = repository.localWeatherData.value
+    val data: LiveData<WeatherEntity> = _data
 
-        repository.apply {
-            lastSearchWeatherData.observeForever {
-                data.postValue(it)
-            }
-            localWeatherData.observeForever {
-                data.postValue(it)
-            }
+    override fun getDataByCity(request: String) {
+        liveData(IO) {
+            emit(repository.getDataByCity(request,WeatherEntity::class))
+            emitSource(data)
         }
     }
 
+    override fun getDataByLocation() {
+        val lon = GeolocationListener.geoLocation!!.longitude
+        val lat = GeolocationListener.geoLocation!!.latitude
+        liveData(IO) {
+            emit(repository.getDataByCoordinates(lon.toFloat(), lat.toFloat(),WeatherEntity::class))
+            emitSource(data)
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    class Factory : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return CurrentWeatherViewModel() as T
+        }
+    }
 }

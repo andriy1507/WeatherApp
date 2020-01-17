@@ -6,7 +6,7 @@ import android.os.Bundle
 
 class GeolocationListener:LocationListener {
     companion object{
-        lateinit var geoLocation:Location
+        var geoLocation:Location? = null
     }
 
     override fun onLocationChanged(location: Location?) {
