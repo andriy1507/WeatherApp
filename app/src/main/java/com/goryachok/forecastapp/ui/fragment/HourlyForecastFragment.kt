@@ -24,6 +24,11 @@ class HourlyForecastFragment : PagerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.data.observe(viewLifecycleOwner, Observer {
+            adapter.update(it.list)
+            hourlyForecast_cityName_textView.text =
+                getString(R.string.location_template, it.city.name, it.city.country)
+        })
         return inflater.inflate(R.layout.hourly_forecast_fragment, container, false)
     }
 
@@ -31,11 +36,6 @@ class HourlyForecastFragment : PagerFragment() {
         super.onActivityCreated(savedInstanceState)
         hourlyForecast_recyclerView.layoutManager = LinearLayoutManager(context)
         hourlyForecast_recyclerView.adapter = HourlyForecastAdapter(viewModel.data.value!!.list)
-        viewModel.data.observe(viewLifecycleOwner, Observer {
-            adapter.update(it.list)
-            hourlyForecast_cityName_textView.text =
-                getString(R.string.location_template, it.city.name, it.city.country)
-        })
     }
 
     override fun onSearchRequest(request: String) {

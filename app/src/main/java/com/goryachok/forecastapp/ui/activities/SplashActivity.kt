@@ -29,7 +29,10 @@ class SplashActivity : AppCompatActivity() {
 
         if (!checkForPermissions()) {
             askForPermissions()
+        }else{
+            startActivity(Intent(this,MainActivity::class.java))
         }
+
     }
 
     override fun onRequestPermissionsResult(

@@ -5,7 +5,6 @@ import com.goryachok.forecastapp.WeatherApplication
 import com.goryachok.forecastapp.base.App
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
 @Module
 class AppModule {

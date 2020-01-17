@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.goryachok.forecastapp.R
+import com.goryachok.forecastapp.WeatherApplication
 import com.goryachok.forecastapp.ui.adapters.ForecastPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        (applicationContext as WeatherApplication).component.inject(this)
         forecast_viewPager.adapter = adapter
     }
 

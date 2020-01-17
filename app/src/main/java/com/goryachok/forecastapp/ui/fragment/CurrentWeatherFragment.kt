@@ -19,7 +19,6 @@ class CurrentWeatherFragment : PagerFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         viewModel.data.observe(viewLifecycleOwner, Observer {
             currentTemp_textView.text = getString(R.string.temperature_template, it.main.temp)
             curLocation.text = it.city

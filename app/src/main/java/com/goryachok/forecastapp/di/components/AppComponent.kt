@@ -3,6 +3,7 @@ package com.goryachok.forecastapp.di.components
 import com.goryachok.forecastapp.WeatherApplication
 import com.goryachok.forecastapp.base.App
 import com.goryachok.forecastapp.di.modules.*
+import com.goryachok.forecastapp.ui.activities.MainActivity
 import com.goryachok.forecastapp.ui.activities.SplashActivity
 import dagger.BindsInstance
 import dagger.Component
@@ -23,6 +24,8 @@ interface AppComponent {
     fun inject(app: App)
 
     fun inject(activity: SplashActivity)
+
+    fun inject(activity: MainActivity)
 
     @Component.Builder
     interface Builder {

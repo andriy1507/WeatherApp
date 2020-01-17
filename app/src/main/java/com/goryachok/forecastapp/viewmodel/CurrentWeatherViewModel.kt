@@ -8,7 +8,7 @@ import com.goryachok.forecastapp.services.GeolocationListener
 import kotlinx.coroutines.Dispatchers.IO
 import javax.inject.Inject
 
-class CurrentWeatherViewModel : PagerModel(){
+class CurrentWeatherViewModel @Inject constructor() : PagerModel(){
     @Inject
     override lateinit var repository: Repository
 

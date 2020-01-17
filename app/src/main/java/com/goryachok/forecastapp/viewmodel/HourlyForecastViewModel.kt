@@ -12,7 +12,7 @@ import com.goryachok.forecastapp.services.GeolocationListener
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
-class HourlyForecastViewModel : PagerModel() {
+class HourlyForecastViewModel @Inject constructor() : PagerModel() {
     @Inject
     override lateinit var repository: Repository
 

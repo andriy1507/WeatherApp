@@ -2,8 +2,13 @@ package com.goryachok.forecastapp.di.modules
 
 import androidx.lifecycle.ViewModelProvider
 import com.goryachok.forecastapp.ui.activities.SplashActivity
+import com.goryachok.forecastapp.ui.fragment.CurrentWeatherFragment
+import com.goryachok.forecastapp.ui.fragment.DailyForecastFragment
+import com.goryachok.forecastapp.ui.fragment.HourlyForecastFragment
+import com.goryachok.forecastapp.viewmodel.CurrentWeatherViewModel
+import com.goryachok.forecastapp.viewmodel.DailyForecastViewModel
+import com.goryachok.forecastapp.viewmodel.HourlyForecastViewModel
 import com.goryachok.forecastapp.viewmodel.SplashViewModel
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 
@@ -13,23 +18,33 @@ abstract class ViewModelModule {
     @Module
     companion object {
         @Provides
-        fun provideViewModel(
+        fun provideSplashViewModel(
             activity: SplashActivity,
             factory: SplashViewModel.Factory
         ): SplashViewModel {
             return ViewModelProvider(activity, factory).get(SplashViewModel::class.java)
         }
+        @Provides
+        fun provideCurrentViewModel(
+            activity: CurrentWeatherFragment,
+            factory: CurrentWeatherViewModel.Factory
+        ): CurrentWeatherViewModel {
+            return ViewModelProvider(activity, factory).get(CurrentWeatherViewModel::class.java)
+        }
+
+        @Provides
+        fun provideHourlyViewModel(
+            activity: HourlyForecastFragment,
+            factory: HourlyForecastViewModel.Factory
+        ): HourlyForecastViewModel {
+            return ViewModelProvider(activity, factory).get(HourlyForecastViewModel::class.java)
+        }
+        @Provides
+        fun provideDailyViewModel(
+            activity: DailyForecastFragment,
+            factory: DailyForecastViewModel.Factory
+        ): DailyForecastViewModel {
+            return ViewModelProvider(activity, factory).get(DailyForecastViewModel::class.java)
+        }
     }
-
-    @Binds
-    abstract fun bindSplashViewModelFactory(impl: SplashViewModel.Factory): ViewModelProvider.Factory
-
-//    @Binds
-//    abstract fun bindHourlyViewModelFactory(impl: HourlyForecastViewModel.Factory): ViewModelProvider.Factory
-//
-//    @Binds
-//    abstract fun bindCurrentViewModelFactory(impl: CurrentWeatherViewModel.Factory): ViewModelProvider.Factory
-//
-//    @Binds
-//    abstract fun bindDailyViewModelFactory(impl: DailyForecastViewModel.Factory): ViewModelProvider.Factory
 }

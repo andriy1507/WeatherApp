@@ -36,7 +36,7 @@ class ApiModule {
 
     @Provides
     fun provideOkHttp(interceptor: Interceptor): OkHttpClient {
-        Log.d("DaggerDebug", OkHttpClient::javaClass.name)
+        Log.d("DaggerDebug", OkHttpClient::class.java.name)
         return OkHttpClient
             .Builder()
             .addInterceptor(interceptor)
