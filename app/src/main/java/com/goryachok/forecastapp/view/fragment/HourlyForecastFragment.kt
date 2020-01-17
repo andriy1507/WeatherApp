@@ -5,25 +5,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.goryachok.forecastapp.R
+import com.goryachok.forecastapp.WeatherApplication
 import com.goryachok.forecastapp.base.PagerFragment
+import com.goryachok.forecastapp.view.activities.MainActivity
 import com.goryachok.forecastapp.view.adapters.HourlyForecastAdapter
 import com.goryachok.forecastapp.viewmodel.HourlyForecastViewModel
 import kotlinx.android.synthetic.main.hourly_forecast_fragment.*
-import javax.inject.Inject
 
 class HourlyForecastFragment : PagerFragment() {
-    @Inject
+
     lateinit var viewModel: HourlyForecastViewModel
 
     private lateinit var adapter: HourlyForecastAdapter
+
+    override fun setupDependencies() {
+        ((activity as MainActivity).application as WeatherApplication).component.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel = ViewModelProvider(this).get(HourlyForecastViewModel::class.java)
         viewModel.data.observe(viewLifecycleOwner, Observer {
             adapter.update(it.list)
             hourlyForecast_cityName_textView.text =

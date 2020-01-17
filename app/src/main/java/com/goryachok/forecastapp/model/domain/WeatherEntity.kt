@@ -2,7 +2,6 @@ package com.goryachok.forecastapp.model.domain
 
 
 import android.os.Parcelable
-import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.goryachok.forecastapp.base.RemoteEntity
 import com.goryachok.forecastapp.model.local.WeatherModel

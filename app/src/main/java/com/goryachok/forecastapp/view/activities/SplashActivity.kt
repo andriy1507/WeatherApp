@@ -1,11 +1,11 @@
 package com.goryachok.forecastapp.view.activities
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.goryachok.forecastapp.R
@@ -17,6 +17,7 @@ class SplashActivity : AppCompatActivity() {
 
     companion object {
         private const val LOCATION_PERMISSION_CODE = 101
+        private const val TAG = "DaggerDebug"
     }
 
     @Inject
@@ -26,13 +27,13 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
         (applicationContext as WeatherApplication).component.inject(this)
+        Log.d(TAG, SplashActivity::class.java.name)
 
         if (!checkForPermissions()) {
             askForPermissions()
-        }else{
-            startActivity(Intent(this,MainActivity::class.java))
+        } else {
+            TODO("Go to main activity if data is available")
         }
-
     }
 
     override fun onRequestPermissionsResult(
@@ -44,9 +45,7 @@ class SplashActivity : AppCompatActivity() {
         when (requestCode) {
             LOCATION_PERMISSION_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    viewModel.initData()
-                    if (viewModel.isDataInitialized())
-                        startActivity(Intent(this, MainActivity::class.java))
+                    TODO("Go to main activity if data is available")
                 } else {
                     alert(getString(R.string.permission_message))
                     askForPermissions()

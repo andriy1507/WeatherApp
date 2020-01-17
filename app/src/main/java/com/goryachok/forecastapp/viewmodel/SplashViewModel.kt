@@ -5,17 +5,21 @@ import android.location.Criteria
 import android.location.Location
 import android.location.LocationManager
 import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.goryachok.forecastapp.model.domain.ForecastEntity
 import com.goryachok.forecastapp.model.domain.WeatherEntity
 import com.goryachok.forecastapp.repository.Repository
 import com.goryachok.forecastapp.services.GeolocationListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SplashViewModel @Inject constructor() : ViewModel() {
+
+    private val _data = MutableLiveData<WeatherEntity>()
+    val data: LiveData<WeatherEntity>
+        get() = _data
 
     @Inject
     lateinit var repository: Repository
@@ -47,20 +51,22 @@ class SplashViewModel @Inject constructor() : ViewModel() {
 
     fun initData() {
         getLocation()
-        viewModelScope.launch {
-            if (GeolocationListener.geoLocation != null) {
-                val loc: Location = GeolocationListener.geoLocation!!
-                repository.getDataByCoordinates(
-                    type = WeatherEntity::class,
-                    lon = loc.longitude.toFloat(),
-                    lat = loc.latitude.toFloat()
-                )
-                repository.getDataByCoordinates(
-                    type = ForecastEntity::class,
-                    lon = loc.longitude.toFloat(),
-                    lat = loc.latitude.toFloat()
-                )
-            }
+        CoroutineScope(IO).launch {
+            //            if (GeolocationListener.geoLocation != null) {
+//                val loc: Location = GeolocationListener.geoLocation!!
+//                repository.getDataByCoordinates(
+//                    type = WeatherEntity::class,
+//                    lon = loc.longitude.toFloat(),
+//                    lat = loc.latitude.toFloat()
+//                )
+//                repository.getDataByCoordinates(
+//                    type = ForecastEntity::class,
+//                    lon = loc.longitude.toFloat(),
+//                    lat = loc.latitude.toFloat()
+//                )
+//            }
+            _data.postValue(repository.getDataByCity("Lviv", WeatherEntity::class))
+            repository.getDataByCity("Lviv", ForecastEntity::class)
         }
     }
 

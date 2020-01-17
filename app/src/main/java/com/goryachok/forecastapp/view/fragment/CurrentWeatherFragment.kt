@@ -5,20 +5,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.goryachok.forecastapp.R
+import com.goryachok.forecastapp.WeatherApplication
 import com.goryachok.forecastapp.base.PagerFragment
+import com.goryachok.forecastapp.view.activities.MainActivity
 import com.goryachok.forecastapp.viewmodel.CurrentWeatherViewModel
 import kotlinx.android.synthetic.main.current_weather_fragment.*
-import javax.inject.Inject
 
 class CurrentWeatherFragment : PagerFragment() {
-    @Inject
+
+
     lateinit var viewModel: CurrentWeatherViewModel
+
+    override fun setupDependencies() {
+        ((activity as MainActivity).application as WeatherApplication).component.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel = ViewModelProvider(this).get(CurrentWeatherViewModel::class.java)
         viewModel.data.observe(viewLifecycleOwner, Observer {
             currentTemp_textView.text = getString(R.string.temperature_template, it.main.temp)
             curLocation.text = it.city

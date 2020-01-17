@@ -11,7 +11,7 @@ import kotlin.reflect.KClass
 class RemoteDataSource @Inject constructor(val api: OpenWeatherMapAPI) {
 
     companion object {
-        private const val DAGGER_TAG ="DaggerDebug"
+        private const val DAGGER_TAG = "DaggerDebug"
 
         private const val FORECAST_QUERY_PARAM = "weather"
         private const val WEATHER_QUERY_PARAM = "forecast"

@@ -3,23 +3,27 @@ package com.goryachok.forecastapp.view.activities
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.goryachok.forecastapp.R
-import com.goryachok.forecastapp.WeatherApplication
 import com.goryachok.forecastapp.view.adapters.ForecastPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        private const val TAG = "DaggerDebug"
+    }
 
     private val adapter by lazy { ForecastPagerAdapter(supportFragmentManager) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        (applicationContext as WeatherApplication).component.inject(this)
+        Log.d(TAG, MainActivity::class.java.name)
         forecast_viewPager.adapter = adapter
     }
 

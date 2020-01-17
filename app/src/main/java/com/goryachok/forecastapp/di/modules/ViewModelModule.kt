@@ -9,6 +9,7 @@ import com.goryachok.forecastapp.viewmodel.CurrentWeatherViewModel
 import com.goryachok.forecastapp.viewmodel.DailyForecastViewModel
 import com.goryachok.forecastapp.viewmodel.HourlyForecastViewModel
 import com.goryachok.forecastapp.viewmodel.SplashViewModel
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 
@@ -24,6 +25,8 @@ abstract class ViewModelModule {
         ): SplashViewModel {
             return ViewModelProvider(activity, factory).get(SplashViewModel::class.java)
         }
+
+        @JvmStatic
         @Provides
         fun provideCurrentViewModel(
             activity: CurrentWeatherFragment,
@@ -47,4 +50,16 @@ abstract class ViewModelModule {
             return ViewModelProvider(activity, factory).get(DailyForecastViewModel::class.java)
         }
     }
+
+    @Binds
+    abstract fun bindCurrentViewModelFactory(impl:CurrentWeatherViewModel.Factory):ViewModelProvider.Factory
+
+    @Binds
+    abstract fun bindDailyViewModelFactory(impl:DailyForecastViewModel.Factory):ViewModelProvider.Factory
+
+    @Binds
+    abstract fun bindHourlyViewModelFactory(impl:HourlyForecastViewModel.Factory):ViewModelProvider.Factory
+
+    @Binds
+    abstract fun bindSplashViewModelFactory(impl:SplashViewModel.Factory):ViewModelProvider.Factory
 }
