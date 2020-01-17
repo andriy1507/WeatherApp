@@ -10,14 +10,17 @@ import javax.inject.Inject
 
 class WeatherApplication : App() {
 
+    companion object{
+        private const val DAGGER_TAG = "DaggerDebug"
+    }
+
     override val component: AppComponent = DaggerAppComponent.builder().application(this).build()
 
     init {
         component.inject(this)
-        Log.d("DaggerDebug", javaClass.name)
+        Log.d(DAGGER_TAG, javaClass.name)
     }
 
     @Inject
     override lateinit var context: Context
-
 }

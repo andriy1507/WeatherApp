@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class CurrentWeatherViewModel @Inject constructor() : PagerModel(){
     @Inject
-    override lateinit var repository: Repository
+    lateinit var repository: Repository
 
     private val _data = MutableLiveData<WeatherEntity>()
 

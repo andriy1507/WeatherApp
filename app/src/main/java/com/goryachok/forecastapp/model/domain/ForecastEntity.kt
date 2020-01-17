@@ -12,4 +12,4 @@ data class ForecastEntity(
     val city: City,
     @SerializedName("list")
     val list: List<Forecast>
-) : Parcelable, RemoteEntity
+) : Parcelable, RemoteEntity()

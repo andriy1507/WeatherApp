@@ -1,4 +1,4 @@
-package com.goryachok.forecastapp.ui.activities
+package com.goryachok.forecastapp.view.activities
 
 import android.app.SearchManager
 import android.content.Context
@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.WeatherApplication
-import com.goryachok.forecastapp.ui.adapters.ForecastPagerAdapter
+import com.goryachok.forecastapp.view.adapters.ForecastPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

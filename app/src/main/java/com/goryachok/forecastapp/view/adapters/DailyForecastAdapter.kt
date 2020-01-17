@@ -1,4 +1,4 @@
-package com.goryachok.forecastapp.ui.adapters
+package com.goryachok.forecastapp.view.adapters
 
 import android.view.LayoutInflater
 import android.view.View

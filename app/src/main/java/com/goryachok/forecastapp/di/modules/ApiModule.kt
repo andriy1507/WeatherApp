@@ -1,6 +1,7 @@
 package com.goryachok.forecastapp.di.modules
 
 import android.util.Log
+import com.goryachok.forecastapp.BuildConfig
 import com.goryachok.forecastapp.api.OpenWeatherMapAPI
 import dagger.Module
 import dagger.Provides
@@ -24,7 +25,7 @@ class ApiModule {
             chain.request()
                 .url
                 .newBuilder()
-                .addQueryParameter("appid", OpenWeatherMapAPI.API_KEY)
+                .addQueryParameter("appid", BuildConfig.API_KEY)
                 .addQueryParameter("units", "metric")
                 .build()
 
@@ -58,7 +59,7 @@ class ApiModule {
         return Retrofit
             .Builder()
             .client(okHttpClient)
-            .baseUrl(OpenWeatherMapAPI.DOMAIN)
+            .baseUrl(BuildConfig.DOMAIN)
             .addConverterFactory(converterFactory)
             .build()
     }

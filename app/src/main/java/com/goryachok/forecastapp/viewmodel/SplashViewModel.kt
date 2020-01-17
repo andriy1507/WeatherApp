@@ -8,7 +8,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.goryachok.forecastapp.base.RepoViewModel
 import com.goryachok.forecastapp.model.domain.ForecastEntity
 import com.goryachok.forecastapp.model.domain.WeatherEntity
 import com.goryachok.forecastapp.repository.Repository
@@ -16,10 +15,10 @@ import com.goryachok.forecastapp.services.GeolocationListener
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SplashViewModel @Inject constructor() : ViewModel(), RepoViewModel {
+class SplashViewModel @Inject constructor() : ViewModel() {
 
     @Inject
-    override lateinit var repository: Repository
+    lateinit var repository: Repository
 
     @Inject
     lateinit var locationManager: LocationManager

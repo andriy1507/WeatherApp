@@ -11,60 +11,47 @@ import kotlin.reflect.KClass
 
 class LocalDataSource @Inject constructor(context: Context) {
 
-    companion object{
+    companion object {
         private const val DAGGER_TAG = "DaggerDebug"
+
+        private const val PREFS_NAME = "WEATHER_PREFERENCES"
+        private const val WEATHER_PREFS = "LOCAL_WEATHER_DATA"
+        private const val FORECAST_PREFS = "LOCAL_FORECAST_DATA"
     }
+
     init {
         Log.d(DAGGER_TAG, javaClass.name)
     }
 
-    private val prefsName = "WEATHER_PREFERENCES"
-    private val weatherPrefs = "LOCAL_WEATHER_DATA"
-    private val forecastPrefs = "LOCAL_FORECAST_DATA"
-
-    private val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+    private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     fun saveData(remoteEntity: RemoteEntity) {
         when (remoteEntity) {
             is WeatherEntity -> {
-                val str = Gson().toJson(remoteEntity, WeatherEntity::class.java)
-                prefs.edit().putString(weatherPrefs, str).apply()
+                prefs.edit().putString(WEATHER_PREFS, remoteEntity.toJson()).apply()
             }
             is ForecastEntity -> {
-                val str = Gson().toJson(remoteEntity, ForecastEntity::class.java)
-                prefs.edit().putString(forecastPrefs, str).apply()
+                prefs.edit().putString(FORECAST_PREFS, remoteEntity.toJson()).apply()
             }
         }
     }
 
     fun lastFetchTime() = if (isDataAvailable()) getData(WeatherEntity::class).date else 0
 
-//    fun getWeatherData(): WeatherEntity {
-//        val string = prefs.getString(weatherPrefs, "")
-//        return Gson().fromJson(string, WeatherEntity::class.java)
-//    }
-//
-//    fun getForecastData(): ForecastEntity {
-//        val string = prefs.getString(forecastPrefs, "")
-//        return Gson().fromJson(string, ForecastEntity::class.java)
-//    }
-
     @Suppress("UNCHECKED_CAST")
-    fun <T : RemoteEntity> getData(type: KClass<T>): T {
-        return when (type) {
+    fun <T : RemoteEntity> getData(type: KClass<T>): T =
+        when (type) {
             WeatherEntity::class -> Gson().fromJson(
-                prefs.getString(weatherPrefs, ""),
+                prefs.getString(WEATHER_PREFS, ""),
                 WeatherEntity::class.java
             ) as T
             ForecastEntity::class -> Gson().fromJson(
-                prefs.getString(forecastPrefs, ""),
+                prefs.getString(FORECAST_PREFS, ""),
                 ForecastEntity::class.java
             ) as T
             else -> throw ClassCastException()
         }
-    }
 
-    fun isDataAvailable(): Boolean {
-        return prefs.contains(weatherPrefs) && prefs.contains(forecastPrefs)
-    }
+    fun isDataAvailable() = prefs.contains(WEATHER_PREFS) && prefs.contains(FORECAST_PREFS)
+
 }

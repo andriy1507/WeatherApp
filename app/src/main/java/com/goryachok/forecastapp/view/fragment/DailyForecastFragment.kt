@@ -1,4 +1,4 @@
-package com.goryachok.forecastapp.ui.fragment
+package com.goryachok.forecastapp.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.base.PagerFragment
-import com.goryachok.forecastapp.ui.adapters.DailyForecastAdapter
+import com.goryachok.forecastapp.view.adapters.DailyForecastAdapter
 import com.goryachok.forecastapp.viewmodel.DailyForecastViewModel
 import kotlinx.android.synthetic.main.daily_forecast_fragment.*
 import javax.inject.Inject

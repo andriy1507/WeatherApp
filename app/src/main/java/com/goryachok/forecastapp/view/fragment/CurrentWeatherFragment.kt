@@ -1,4 +1,4 @@
-package com.goryachok.forecastapp.ui.fragment
+package com.goryachok.forecastapp.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -19,14 +19,14 @@
         android:supportsRtl="true"
         android:screenOrientation="portrait"
         android:theme="@style/MainTheme">
-        <activity android:name=".ui.activities.SplashActivity">
+        <activity android:name=".view.activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.MainActivity" />
+        <activity android:name=".view.activities.MainActivity" />
 
     </application>
 

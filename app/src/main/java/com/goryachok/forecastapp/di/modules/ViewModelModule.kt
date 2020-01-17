@@ -1,10 +1,10 @@
 package com.goryachok.forecastapp.di.modules
 
 import androidx.lifecycle.ViewModelProvider
-import com.goryachok.forecastapp.ui.activities.SplashActivity
-import com.goryachok.forecastapp.ui.fragment.CurrentWeatherFragment
-import com.goryachok.forecastapp.ui.fragment.DailyForecastFragment
-import com.goryachok.forecastapp.ui.fragment.HourlyForecastFragment
+import com.goryachok.forecastapp.view.activities.SplashActivity
+import com.goryachok.forecastapp.view.fragment.CurrentWeatherFragment
+import com.goryachok.forecastapp.view.fragment.DailyForecastFragment
+import com.goryachok.forecastapp.view.fragment.HourlyForecastFragment
 import com.goryachok.forecastapp.viewmodel.CurrentWeatherViewModel
 import com.goryachok.forecastapp.viewmodel.DailyForecastViewModel
 import com.goryachok.forecastapp.viewmodel.HourlyForecastViewModel

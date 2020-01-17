@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class DailyForecastViewModel @Inject constructor() : PagerModel() {
     @Inject
-    override lateinit var repository: Repository
+    lateinit var repository: Repository
 
     val data: LiveData<ForecastEntity>
 

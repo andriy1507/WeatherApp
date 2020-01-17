@@ -21,42 +21,6 @@ class RemoteDataSource @Inject constructor(val api: OpenWeatherMapAPI) {
         Log.d(DAGGER_TAG, javaClass.name)
     }
 
-//    fun getWeatherData(
-//        city: String? = null,
-//        lon: Float = 0.0F,
-//        lat: Float = 0.0F
-//    ): WeatherEntity {
-//        lateinit var response: WeatherEntity
-//        if (city != null) {
-//            CoroutineScope(IO).launch {
-//                response = api.getWeatherByCityAsync(city)
-//            }
-//        } else {
-//            CoroutineScope(IO).launch {
-//                response = api.getWeatherByCoordinatesAsync(lon, lat)
-//            }
-//        }
-//        return response
-//    }
-//
-//    fun getForecastData(
-//        city: String? = null,
-//        lon: Float = 0.0F,
-//        lat: Float = 0.0F
-//    ): ForecastEntity {
-//        lateinit var response: ForecastEntity
-//        if (city != null) {
-//            CoroutineScope(IO).launch {
-//                response = api.getForecastByCityAsync(city)
-//            }
-//        } else {
-//            CoroutineScope(IO).launch {
-//                response = api.getForecastByCoordinatesAsync(lon, lat)
-//            }
-//        }
-//        return response
-//    }
-
     @Suppress("UNCHECKED_CAST")
     suspend fun <T : RemoteEntity> getData(
         clazz: KClass<T>,
@@ -69,11 +33,10 @@ class RemoteDataSource @Inject constructor(val api: OpenWeatherMapAPI) {
             ForecastEntity::class.java -> FORECAST_QUERY_PARAM
             else -> throw ClassCastException()
         }
-        lateinit var response: RemoteEntity
-        if (city != null) {
-                response = api.getDataByCityAsync(type, city).await()
+        val response = if (city != null) {
+            api.getDataByCityAsync(type, city).await()
         } else {
-                response = api.getDataByCoordinatesAsync(type, lon, lat).await()
+            api.getDataByCoordinatesAsync(type, lon, lat).await()
         }
         return response as T
     }

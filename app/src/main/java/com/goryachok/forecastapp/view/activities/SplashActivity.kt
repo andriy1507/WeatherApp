@@ -1,4 +1,4 @@
-package com.goryachok.forecastapp.ui.activities
+package com.goryachok.forecastapp.view.activities
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Intent
