@@ -13,10 +13,14 @@ class SplashActivity : AppCompatActivity() {
 
     lateinit var viewModel: SplashViewModel
 
+
+    lateinit var viewModelFactory:ViewModelProvider.Factory
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        viewModel = ViewModelProvider(this).get(SplashViewModel::class.java)
+        viewModel = ViewModelProvider(this,viewModelFactory).get(SplashViewModel::class.java)
 
         viewModel.data.observe(this, Observer {
             Log.d(BuildConfig.TAG, it.city)
