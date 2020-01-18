@@ -1,7 +1,6 @@
 package com.goryachok.forecastapp.di.modules
 
-import com.goryachok.forecastapp.view.activities.MainActivity
-import com.goryachok.forecastapp.view.adapters.ForecastPagerAdapter
+import com.goryachok.forecastapp.base.PagerFragment
 import com.goryachok.forecastapp.view.fragment.CurrentWeatherFragment
 import com.goryachok.forecastapp.view.fragment.DailyForecastFragment
 import com.goryachok.forecastapp.view.fragment.HourlyForecastFragment
@@ -12,14 +11,11 @@ import dagger.Provides
 class PagerAdapterModule {
 
     @Provides
-    fun providePagerAdapter(
-        activity: MainActivity,
+    fun provideFragmentList(
         currentFragment: CurrentWeatherFragment,
         hourlyFragment: HourlyForecastFragment,
         dailyFragment: DailyForecastFragment
-    ): ForecastPagerAdapter {
-        val pages = listOf(currentFragment, hourlyFragment, dailyFragment)
-        val manager = activity.supportFragmentManager
-        return ForecastPagerAdapter(manager, pages)
+    ): List<PagerFragment> {
+        return listOf(currentFragment, hourlyFragment, dailyFragment)
     }
 }

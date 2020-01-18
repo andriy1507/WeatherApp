@@ -4,6 +4,7 @@ package com.goryachok.forecastapp
 import android.util.Log
 import com.goryachok.forecastapp.base.App
 import com.goryachok.forecastapp.di.components.AppComponent
+import com.goryachok.forecastapp.di.components.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 

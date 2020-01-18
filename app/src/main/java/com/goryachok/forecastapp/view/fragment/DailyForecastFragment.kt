@@ -13,7 +13,10 @@ import com.goryachok.forecastapp.viewmodel.DailyForecastViewModel
 import kotlinx.android.synthetic.main.daily_forecast_fragment.*
 import javax.inject.Inject
 
-class DailyForecastFragment @Inject constructor(val viewModel: DailyForecastViewModel) : PagerFragment() {
+class DailyForecastFragment : PagerFragment() {
+
+//    @Inject
+    lateinit var viewModel: DailyForecastViewModel
 
     private lateinit var adapter: DailyForecastAdapter
 

@@ -26,7 +26,6 @@ abstract class ViewModelModule {
             return ViewModelProvider(activity, factory).get(SplashViewModel::class.java)
         }
 
-        @JvmStatic
         @Provides
         fun provideCurrentViewModel(
             activity: CurrentWeatherFragment,

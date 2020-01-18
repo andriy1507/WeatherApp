@@ -11,7 +11,10 @@ import com.goryachok.forecastapp.viewmodel.CurrentWeatherViewModel
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import javax.inject.Inject
 
-class CurrentWeatherFragment @Inject constructor(val viewModel: CurrentWeatherViewModel) : PagerFragment() {
+class CurrentWeatherFragment : PagerFragment() {
+
+//    @Inject
+    lateinit var viewModel: CurrentWeatherViewModel
 
     override fun setupDependencies() {
 
