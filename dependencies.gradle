@@ -71,9 +71,15 @@ ext.appDependencies = [
         'utils'         :
                 ["org.threeten:threetenbp:$threetenbpVersion"],
         'dagger'        :
-                ["com.google.dagger:dagger:$daggerVersion"],
+                ["com.google.dagger:dagger:$daggerVersion",
+
+                 "com.google.dagger:dagger-android:$daggerVersion",
+
+                 "com.google.dagger:dagger-android-support:$daggerVersion"],
         'daggerCompiler':
-                ["com.google.dagger:dagger-compiler:$daggerVersion"],
+                ["com.google.dagger:dagger-compiler:$daggerVersion",
+
+                 "com.google.dagger:dagger-android-processor:$daggerVersion"],
         'coroutines'    :
                 ["org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion",
 
@@ -97,8 +103,8 @@ ext.appDependencies = [
 ]
 
 ext.buildDependencies = [
-        'gradle':
-                ["org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion",
-
-                 "com.android.tools.build:gradle:$gradleVersion"]
+        'gradle'      :
+                ["com.android.tools.build:gradle:$gradleVersion"],
+        'kotlinPlugin':
+                ["org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"]
 ]
