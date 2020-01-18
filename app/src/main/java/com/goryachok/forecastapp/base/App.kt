@@ -1,10 +1,8 @@
 package com.goryachok.forecastapp.base
 
-import android.app.Application
-import android.content.Context
 import com.goryachok.forecastapp.di.components.AppComponent
+import dagger.android.support.DaggerApplication
 
-abstract class App : Application() {
-    abstract val context: Context
-    abstract val component:AppComponent
+abstract class App : DaggerApplication() {
+    abstract val component: AppComponent
 }

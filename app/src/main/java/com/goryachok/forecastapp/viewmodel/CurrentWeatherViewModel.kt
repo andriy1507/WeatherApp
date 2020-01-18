@@ -6,10 +6,9 @@ import com.goryachok.forecastapp.model.domain.WeatherEntity
 import com.goryachok.forecastapp.repository.Repository
 import com.goryachok.forecastapp.services.GeolocationListener
 import kotlinx.coroutines.Dispatchers.IO
-import javax.inject.Inject
 
-class CurrentWeatherViewModel @Inject constructor() : PagerModel(){
-    @Inject
+class CurrentWeatherViewModel : PagerModel(){
+
     lateinit var repository: Repository
 
     private val _data = MutableLiveData<WeatherEntity>()

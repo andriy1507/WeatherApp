@@ -13,8 +13,9 @@ class AppModule {
     fun provideContext(app: App): Context {
         return app
     }
+
     @Provides
-    fun provideApp(impl:WeatherApplication):App{
+    fun provideApp(impl: WeatherApplication): App {
         return impl
     }
 }

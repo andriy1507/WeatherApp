@@ -2,10 +2,12 @@ package com.goryachok.forecastapp.viewmodel
 
 import android.annotation.SuppressLint
 import android.location.Criteria
-import android.location.Location
 import android.location.LocationManager
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.goryachok.forecastapp.model.domain.ForecastEntity
 import com.goryachok.forecastapp.model.domain.WeatherEntity
 import com.goryachok.forecastapp.repository.Repository
@@ -13,18 +15,17 @@ import com.goryachok.forecastapp.services.GeolocationListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class SplashViewModel @Inject constructor() : ViewModel() {
+class SplashViewModel  : ViewModel() {
 
     private val _data = MutableLiveData<WeatherEntity>()
     val data: LiveData<WeatherEntity>
         get() = _data
 
-    @Inject
+
     lateinit var repository: Repository
 
-    @Inject
+
     lateinit var locationManager: LocationManager
 
     companion object {

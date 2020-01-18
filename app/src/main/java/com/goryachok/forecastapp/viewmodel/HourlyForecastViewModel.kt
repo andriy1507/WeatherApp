@@ -4,16 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
-
 import com.goryachok.forecastapp.base.PagerModel
 import com.goryachok.forecastapp.model.domain.ForecastEntity
 import com.goryachok.forecastapp.repository.Repository
 import com.goryachok.forecastapp.services.GeolocationListener
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Inject
 
-class HourlyForecastViewModel @Inject constructor() : PagerModel() {
-    @Inject
+class HourlyForecastViewModel  : PagerModel() {
+
     lateinit var repository: Repository
 
     val data: LiveData<ForecastEntity>

@@ -6,19 +6,20 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.view.adapters.ForecastPagerAdapter
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity @Inject constructor(val adapter: ForecastPagerAdapter) :
+    DaggerAppCompatActivity() {
 
     companion object {
         private const val TAG = "DaggerDebug"
     }
 
-    private val adapter by lazy { ForecastPagerAdapter(supportFragmentManager) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

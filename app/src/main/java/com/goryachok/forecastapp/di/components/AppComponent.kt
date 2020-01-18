@@ -3,40 +3,30 @@ package com.goryachok.forecastapp.di.components
 import com.goryachok.forecastapp.WeatherApplication
 import com.goryachok.forecastapp.base.App
 import com.goryachok.forecastapp.di.modules.*
-import com.goryachok.forecastapp.view.activities.SplashActivity
-import com.goryachok.forecastapp.view.fragment.CurrentWeatherFragment
-import com.goryachok.forecastapp.view.fragment.DailyForecastFragment
-import com.goryachok.forecastapp.view.fragment.HourlyForecastFragment
 import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjector
 
 @Component(
     modules =
-    [ApiModule::class,
+    [ActivityBuilderModule::class,
+        ApiModule::class,
         AppModule::class,
         DataSourceModule::class,
+        FragmentBuilderModule::class,
+        LocationModule::class,
+        PagerAdapterModule::class,
         RepositoryModule::class,
-        ViewModelModule::class,
-        LocationModule::class]
+        ViewModelModule::class]
 )
-interface AppComponent {
-
-    fun inject(app: App)
-
-    fun inject(activity: SplashActivity)
-
-    fun inject(fragment: CurrentWeatherFragment)
-
-    fun inject(fragment: DailyForecastFragment)
-
-    fun inject(fragment: HourlyForecastFragment)
+interface AppComponent :AndroidInjector<WeatherApplication>{
 
     @Component.Builder
     interface Builder {
 
-        fun build(): AppComponent
-
         @BindsInstance
-        fun application(impl: WeatherApplication): Builder
+        fun application(application: App): Builder
+
+        fun build(): AppComponent
     }
 }

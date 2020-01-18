@@ -1,12 +1,11 @@
 package com.goryachok.forecastapp
 
 
-import android.content.Context
 import android.util.Log
 import com.goryachok.forecastapp.base.App
 import com.goryachok.forecastapp.di.components.AppComponent
-import com.goryachok.forecastapp.di.components.DaggerAppComponent
-import javax.inject.Inject
+import dagger.android.AndroidInjector
+import dagger.android.support.DaggerApplication
 
 class WeatherApplication : App() {
 
@@ -14,13 +13,14 @@ class WeatherApplication : App() {
         private const val DAGGER_TAG = "DaggerDebug"
     }
 
-    override val component: AppComponent = DaggerAppComponent.builder().application(this).build()
-
     init {
-        component.inject(this)
         Log.d(DAGGER_TAG, javaClass.name)
     }
 
-    @Inject
-    override lateinit var context: Context
+    override val component: AppComponent
+        get() = applicationInjector() as AppComponent
+
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerAppComponent.builder().application(this).build()
+    }
 }

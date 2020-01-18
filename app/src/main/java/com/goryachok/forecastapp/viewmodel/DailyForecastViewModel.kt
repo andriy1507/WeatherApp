@@ -9,10 +9,9 @@ import com.goryachok.forecastapp.model.domain.ForecastEntity
 import com.goryachok.forecastapp.repository.Repository
 import com.goryachok.forecastapp.services.GeolocationListener
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Inject
 
-class DailyForecastViewModel @Inject constructor() : PagerModel() {
-    @Inject
+class DailyForecastViewModel  : PagerModel() {
+
     lateinit var repository: Repository
 
     val data: LiveData<ForecastEntity>

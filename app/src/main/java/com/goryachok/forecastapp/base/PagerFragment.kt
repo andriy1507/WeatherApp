@@ -1,9 +1,9 @@
 package com.goryachok.forecastapp.base
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import dagger.android.support.DaggerFragment
 
-abstract class PagerFragment : Fragment() {
+abstract class PagerFragment : DaggerFragment() {
 
     abstract fun onSearchRequest(request: String)
 

@@ -7,26 +7,22 @@ import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.goryachok.forecastapp.R
-import com.goryachok.forecastapp.WeatherApplication
 import com.goryachok.forecastapp.viewmodel.SplashViewModel
+import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity @Inject constructor(val viewModel: SplashViewModel) :
+    DaggerAppCompatActivity() {
 
     companion object {
         private const val LOCATION_PERMISSION_CODE = 101
         private const val TAG = "DaggerDebug"
     }
 
-    @Inject
-    lateinit var viewModel: SplashViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
-        (applicationContext as WeatherApplication).component.inject(this)
         Log.d(TAG, SplashActivity::class.java.name)
 
         if (!checkForPermissions()) {
