@@ -15,6 +15,7 @@ import com.goryachok.forecastapp.services.GeolocationListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class SplashViewModel  : ViewModel() {
 
@@ -22,10 +23,10 @@ class SplashViewModel  : ViewModel() {
     val data: LiveData<WeatherEntity>
         get() = _data
 
-
+    @Inject
     lateinit var repository: Repository
 
-
+    @Inject
     lateinit var locationManager: LocationManager
 
     companion object {

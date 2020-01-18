@@ -16,7 +16,7 @@ import dagger.android.AndroidInjector
 import dagger.android.HasAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -28,6 +28,7 @@ class SplashActivity :
         private const val TAG = "DaggerDebug"
     }
 
+    //    @Inject
     lateinit var viewModel: SplashViewModel
 
     @Suppress("UNCHECKED_CAST")
@@ -40,7 +41,7 @@ class SplashActivity :
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
         Log.d(TAG, SplashActivity::class.java.name)
-        CoroutineScope(Main).launch {
+        CoroutineScope(IO).launch {
             delay(2500)
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
         }

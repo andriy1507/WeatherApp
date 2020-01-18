@@ -19,12 +19,11 @@ import dagger.android.AndroidInjector
 import dagger.android.HasAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import javax.inject.Inject
 
 class MainActivity :
     DaggerAppCompatActivity(), HasAndroidInjector {
 
-    val pages: List<PagerFragment> = listOf(CurrentWeatherFragment(),HourlyForecastFragment(),DailyForecastFragment())
+    lateinit var pages: List<PagerFragment>
 
     val adapter: ForecastPagerAdapter by lazy {
         ForecastPagerAdapter(
@@ -46,7 +45,9 @@ class MainActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+//        pages = listOf(CurrentWeatherFragment(), HourlyForecastFragment(), DailyForecastFragment())
         Log.d(TAG, MainActivity::class.java.name)
+
 //        forecast_viewPager.adapter = adapter
     }
 

@@ -29,20 +29,20 @@ class DailyForecastFragment : PagerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel.data.observe(viewLifecycleOwner, Observer {
-            adapter.update(it.list)
-            dailyForecast_cityName_textView.text =
-                getString(R.string.location_template, it.city.name, it.city.country)
-        })
+//        viewModel.data.observe(viewLifecycleOwner, Observer {
+//            adapter.update(it.list)
+//            dailyForecast_cityName_textView.text =
+//                getString(R.string.location_template, it.city.name, it.city.country)
+//        })
         return inflater.inflate(R.layout.daily_forecast_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        adapter =
-            DailyForecastAdapter(viewModel.data.value!!.list)
-        dailyForecast_recyclerView.layoutManager = LinearLayoutManager(context)
-        dailyForecast_recyclerView.adapter = adapter
+//        adapter =
+//            DailyForecastAdapter(viewModel.data.value!!.list)
+//        dailyForecast_recyclerView.layoutManager = LinearLayoutManager(context)
+//        dailyForecast_recyclerView.adapter = adapter
 
     }
 
