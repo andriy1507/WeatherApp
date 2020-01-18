@@ -27,6 +27,7 @@ android {
 
             buildConfigField("String", "API_KEY", "\"f19f55d718abb04df88d9190337bd5b9\"")
             buildConfigField("String", "DOMAIN", "\"https://api.openweathermap.org/\"")
+            buildConfigField("String","TAG","\"DAGGER_DEBUG\"")
         }
     }
     compileOptions {
@@ -48,7 +49,9 @@ dependencies {
     implementation appDependencies.kotlin
     implementation appDependencies.android
     implementation appDependencies.ui
-    implementation appDependencies.api
+    implementation appDependencies.gson
+    implementation appDependencies.retrofit
+    implementation appDependencies.okhttp
     implementation appDependencies.coroutines
     implementation appDependencies.utils
     implementation appDependencies.dagger

@@ -1,4 +1,4 @@
-package com.goryachok.forecastapp.base
+package com.goryachok.forecastapp.model.domain
 
 import com.google.gson.Gson
 
