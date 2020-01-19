@@ -1,5 +1,6 @@
 package com.goryachok.forecastapp.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +14,10 @@ import javax.inject.Inject
 
 class SplashActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: SplashViewModel
+    private val viewModel: SplashViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)
+            .get(SplashViewModel::class.java)
+    }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -26,14 +30,10 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(SplashViewModel::class.java)
-
         viewModel.data.observe(this, Observer {
-            Log.d(BuildConfig.TAG,it.toString())
+            Log.d(BuildConfig.TAG, it.toString())
         })
 
-        for (a in 1..5){
-            viewModel.getData()
-        }
+        startActivity(Intent(this, MainActivity::class.java))
     }
 }

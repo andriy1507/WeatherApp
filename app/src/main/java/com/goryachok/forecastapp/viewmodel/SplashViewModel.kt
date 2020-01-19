@@ -33,7 +33,9 @@ class SplashViewModel @Inject constructor(
     }
 
     fun getData() {
+
         var entity: WeatherEntity
+
         CoroutineScope(IO).launch {
             try {
                 entity = repository.getWeatherData("Lviv")
