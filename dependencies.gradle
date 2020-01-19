@@ -106,7 +106,7 @@ ext.appDependencies = [
 
 ext.buildDependencies = [
         'gradle'      :
-                ["com.android.tools.build:gradle:${gradleVersion}"],
+                ["com.android.tools.build:gradle:$gradleVersion"],
         'kotlinPlugin':
                 ["org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"]
 ]
