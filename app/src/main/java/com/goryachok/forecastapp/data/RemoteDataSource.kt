@@ -21,7 +21,6 @@ class RemoteDataSource @Inject constructor(val apiService: WeatherApiService) {
         return if (response.isSuccessful){
             val data = response.body()
             Success(data!!)
-
         }else{
             Error(IOException(response.message()))
         }
@@ -32,7 +31,6 @@ class RemoteDataSource @Inject constructor(val apiService: WeatherApiService) {
         return if (response.isSuccessful){
             val data = response.body()
             Success(data!!)
-
         }else{
             Error(IOException(response.message()))
         }
@@ -43,7 +41,6 @@ class RemoteDataSource @Inject constructor(val apiService: WeatherApiService) {
         return if (response.isSuccessful){
             val data = response.body()
             Success(data!!)
-
         }else{
             Error(IOException(response.message()))
         }
@@ -54,7 +51,6 @@ class RemoteDataSource @Inject constructor(val apiService: WeatherApiService) {
         return if (response.isSuccessful){
             val data = response.body()
             Success(data!!)
-
         }else{
             Error(IOException(response.message()))
         }

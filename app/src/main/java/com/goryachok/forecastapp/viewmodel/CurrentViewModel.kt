@@ -4,18 +4,42 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.goryachok.forecastapp.BuildConfig
 import com.goryachok.forecastapp.model.domain.WeatherEntity
 import com.goryachok.forecastapp.repository.Repository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okio.IOException
 import javax.inject.Inject
 
 class CurrentViewModel @Inject constructor(val repository: Repository) : ViewModel() {
 
-    private val _data: MutableLiveData<WeatherEntity> = MutableLiveData()
-    val data: LiveData<WeatherEntity>
-        get() = _data
+    private val _currentData: MutableLiveData<WeatherEntity> = MutableLiveData()
+    private val currentData: LiveData<WeatherEntity>
+        get() = _currentData
 
-    fun init() {
-        Log.d(BuildConfig.TAG, this::class.java.name)
+    private val _searchedData: MutableLiveData<WeatherEntity> = MutableLiveData()
+    private val searchedData: LiveData<WeatherEntity>
+        get() = _searchedData
+
+    val data = listOf(searchedData, currentData)
+
+    fun getDataByCity(city: String) {
+        CoroutineScope(IO).launch {
+            try {
+                val weatherData = repository.getWeatherDataByCity(city)
+                withContext(Main) {
+                    _searchedData.postValue(weatherData)
+                }
+            } catch (e: IOException) {
+                Log.e(this@CurrentViewModel::class.java.name, e.message, e)
+            }
+        }
+    }
+
+    fun getDataByCoord(lat: Float, lon: Float) {
+        _currentData.postValue(repository.getCurrentWeather())
     }
 }

@@ -1,7 +1,6 @@
 package com.goryachok.forecastapp.di.application
 
 import android.content.Context
-import android.location.LocationManager
 import com.goryachok.forecastapp.WeatherApp
 import dagger.Module
 import dagger.Provides

@@ -3,7 +3,6 @@ package com.goryachok.forecastapp.di.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.goryachok.forecastapp.viewmodel.CurrentViewModel
-import com.goryachok.forecastapp.viewmodel.MainViewModel
 import com.goryachok.forecastapp.viewmodel.SplashViewModel
 import dagger.Binds
 import dagger.Module
@@ -16,11 +15,6 @@ abstract class ViewModelsModule {
     @IntoMap
     @ViewModelKey(SplashViewModel::class)
     abstract fun bindSplashViewModel(viewModel: SplashViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(MainViewModel::class)
-    abstract fun bindMainViewModel(viewModel: MainViewModel): ViewModel
 
     @Binds
     @IntoMap

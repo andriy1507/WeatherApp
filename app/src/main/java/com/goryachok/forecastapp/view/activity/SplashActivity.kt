@@ -2,14 +2,15 @@ package com.goryachok.forecastapp.view.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.goryachok.forecastapp.BuildConfig
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.di.viewmodel.DaggerViewModelComponent
 import com.goryachok.forecastapp.viewmodel.SplashViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SplashActivity : AppCompatActivity() {
@@ -30,10 +31,11 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        viewModel.data.observe(this, Observer {
-            Log.d(BuildConfig.TAG, it.toString())
-        })
 
-        startActivity(Intent(this, MainActivity::class.java))
+        /**Temporal imitation of loading*/
+        CoroutineScope(Main).launch {
+            delay(2500)
+            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+        }
     }
 }
