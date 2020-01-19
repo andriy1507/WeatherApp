@@ -18,10 +18,4 @@ class ApplicationModule {
     fun provideContext(app: WeatherApp): Context {
         return app
     }
-
-    @Provides
-    fun provideLocationManager(context: Context): LocationManager {
-        return (context.getSystemService(Context.LOCATION_SERVICE) as LocationManager)
-    }
-
 }

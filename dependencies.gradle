@@ -65,7 +65,6 @@ ext.appDependencies = [
 
                  "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"],
         'retrofit'      : [
-
                 "com.squareup.retrofit2:retrofit:$retrofitVersion",
 
                 "com.squareup.retrofit2:converter-gson:$retrofitVersion"],

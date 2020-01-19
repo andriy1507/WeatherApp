@@ -2,19 +2,25 @@ package com.goryachok.forecastapp.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.goryachok.forecastapp.viewmodel.MainViewModel
 import com.goryachok.forecastapp.viewmodel.SplashViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 
 @Module
-abstract class ViewModelsModule{
+abstract class ViewModelsModule {
 
     @Binds
     @IntoMap
     @ViewModelKey(SplashViewModel::class)
-    abstract fun bindSplashViewModel(viewModel: SplashViewModel):ViewModel
+    abstract fun bindSplashViewModel(viewModel: SplashViewModel): ViewModel
 
     @Binds
-    abstract fun bindViewModelFactory(factory: ViewModelFactory):ViewModelProvider.Factory
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    abstract fun bindMainViewModel(viewModel: MainViewModel): ViewModel
+
+    @Binds
+    abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 }
