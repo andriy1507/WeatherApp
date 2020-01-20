@@ -41,24 +41,53 @@ android {
 //    }
 }
 
+
 androidExtensions {
     isExperimental = true
 }
 
 dependencies {
 
-    //    implementation(fileTree(dir("libs"), include("*.jar")))
-//    implementation(appDependencies.kotlin)
-//    implementation(appDependencies.android)
-//    implementation(appDependencies.ui)
-//    implementation(appDependencies.gson)
-//    implementation(appDependencies.retrofit)
-//    implementation(appDependencies.okhttp)
-//    implementation(appDependencies.coroutines)
-//    implementation(appDependencies.utils)
-//    implementation(appDependencies.dagger)
-//    kapt(appDependencies.daggerCompiler)
-//
-//    testImplementation(appDependencies.test)
-//    androidTestImplementation(appDependencies.androidTest)
+    //    This seems to be unnecessary
+//    implementation(fileTree(dir("libs"), include("*.jar")))
+
+//    AndroidX
+    implementation(Dependencies.AndroidX.constraintLayout)
+    implementation(Dependencies.AndroidX.legacySupport)
+    implementation(Dependencies.AndroidX.lifecycleExtensions)
+    implementation(Dependencies.AndroidX.livecycleViewModel)
+    implementation(Dependencies.AndroidX.recyclerView)
+
+//    Coroutines
+    implementation(Dependencies.Coroutines.core)
+    implementation(Dependencies.Coroutines.android)
+
+//    Utils
+    implementation(Dependencies.Utils.threetenbp)
+
+//    Gson
+    implementation(Dependencies.Gson.gson)
+
+//    Kotlin
+    implementation(Dependencies.Kotlin.kotlin)
+
+//    OkHttp
+    implementation(Dependencies.OkHttp.okhttp)
+    implementation(Dependencies.OkHttp.loggingInterceptor)
+
+//    Dagger
+    implementation(Dependencies.Dagger.dagger)
+    implementation(Dependencies.Dagger.daggerAndroid)
+    implementation(Dependencies.Dagger.daggerAndroidSupport)
+    kapt(Dependencies.Dagger.daggerAndroidProcessor)
+    kapt(Dependencies.Dagger.daggerCompiler)
+
+//    Retrofit
+    implementation(Dependencies.Retrofit.retrofit)
+    implementation(Dependencies.Retrofit.converter)
+
+//    Tests
+    testImplementation(Dependencies.junit)
+    androidTestImplementation(Dependencies.AndroidTest.junit)
+    androidTestImplementation(Dependencies.AndroidTest.espresso)
 }
