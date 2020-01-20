@@ -5,15 +5,15 @@ plugins {
     kotlin("kapt")
 }
 android {
-    compileSdkVersion(29)
-    buildToolsVersion = "29.0.2"
+    compileSdkVersion(Variables.targetSdkVersion)
+    buildToolsVersion = Variables.toolsVersion
     defaultConfig {
-        applicationId = "com.goryachok.forecastapp"
-        minSdkVersion(15)
-        targetSdkVersion(29)
-        versionCode = 1
-        versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        applicationId = Variables.appId
+        minSdkVersion(Variables.minimalSdkVersion)
+        targetSdkVersion(Variables.targetSdkVersion)
+        versionCode = Variables.versionCode
+        versionName = Variables.versionName
+        testInstrumentationRunner = Variables.testRunner
     }
     buildTypes {
         getByName("release") {
@@ -22,14 +22,17 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "API_KEY", "\"f19f55d718abb04df88d9190337bd5b9\"")
+            buildConfigField("String", "DOMAIN", "\"https://api.openweathermap.org/\"")
+            buildConfigField("Integer", "HOUR", "3600")
         }
         getByName("debug") {
             isMinifyEnabled = false
 
             buildConfigField("String", "API_KEY", "\"f19f55d718abb04df88d9190337bd5b9\"")
             buildConfigField("String", "DOMAIN", "\"https://api.openweathermap.org/\"")
-            buildConfigField("String", "TAG", "\"DAGGER_DEBUG\"")
             buildConfigField("Integer", "HOUR", "3600")
+            buildConfigField("String", "TAG", "\"DAGGER_DEBUG\"")
         }
     }
     compileOptions {
