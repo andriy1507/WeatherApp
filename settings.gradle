@@ -1,2 +1,2 @@
-include ':app'
-rootProject.name='ForecastApp'
+include ":app"
+rootProject.name="ForecastApp"

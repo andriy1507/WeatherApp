@@ -1,10 +1,10 @@
-apply plugin: 'com.android.application'
+apply plugin: "com.android.application"
 
-apply plugin: 'kotlin-android'
+apply plugin: "kotlin-android"
 
-apply plugin: 'kotlin-android-extensions'
+apply plugin: "kotlin-android-extensions"
 
-apply plugin: 'kotlin-kapt'
+apply plugin: "kotlin-kapt"
 
 android {
     compileSdkVersion targetSdkVer
@@ -20,7 +20,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
         debug {
             minifyEnabled false
@@ -46,7 +46,7 @@ androidExtensions {
 
 dependencies {
 
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation appDependencies.kotlin
     implementation appDependencies.android
     implementation appDependencies.ui
