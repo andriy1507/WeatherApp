@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -39,9 +41,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-//    kotlinOptions {
-//        jvmTarget = JavaVersion.VERSION_1_8
-//    }
+    tasks {
+        withType<KotlinCompile> {
+            kotlinOptions.jvmTarget = "1.8"
+        }
+    }
 }
 
 
@@ -51,10 +55,7 @@ androidExtensions {
 
 dependencies {
 
-    //    This seems to be unnecessary
-//    implementation(fileTree(dir("libs"), include("*.jar")))
-
-//    AndroidX
+    //    AndroidX
     implementation(Dependencies.AndroidX.constraintLayout)
     implementation(Dependencies.AndroidX.legacySupport)
     implementation(Dependencies.AndroidX.lifecycleExtensions)
