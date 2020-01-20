@@ -1,5 +1,6 @@
 package com.goryachok.forecastapp.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,10 +13,9 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okio.IOException
-import javax.inject.Inject
 
-class CurrentViewModel @Inject constructor(val repository: Repository) : ViewModel() {
-
+class CurrentViewModel(applicationContext: Context) : ViewModel() {
+    val repository: Repository = Repository(applicationContext)
     private val _currentData: MutableLiveData<WeatherEntity> = MutableLiveData()
     private val currentData: LiveData<WeatherEntity>
         get() = _currentData
@@ -39,7 +39,7 @@ class CurrentViewModel @Inject constructor(val repository: Repository) : ViewMod
         }
     }
 
-    fun getDataByCoord(lat: Float, lon: Float) {
+    fun getDataByCoord() {
         _currentData.postValue(repository.getCurrentWeather())
     }
 }

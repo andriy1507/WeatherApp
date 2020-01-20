@@ -2,12 +2,10 @@ package com.goryachok.forecastapp.data
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.goryachok.forecastapp.di.repository.DaggerRepositoryComponent
 import com.goryachok.forecastapp.model.domain.ForecastEntity
 import com.goryachok.forecastapp.model.domain.WeatherEntity
-import javax.inject.Inject
 
-class LocalDataSource @Inject constructor(val context: Context) {
+class LocalDataSource(val context: Context) {
 
     companion object {
         private const val PREF_NAME = "WEATHER_APPLICATION_PREFERENCES"
@@ -21,10 +19,6 @@ class LocalDataSource @Inject constructor(val context: Context) {
             PREF_NAME,
             MODE
         )
-    }
-
-    init {
-        DaggerRepositoryComponent.create().inject(this)
     }
 
     fun saveForecastData(data: ForecastEntity) {

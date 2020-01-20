@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-apply plugin: 'kotlin-kapt'
+//apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion targetSdkVer
@@ -55,8 +55,8 @@ dependencies {
     implementation appDependencies.okhttp
     implementation appDependencies.coroutines
     implementation appDependencies.utils
-    implementation appDependencies.dagger
-    kapt appDependencies.daggerCompiler
+//    implementation appDependencies.dagger
+//    kapt appDependencies.daggerCompiler
 
     testImplementation appDependencies.test
     androidTestImplementation appDependencies.androidTest

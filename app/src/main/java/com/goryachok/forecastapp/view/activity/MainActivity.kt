@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.goryachok.forecastapp.R
-import com.goryachok.forecastapp.di.viewmodel.DaggerViewModelComponent
 import com.goryachok.forecastapp.view.FragmentsAdapter
 import com.goryachok.forecastapp.view.fragment.CurrentFragment
 import com.goryachok.forecastapp.view.fragment.MyFragment
@@ -20,10 +19,6 @@ class MainActivity : AppCompatActivity() {
 
     private val adapter: FragmentsAdapter by lazy {
         FragmentsAdapter(supportFragmentManager, fragments)
-    }
-
-    init {
-        DaggerViewModelComponent.create().inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

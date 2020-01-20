@@ -3,22 +3,24 @@ package com.goryachok.forecastapp.viewmodel
 import android.content.Context
 import android.location.LocationManager
 import androidx.lifecycle.ViewModel
-import com.goryachok.forecastapp.di.repository.DaggerRepositoryComponent
 import com.goryachok.forecastapp.repository.Repository
-import javax.inject.Inject
 
-class SplashViewModel @Inject constructor(
-    val repository: Repository,
-    val context: Context
-) : ViewModel() {
+class SplashViewModel(applicationContext: Context) : ViewModel() {
 
-    private val locationManager: LocationManager by lazy { context.getSystemService(Context.LOCATION_SERVICE) as LocationManager }
+    private val repository: Repository by lazy { Repository(applicationContext) }
 
-    init {
-        DaggerRepositoryComponent.create().inject(this)
+    private val locationManager: LocationManager by lazy {
+        applicationContext.getSystemService(
+            Context.LOCATION_SERVICE
+        ) as LocationManager
     }
 
-    fun initialize() {
-//        repository.initializeData()
+    private fun initialize() {
+        repository.initializeData(45f, 45f)
+    }
+
+    fun isDataReady(): Boolean {
+        initialize()
+        return repository.isDataInitialized()
     }
 }

@@ -1,10 +1,10 @@
 package com.goryachok.forecastapp.repository
 
+import android.content.Context
 import android.util.Log
 import com.goryachok.forecastapp.BuildConfig
 import com.goryachok.forecastapp.data.LocalDataSource
 import com.goryachok.forecastapp.data.RemoteDataSource
-import com.goryachok.forecastapp.di.repository.DaggerRepositoryComponent
 import com.goryachok.forecastapp.model.domain.ForecastEntity
 import com.goryachok.forecastapp.model.domain.WeatherEntity
 import com.goryachok.forecastapp.model.local.Result.Error
@@ -13,17 +13,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import okio.IOException
-import javax.inject.Inject
 
 
-class Repository @Inject constructor(val remote: RemoteDataSource, val local: LocalDataSource) {
+class Repository(val context: Context) {
+
+    private val remote by lazy { RemoteDataSource() }
+    private val local by lazy { LocalDataSource(context) }
 
     private lateinit var fData: ForecastEntity
     private lateinit var wData: WeatherEntity
-
-    init {
-        DaggerRepositoryComponent.create().inject(this)
-    }
 
     suspend fun getWeatherDataByCity(city: String): WeatherEntity {
         val data: WeatherEntity
@@ -93,8 +91,10 @@ class Repository @Inject constructor(val remote: RemoteDataSource, val local: Lo
     private fun saveRemoteDataToLocal(lat: Float, lon: Float) {
         CoroutineScope(IO).launch {
             try {
-                fData = getForecastDataByCoord(lat, lon)
-                wData = getWeatherDataByCoord(lat, lon)
+//                fData = getForecastDataByCoord(lat, lon)
+//                wData = getWeatherDataByCoord(lat, lon)
+                wData = getWeatherDataByCity("Lviv")
+                fData = getForecastDataByCity("Lviv")
 
                 local.saveWeatherData(wData)
                 local.saveForecastData(fData)
@@ -102,6 +102,7 @@ class Repository @Inject constructor(val remote: RemoteDataSource, val local: Lo
                 Log.e(e::class.java.name, e.message, e)
             }
         }
+
     }
 
     private fun isFetchNeeded(): Boolean {
@@ -117,14 +118,8 @@ class Repository @Inject constructor(val remote: RemoteDataSource, val local: Lo
 
     private fun isLocalDataAvailable() = local.isDataAvailable()
 
-    private fun isDataInitialized(): Boolean {
-        return try {
-            wData.city
-            fData.city
-            true
-        } catch (e: NullPointerException) {
-            false
-        }
+    fun isDataInitialized(): Boolean {
+        return ::wData.isInitialized && ::fData.isInitialized
     }
 
     fun getCurrentWeather(): WeatherEntity {

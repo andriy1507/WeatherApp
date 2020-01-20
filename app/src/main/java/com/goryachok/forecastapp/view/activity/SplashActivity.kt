@@ -2,16 +2,12 @@ package com.goryachok.forecastapp.view.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.goryachok.forecastapp.R
-import com.goryachok.forecastapp.di.viewmodel.DaggerViewModelComponent
 import com.goryachok.forecastapp.viewmodel.SplashViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class SplashActivity : AppCompatActivity() {
 
@@ -20,22 +16,23 @@ class SplashActivity : AppCompatActivity() {
             .get(SplashViewModel::class.java)
     }
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    init {
-        DaggerViewModelComponent.create().inject(this)
+    val viewModelFactory: ViewModelProvider.Factory by lazy {
+        object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return SplashViewModel(applicationContext) as T
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-
-
-        /**Temporal imitation of loading*/
-        CoroutineScope(Main).launch {
-            delay(2500)
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+        if (viewModel.isDataReady()) {
+            Toast.makeText(this, "Data is ready", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, MainActivity::class.java))
+        } else {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
         }
     }
 }

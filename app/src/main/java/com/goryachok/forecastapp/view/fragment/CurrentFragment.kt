@@ -5,31 +5,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.goryachok.forecastapp.R
-import com.goryachok.forecastapp.di.viewmodel.DaggerViewModelComponent
 import com.goryachok.forecastapp.viewmodel.CurrentViewModel
 import kotlinx.android.synthetic.main.current_weather_fragment.*
-import javax.inject.Inject
 
 class CurrentFragment : MyFragment() {
 
-    private val viewModel: CurrentViewModel by lazy { ViewModelProvider(this,viewModelFactory).get(CurrentViewModel::class.java) }
+    private lateinit var viewModel: CurrentViewModel
 
-    @Inject
-    lateinit var viewModelFactory:ViewModelProvider.Factory
+    val viewModelFactory: ViewModelProvider.Factory by lazy {
+        object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return activity?.applicationContext?.let { CurrentViewModel(it) } as T
+            }
+        }
+    }
 
-    override fun setupDependencies() {
-        DaggerViewModelComponent.create().inject(this)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(
+            CurrentViewModel::class.java
+        )
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return inflater.inflate(R.layout.current_weather_fragment, container, false)
+    }
 
-        viewModel.getDataByCity("Khmelnytskyi")
-
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         viewModel.data.forEach { liveData ->
             liveData.observe(viewLifecycleOwner, Observer {
                 currentTemp_textView.text = getString(R.string.temperature_template, it.main.temp)
@@ -50,7 +60,8 @@ class CurrentFragment : MyFragment() {
                 }
             })
         }
-        return inflater.inflate(R.layout.current_weather_fragment, container, false)
+        viewModel.getDataByCity("Lviv")
+
     }
 
     override fun onSearchRequest(request: String) {

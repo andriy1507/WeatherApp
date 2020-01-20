@@ -77,11 +77,13 @@ ext.appDependencies = [
 
                  "com.google.dagger:dagger-android:$daggerVersion",
 
-                 "com.google.dagger:dagger-android-support:$daggerVersion"],
+                 "com.google.dagger:dagger-android-support:$daggerVersion"
+                ],
         'daggerCompiler':
                 ["com.google.dagger:dagger-compiler:$daggerVersion",
 
-                 "com.google.dagger:dagger-android-processor:$daggerVersion"],
+                 "com.google.dagger:dagger-android-processor:$daggerVersion"
+                ],
         'coroutines'    :
                 ["org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion",
 
