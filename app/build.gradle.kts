@@ -42,7 +42,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     tasks {
-        withType<KotlinCompile> {
+        withType(KotlinCompile::class) {
             kotlinOptions.jvmTarget = "1.8"
         }
     }

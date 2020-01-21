@@ -34,7 +34,6 @@ object Dependencies {
     object Coroutines {
         const val core =
             "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Variables.coroutinesVersion}"
-
         const val android =
             "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Variables.coroutinesVersion}"
     }
@@ -53,14 +52,12 @@ object Dependencies {
 
     object OkHttp {
         const val okhttp = "com.squareup.okhttp3:okhttp:${Variables.okhttpVersion}"
-
         const val loggingInterceptor =
             "com.squareup.okhttp3:logging-interceptor:${Variables.okhttpVersion}"
     }
 
     object Retrofit {
         const val retrofit = "com.squareup.retrofit2:retrofit:${Variables.retrofitVersion}"
-
         const val converter = "com.squareup.retrofit2:converter-gson:${Variables.retrofitVersion}"
     }
 }
