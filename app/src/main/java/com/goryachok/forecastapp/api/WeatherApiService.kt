@@ -36,7 +36,7 @@ interface WeatherApiService {
         @Query("lon") longitude: Float
     ): Response<ForecastEntity>
 
-    object Factory {
+    class Factory {
 
         fun create(): WeatherApiService {
             val interceptor = provideInterceptor()

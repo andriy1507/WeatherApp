@@ -10,7 +10,7 @@ import okio.IOException
 
 class RemoteDataSource {
 
-    private val apiService by lazy { WeatherApiService.Factory.create() }
+    private val apiService by lazy { WeatherApiService.Factory().create() }
 
     suspend fun getWeatherByCity(city: String): Result<WeatherEntity> {
         val response = apiService.getWeatherByCity(city)
