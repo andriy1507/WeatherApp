@@ -10,8 +10,8 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -59,7 +59,10 @@ class SplashActivity : AppCompatActivity() {
             if (grantResults.isNotEmpty()) {
                 when (grantResults[0]) {
                     PackageManager.PERMISSION_GRANTED -> startMainActivity()
-                    PackageManager.PERMISSION_DENIED -> informUserAndRequestPermission()
+                    PackageManager.PERMISSION_DENIED -> {
+                        informUserAndRequestPermission()
+                        requestLocationPermission()
+                    }
                 }
             }
         }
@@ -68,8 +71,7 @@ class SplashActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     private fun requestLocationPermission() {
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // onPermissionNotAllowed
-            //TODO show hint dialog
+            //TODO show dialog
             requestPermissions(
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 PERMISSION_REQUEST_CODE
@@ -81,7 +83,7 @@ class SplashActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun informUserAndRequestPermission() {
-        //TODO Create dialog
+        //TODO create dialog
     }
 
     @SuppressLint("MissingPermission")
@@ -121,14 +123,21 @@ class SplashActivity : AppCompatActivity() {
                                 it.longitude.toFloat()
                             )
                         }
+                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                     }
 
                     override fun onProviderDisabled(provider: String?) {
-                        Toast.makeText(
-                            this@SplashActivity,
-                            "Enable your location",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        //TODO
+                        val dialogBuilder = AlertDialog.Builder(this@SplashActivity)
+                        dialogBuilder.apply {
+                            title = ""
+                            setMessage(R.string.app_name)
+                            setPositiveButton("OK") { v, _ ->
+                                v.dismiss()
+                            }
+                        }
+                        val dialog = dialogBuilder.create()
+                        dialog.show()
                     }
                 })
         }

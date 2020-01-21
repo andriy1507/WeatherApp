@@ -9,22 +9,19 @@ import androidx.appcompat.widget.SearchView
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.view.FragmentsAdapter
 import com.goryachok.forecastapp.view.fragment.CurrentFragment
+import com.goryachok.forecastapp.view.fragment.HourlyFragment
 import com.goryachok.forecastapp.view.fragment.MyFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val fragments = listOf<MyFragment>(CurrentFragment())
-
-    private val adapter: FragmentsAdapter by lazy {
-        FragmentsAdapter(supportFragmentManager, fragments)
-    }
+    private val pagerAdapter by lazy { FragmentsAdapter(supportFragmentManager) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        forecast_viewPager.adapter = adapter
+        initViewPager()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -42,9 +39,12 @@ class MainActivity : AppCompatActivity() {
                     clearFocus()
                     setQuery("", false)
                 }
-                adapter.pages.forEach {
-                    it.onSearchRequest(query ?: return false)
+
+                for (index in 0 until pagerAdapter.count) {
+                    val adapterItem = pagerAdapter.getItem(index) as? MyFragment
+                    adapterItem?.onSearchRequest(query ?: return false)
                 }
+
                 searchItem.collapseActionView()
                 return true
             }
@@ -57,9 +57,20 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.geoLocationItem -> {
-                adapter.pages.forEach { fragment -> fragment.onLocationRequest() }
+                for (index in 0 until pagerAdapter.count) {
+                    val adapterItem = pagerAdapter.getItem(index) as? MyFragment
+                    adapterItem?.onLocationRequest()
+                }
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun initViewPager() {
+        forecast_viewPager.apply {
+            adapter = pagerAdapter.apply {
+                addFragments(listOf(CurrentFragment(), HourlyFragment()))
+            }
+        }
     }
 }

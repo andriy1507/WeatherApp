@@ -27,7 +27,7 @@ android {
 
             buildConfigField("String", "API_KEY", "\"f19f55d718abb04df88d9190337bd5b9\"")
             buildConfigField("String", "DOMAIN", "\"https://api.openweathermap.org/\"")
-            buildConfigField("String", "TAG", "\"DAGGER_DEBUG\"")
+            buildConfigField("String", "TAG", "\"TEST_DEBUG\"")
             buildConfigField("Integer","HOUR","3600")
         }
     }

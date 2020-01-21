@@ -117,9 +117,9 @@ class Repository(context: Context) {
 
     private fun isLocalDataAvailable() = local.isDataAvailable()
 
-    fun isDataInitialized(): Boolean {
-        return weatherData != null && forecastData != null
-    }
+//    fun isDataInitialized(): Boolean {
+//        return weatherData != null && forecastData != null
+//    }
 
 //    Functions to get data from ViewModel
 

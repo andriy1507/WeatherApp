@@ -15,9 +15,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okio.IOException
 
-class CurrentViewModel(applicationContext: Context) : ViewModel() {
+class CurrentViewModel(context: Context) : ViewModel() {
 
-    private val repository: Repository = Repository(applicationContext)
+    private val repository: Repository = Repository(context)
 
     private val _currentData: MutableLiveData<WeatherEntity> = MutableLiveData()
     private val currentData: LiveData<WeatherEntity>
@@ -37,7 +37,6 @@ class CurrentViewModel(applicationContext: Context) : ViewModel() {
                     is Result.Error -> {
                     }
                 }
-
             } catch (e: IOException) {
                 Log.e(this@CurrentViewModel::class.java.name, e.message, e)
             }
