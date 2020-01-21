@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import com.goryachok.forecastapp.model.domain.ForecastEntity
 import com.goryachok.forecastapp.model.domain.WeatherEntity
 
-class LocalDataSource(val context: Context) {
+class LocalDataSource(context: Context) {
 
     companion object {
         private const val PREF_NAME = "WEATHER_APPLICATION_PREFERENCES"

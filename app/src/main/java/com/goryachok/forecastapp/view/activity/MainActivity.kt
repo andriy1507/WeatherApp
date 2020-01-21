@@ -4,7 +4,6 @@ import android.app.SearchManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.goryachok.forecastapp.R
@@ -58,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.geoLocationItem -> {
-                Toast.makeText(this, "Feature will be available later", Toast.LENGTH_SHORT).show()
+                adapter.pages.forEach { fragment -> fragment.onLocationRequest() }
             }
         }
         return super.onOptionsItemSelected(item)

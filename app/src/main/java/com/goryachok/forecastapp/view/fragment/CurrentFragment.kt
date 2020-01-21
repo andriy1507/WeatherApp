@@ -69,6 +69,6 @@ class CurrentFragment : MyFragment() {
     }
 
     override fun onLocationRequest() {
-        TODO()
+        viewModel.getDataByCoord()
     }
 }

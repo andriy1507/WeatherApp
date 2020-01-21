@@ -7,73 +7,56 @@ import com.goryachok.forecastapp.data.LocalDataSource
 import com.goryachok.forecastapp.data.RemoteDataSource
 import com.goryachok.forecastapp.model.domain.ForecastEntity
 import com.goryachok.forecastapp.model.domain.WeatherEntity
+import com.goryachok.forecastapp.model.local.Result
 import com.goryachok.forecastapp.model.local.Result.Error
 import com.goryachok.forecastapp.model.local.Result.Success
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okio.IOException
 
 
-class Repository(val context: Context) {
+class Repository(context: Context) {
 
     private val remote by lazy { RemoteDataSource() }
     private val local by lazy { LocalDataSource(context) }
 
-    private lateinit var fData: ForecastEntity
-    private lateinit var wData: WeatherEntity
+    private var forecastData: ForecastEntity? = null
+    private var weatherData: WeatherEntity? = null
 
-    suspend fun getWeatherDataByCity(city: String): WeatherEntity {
-        val data: WeatherEntity
-        when (val result = remote.getWeatherByCity(city)) {
-            is Success -> {
-                data = result.data
-                return data
-            }
-            is Error -> {
-                throw result.exception
-            }
-        }
-    }
+//    Getting data by city
 
-    private suspend fun getWeatherDataByCoord(lat: Float, lon: Float): WeatherEntity {
-        val data: WeatherEntity
-        when (val result = remote.getWeatherByCoord(lat, lon)) {
-            is Success -> {
-                data = result.data
-                return data
+    suspend fun getWeatherDataByCity(city: String): Result<WeatherEntity> =
+        runBlocking {
+            val result = async {
+                remote.getWeatherByCity(city)
             }
-            is Error -> {
-                throw result.exception
-            }
+            result.await()
         }
-    }
 
-    suspend fun getForecastDataByCity(city: String): ForecastEntity {
-        val data: ForecastEntity
-        when (val result = remote.getForecastByCity(city)) {
-            is Success -> {
-                data = result.data
-                return data
-            }
-            is Error -> {
-                throw result.exception
-            }
+    suspend fun getForecastDataByCity(city: String): Result<ForecastEntity> =
+        runBlocking {
+            val result = async { remote.getForecastByCity(city) }
+            result.await()
         }
-    }
 
-    private suspend fun getForecastDataByCoord(lat: Float, lon: Float): ForecastEntity {
-        val data: ForecastEntity
-        when (val result = remote.getForecastByCoord(lat, lon)) {
-            is Success -> {
-                data = result.data
-                return data
-            }
-            is Error -> {
-                throw result.exception
-            }
+//    Getting data by coordinates
+
+    private suspend fun getWeatherDataByCoord(lat: Float, lon: Float): Result<WeatherEntity> =
+        runBlocking {
+            val result = async { remote.getWeatherByCoord(lat, lon) }
+            result.await()
         }
-    }
+
+    private suspend fun getForecastDataByCoord(lat: Float, lon: Float): Result<ForecastEntity> =
+        runBlocking {
+            val result = async { remote.getForecastByCoord(lat, lon) }
+            result.await()
+        }
+
+//    Initializing data
 
     fun initializeData(lat: Float, lon: Float) {
         if (isFetchNeeded()) {
@@ -84,20 +67,34 @@ class Repository(val context: Context) {
     }
 
     private fun getLocalData() {
-        fData = local.readForecastData()
-        wData = local.readWeatherData()
+        forecastData = local.readForecastData()
+        weatherData = local.readWeatherData()
     }
 
     private fun saveRemoteDataToLocal(lat: Float, lon: Float) {
-        CoroutineScope(IO).launch {
+        CoroutineScope(Default).launch {
             try {
-//                fData = getForecastDataByCoord(lat, lon)
-//                wData = getWeatherDataByCoord(lat, lon)
-                wData = getWeatherDataByCity("Lviv")
-                fData = getForecastDataByCity("Lviv")
+                when (val result = (getForecastDataByCoord(lat, lon))) {
+                    is Success -> {
+                        local.saveForecastData(result.data)
+                        //TODO save to DB
+                    }
+                    is Error -> {
+                        //TODO error handling
+                    }
+                }
+                forecastData = (getForecastDataByCoord(lat, lon) as? Success)?.data
+                forecastData?.let { local.saveForecastData(it) }
+                when (val result = getWeatherDataByCoord(lat, lon)) {
+                    is Success -> {
+                        local.saveWeatherData(result.data)
+                    }
+                    is Error -> {
+                    }
+                }
+                weatherData = (getWeatherDataByCoord(lat, lon) as? Success)?.data
 
-                local.saveWeatherData(wData)
-                local.saveForecastData(fData)
+
             } catch (e: IOException) {
                 Log.e(e::class.java.name, e.message, e)
             }
@@ -105,11 +102,13 @@ class Repository(val context: Context) {
 
     }
 
+//    Checking data availability
+
     private fun isFetchNeeded(): Boolean {
         return if (isLocalDataAvailable()) {
-            wData = local.readWeatherData()
-            fData = local.readForecastData()
-            val diff = System.currentTimeMillis() / 1000 - wData.date
+            weatherData = local.readWeatherData()
+            forecastData = local.readForecastData()
+            val diff = System.currentTimeMillis() / 1000 - weatherData!!.date
             diff > BuildConfig.HOUR
         } else {
             true
@@ -119,14 +118,18 @@ class Repository(val context: Context) {
     private fun isLocalDataAvailable() = local.isDataAvailable()
 
     fun isDataInitialized(): Boolean {
-        return ::wData.isInitialized && ::fData.isInitialized
+        return weatherData != null && forecastData != null
     }
 
-    fun getCurrentWeather(): WeatherEntity {
-        return wData
+//    Functions to get data from ViewModel
+
+    fun getCurrentWeather(): WeatherEntity? {
+        return weatherData
     }
 
-    fun getCurrentForecast(): ForecastEntity {
-        return fData
+    fun getCurrentForecast(): ForecastEntity? {
+        return forecastData
     }
+
+
 }
