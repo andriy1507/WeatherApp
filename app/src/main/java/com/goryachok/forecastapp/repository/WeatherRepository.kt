@@ -81,13 +81,13 @@ class WeatherRepository(context: Context) {
                 when (val result = getWeatherDataByCoord(lat, lon)) {
                     is Success -> {
                         local.saveWeatherData(result.data)
+                        //TODO save to DB
                     }
                     is Error -> {
                         //TODO error handling
                     }
                 }
                 weatherData = (getWeatherDataByCoord(lat, lon) as? Success)?.data
-
 
             } catch (e: IOException) {
                 Log.e(e::class.java.name, e.message, e)

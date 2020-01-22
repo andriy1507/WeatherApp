@@ -57,7 +57,7 @@ class CurrentViewModel(context: Context) : ViewModel() {
         _currentData.postValue(repository.getCurrentWeather())
     }
 
-    fun initializeData() {
+    private fun initializeData() {
         repository.initializeData(
             this.location.latitude.toFloat(),
             this.location.longitude.toFloat()

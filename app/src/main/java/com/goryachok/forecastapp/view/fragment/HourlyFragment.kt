@@ -34,7 +34,6 @@ class HourlyFragment : MyFragment() {
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.hourly_forecast_fragment, container, false)
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory).get(HourlyViewModel::class.java)
@@ -46,7 +45,6 @@ class HourlyFragment : MyFragment() {
                 hourlyForecast_cityName_textView.text =
                     getString(R.string.location_template, it.city.name, it.city.country)
                 adapter = HourlyForecastAdapter().apply {
-
                     setNewItemList(it.list)
                 }
                 hourlyForecast_recyclerView.apply {

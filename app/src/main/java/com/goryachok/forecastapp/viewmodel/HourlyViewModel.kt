@@ -1,6 +1,8 @@
 package com.goryachok.forecastapp.viewmodel
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.location.LocationManager
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -29,6 +31,12 @@ class HourlyViewModel(context: Context) : ViewModel() {
 
     val data = listOf(searchedData, currentData)
 
+    @SuppressLint("MissingPermission")
+    private val location =
+        (context.getSystemService(Context.LOCATION_SERVICE) as LocationManager).getLastKnownLocation(
+            LocationManager.GPS_PROVIDER
+        )
+
     fun getDataByCity(city: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -55,6 +63,7 @@ class HourlyViewModel(context: Context) : ViewModel() {
     }
 
     fun getDataByCoordinates() {
+        initializeData()
         val data = repository.getCurrentForecast()
 
         val newList = mutableListOf<Forecast>()
@@ -64,5 +73,12 @@ class HourlyViewModel(context: Context) : ViewModel() {
             }
             _currentData.postValue(data.copy(list = newList))
         }
+    }
+
+    private fun initializeData() {
+        repository.initializeData(
+            this.location.latitude.toFloat(),
+            this.location.longitude.toFloat()
+        )
     }
 }

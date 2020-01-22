@@ -40,11 +40,13 @@ class SplashActivity : AppCompatActivity() {
             .setTitle(R.string.app_name)
             .setMessage(R.string.permission_message)
             .setPositiveButton(R.string.ok_button) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setOnDismissListener {
                 requestPermissions(
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     PERMISSION_REQUEST_CODE
                 )
-                dialog.dismiss()
             }
             .create()
     }
@@ -80,10 +82,11 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestLocationPermission()
-        else
+        } else {
             startMainActivity()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -126,6 +129,7 @@ class SplashActivity : AppCompatActivity() {
                 lastKnownLocation.latitude.toFloat(),
                 lastKnownLocation.longitude.toFloat()
             )
+            startActivity(Intent(this, MainActivity::class.java))
         } else {
             locationManger.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
