@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         initViewPager()
     }
 
@@ -38,7 +37,7 @@ class MainActivity : AppCompatActivity() {
                     clearFocus()
                     setQuery("", false)
                 }
-//                pagerAdapter.fragments.forEach { it.onSearchRequest(query ?: "") }
+                pagerAdapter.fragments.forEach { it.onSearchRequest(query ?: "") }
                 searchItem.collapseActionView()
                 return true
             }
@@ -51,7 +50,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.geoLocationItem -> {
-//                pagerAdapter.fragments.forEach { it.onLocationRequest() }
+                pagerAdapter.fragments.forEach { it.onLocationRequest() }
             }
         }
         return super.onOptionsItemSelected(item)

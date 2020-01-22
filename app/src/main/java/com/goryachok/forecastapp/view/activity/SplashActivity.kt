@@ -26,6 +26,43 @@ class SplashActivity : AppCompatActivity() {
         private const val PERMISSION_REQUEST_CODE = 101
     }
 
+    private val defaultLocationDialog by lazy {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.app_name)
+            .setMessage(R.string.default_location_message)
+            .setPositiveButton(R.string.ok_button) { dialog, _ -> dialog.dismiss() }
+            .create()
+    }
+
+    @Suppress("NewApi")
+    private val locationRequestDialog by lazy {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.app_name)
+            .setMessage(R.string.permission_message)
+            .setPositiveButton(R.string.ok_button) { dialog, _ ->
+                requestPermissions(
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    PERMISSION_REQUEST_CODE
+                )
+                dialog.dismiss()
+            }
+            .create()
+    }
+
+    private val unavailableLocationDialog by lazy {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.app_name)
+            .setMessage(R.string.unavailable_location_message)
+            .setPositiveButton(R.string.yes_button) { dialog, _ ->
+                startActivity(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+                dialog.dismiss()
+            }
+            .setNegativeButton(R.string.no_button) { dialog, _ ->
+                defaultLocationDialog.show()
+                dialog.dismiss()
+            }
+    }
+
     private val viewModel: SplashViewModel by lazy {
         ViewModelProvider(this, viewModelFactory)
             .get(SplashViewModel::class.java)
@@ -59,10 +96,11 @@ class SplashActivity : AppCompatActivity() {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty()) {
                 when (grantResults.first()) {
-                    PackageManager.PERMISSION_GRANTED -> startMainActivity()
+                    PackageManager.PERMISSION_GRANTED -> {
+                        startMainActivity()
+                    }
                     PackageManager.PERMISSION_DENIED -> {
-                        informUserAndRequestPermission()
-                        requestLocationPermission()
+                        defaultLocationDialog.show()
                     }
                 }
             }
@@ -72,19 +110,10 @@ class SplashActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     private fun requestLocationPermission() {
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            //TODO show dialog
-            requestPermissions(
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                PERMISSION_REQUEST_CODE
-            )
+            locationRequestDialog.show()
         } else {
             startMainActivity()
         }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun informUserAndRequestPermission() {
-        //TODO create dialog
     }
 
     @SuppressLint("MissingPermission")
@@ -111,6 +140,7 @@ class SplashActivity : AppCompatActivity() {
                                 it.longitude.toFloat()
                             )
                         }
+                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                     }
 
                     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
@@ -128,21 +158,9 @@ class SplashActivity : AppCompatActivity() {
                     }
 
                     override fun onProviderDisabled(provider: String?) {
-                        //TODO Location alert dialog
-                        val dialogBuilder = AlertDialog.Builder(this@SplashActivity)
-                        dialogBuilder.apply {
-                            title = ""
-                            setMessage(R.string.app_name)
-                            setPositiveButton("OK") { v, _ ->
-                                v.dismiss()
-                            }
-                        }
-                        val dialog = dialogBuilder.create()
-                        dialog.show()
+                        unavailableLocationDialog.show()
                     }
                 })
-
-            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 }
