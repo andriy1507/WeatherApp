@@ -5,9 +5,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.goryachok.forecastapp.model.domain.Forecast
 import com.goryachok.forecastapp.model.domain.ForecastEntity
 import com.goryachok.forecastapp.model.local.Result
-import com.goryachok.forecastapp.repository.Repository
+import com.goryachok.forecastapp.repository.WeatherRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +17,7 @@ import okio.IOException
 
 class HourlyViewModel(context: Context) : ViewModel() {
 
-    private val repository: Repository = Repository(context)
+    private val repository: WeatherRepository = WeatherRepository(context)
 
     private val _currentData: MutableLiveData<ForecastEntity> = MutableLiveData()
     private val currentData: LiveData<ForecastEntity>
@@ -33,9 +34,16 @@ class HourlyViewModel(context: Context) : ViewModel() {
             try {
                 when (val result = repository.getForecastDataByCity(city)) {
                     is Result.Success -> withContext(Dispatchers.Main) {
-                        _searchedData.postValue(
-                            result.data
-                        )
+                        val data = result.data
+                        data.let {
+                            val newList = mutableListOf<Forecast>()
+                            data.let {
+                                for (index in 0..7) {
+                                    newList.add(data.list[index])
+                                }
+                                _searchedData.postValue(data.copy(list = newList))
+                            }
+                        }
                     }
                     is Result.Error -> {
                     }
@@ -46,8 +54,15 @@ class HourlyViewModel(context: Context) : ViewModel() {
         }
     }
 
-    fun getDataByCoord() {
-        _currentData.postValue(repository.getCurrentForecast())
-    }
+    fun getDataByCoordinates() {
+        val data = repository.getCurrentForecast()
 
+        val newList = mutableListOf<Forecast>()
+        data?.let {
+            for (index in 0..7) {
+                newList.add(data.list[index])
+            }
+            _currentData.postValue(data.copy(list = newList))
+        }
+    }
 }

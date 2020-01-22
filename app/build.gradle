@@ -4,8 +4,6 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
-//apply plugin: 'kotlin-kapt'
-
 android {
     compileSdkVersion targetSdkVer
     buildToolsVersion toolsVer
@@ -16,19 +14,20 @@ android {
         versionCode versionCode
         versionName versionName
         testInstrumentationRunner testRunner
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField("String", "API_KEY", "\"f19f55d718abb04df88d9190337bd5b9\"")
+            buildConfigField("String", "DOMAIN", "\"https://api.openweathermap.org/\"")
         }
         debug {
             minifyEnabled false
 
             buildConfigField("String", "API_KEY", "\"f19f55d718abb04df88d9190337bd5b9\"")
             buildConfigField("String", "DOMAIN", "\"https://api.openweathermap.org/\"")
-            buildConfigField("String", "TAG", "\"TEST_DEBUG\"")
-            buildConfigField("Integer","HOUR","3600")
         }
     }
     compileOptions {
@@ -54,9 +53,7 @@ dependencies {
     implementation appDependencies.retrofit
     implementation appDependencies.okhttp
     implementation appDependencies.coroutines
-    implementation appDependencies.utils
-//    implementation appDependencies.dagger
-//    kapt appDependencies.daggerCompiler
+    implementation appDependencies.logging
 
     testImplementation appDependencies.test
     androidTestImplementation appDependencies.androidTest

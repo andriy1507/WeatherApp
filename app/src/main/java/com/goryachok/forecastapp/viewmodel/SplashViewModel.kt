@@ -3,11 +3,11 @@ package com.goryachok.forecastapp.viewmodel
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.ViewModel
-import com.goryachok.forecastapp.repository.Repository
+import com.goryachok.forecastapp.repository.WeatherRepository
 
 class SplashViewModel(applicationContext: Context) : ViewModel() {
 
-    private val repository: Repository by lazy { Repository(applicationContext) }
+    private val repository: WeatherRepository by lazy { WeatherRepository(applicationContext) }
 
     @SuppressLint("MissingPermission")
     fun initialize(lat: Float, lon: Float) {

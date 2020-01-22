@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.goryachok.forecastapp.R
+import com.goryachok.forecastapp.base.LOC_UPDATE_DISTANCE
+import com.goryachok.forecastapp.base.MINUTE_MS
 import com.goryachok.forecastapp.viewmodel.SplashViewModel
 
 class SplashActivity : AppCompatActivity() {
@@ -45,7 +47,6 @@ class SplashActivity : AppCompatActivity() {
             requestLocationPermission()
         else
             startMainActivity()
-
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -57,7 +58,7 @@ class SplashActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty()) {
-                when (grantResults[0]) {
+                when (grantResults.first()) {
                     PackageManager.PERMISSION_GRANTED -> startMainActivity()
                     PackageManager.PERMISSION_DENIED -> {
                         informUserAndRequestPermission()
@@ -99,8 +100,8 @@ class SplashActivity : AppCompatActivity() {
         } else {
             locationManger.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
-                1000,
-                200F,
+                MINUTE_MS,
+                LOC_UPDATE_DISTANCE,
                 object : LocationListener {
 
                     override fun onLocationChanged(location: Location?) {
@@ -127,7 +128,7 @@ class SplashActivity : AppCompatActivity() {
                     }
 
                     override fun onProviderDisabled(provider: String?) {
-                        //TODO
+                        //TODO Location alert dialog
                         val dialogBuilder = AlertDialog.Builder(this@SplashActivity)
                         dialogBuilder.apply {
                             title = ""
@@ -140,7 +141,8 @@ class SplashActivity : AppCompatActivity() {
                         dialog.show()
                     }
                 })
+
+            startActivity(Intent(this, MainActivity::class.java))
         }
-        startActivity(Intent(this, MainActivity::class.java))
     }
 }

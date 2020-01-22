@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.goryachok.forecastapp.R
+import com.goryachok.forecastapp.utils.Converter
 import com.goryachok.forecastapp.viewmodel.CurrentViewModel
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 
@@ -34,12 +35,11 @@ class CurrentFragment : MyFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.current_weather_fragment, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.current_weather_fragment, container, false)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getDataByCoord()
         viewModel.data.forEach { liveData ->
             liveData.observe(viewLifecycleOwner, Observer {
                 currentTemp_textView.text = getString(R.string.temperature_template, it.main.temp)
@@ -47,21 +47,9 @@ class CurrentFragment : MyFragment() {
                 curWindSpeed_textView.text = getString(R.string.windSpeed_template, it.wind.speed)
                 curPress_textView.text = getString(R.string.pressure_template, it.main.pressure)
                 curHumid_textView.text = getString(R.string.humidity_template, it.main.humidity)
-                curWindDir_textView.text = when (it.wind.deg) {
-                    in 0..23, in 339..360 -> "N"
-                    in 24..68 -> "NE"
-                    in 69..113 -> "E"
-                    in 114..158 -> "SE"
-                    in 159..203 -> "S"
-                    in 204..248 -> "SW"
-                    in 249..293 -> "W"
-                    in 294..338 -> "NW"
-                    else -> "-"
-                }
+                curWindDir_textView.text = Converter.convertDegreesToDirection(it.wind.deg)
             })
         }
-        viewModel.getDataByCity("Lviv")
-
     }
 
     override fun onSearchRequest(request: String) {

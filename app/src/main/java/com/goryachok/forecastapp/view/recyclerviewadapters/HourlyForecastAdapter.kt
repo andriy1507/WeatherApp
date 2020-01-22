@@ -3,39 +3,51 @@ package com.goryachok.forecastapp.view.recyclerviewadapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.model.domain.Forecast
+import kotlinx.android.synthetic.main.forecast_item_layout.view.*
 
-class HourlyForecastAdapter(private var forecast: List<Forecast>) :
+class HourlyForecastAdapter :
     RecyclerView.Adapter<HourlyForecastAdapter.HourlyForecastViewHolder>() {
-    class HourlyForecastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val temp: TextView = itemView.findViewById(R.id.temp_textView)
-        val desc: TextView = itemView.findViewById(R.id.desc_textView)
-        val date: TextView = itemView.findViewById(R.id.date_textView)
-    }
+
+    private var forecast: MutableList<Forecast> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HourlyForecastViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.forecast_item_layout, parent, false)
-        return HourlyForecastViewHolder(
-            itemView
-        )
+        return HourlyForecastViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int = forecast.size / 5
+    override fun getItemCount(): Int = forecast.size
 
     override fun onBindViewHolder(holder: HourlyForecastViewHolder, position: Int) {
-        val context = holder.itemView.context
-        holder.date.text = forecast[position].dateText.substringAfter(" ")
-        holder.desc.text = forecast[position].weather[0].description
-        holder.temp.text =
-            context.getString(R.string.temperature_template, forecast[position].main.temp)
+        forecast[position].let { holder.bind(it) }
     }
 
-    fun update(forecast: List<Forecast>) {
-        this.forecast = forecast
-        notifyDataSetChanged()
+    fun setNewItemList(forecast: List<Forecast>) {
+        this.forecast = forecast.toMutableList()
+        notifyItemRangeChanged(0, this.forecast.size - 1)
+    }
+
+    fun addNewItems(forecast: List<Forecast>) {
+        val startIndex = this.forecast.size - 1
+
+        this.forecast.addAll(forecast)
+        val endIndex = startIndex + forecast.size
+
+        notifyItemRangeChanged(startIndex, endIndex)
+    }
+
+    class HourlyForecastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val temp = itemView.temp_textView
+        private val desc = itemView.desc_textView
+        private val date = itemView.date_textView
+
+        fun bind(item: Forecast) {
+            date.text = item.dateText.substringAfter(" ")
+            desc.text = item.weather.first().description
+            temp.text = itemView.context.getString(R.string.temperature_template, item.main.temp)
+        }
     }
 }

@@ -2,7 +2,8 @@ package com.goryachok.forecastapp.repository
 
 import android.content.Context
 import android.util.Log
-import com.goryachok.forecastapp.BuildConfig
+import com.goryachok.forecastapp.base.HOUR_MS
+import com.goryachok.forecastapp.base.SECOND_MS
 import com.goryachok.forecastapp.data.LocalDataSource
 import com.goryachok.forecastapp.data.RemoteDataSource
 import com.goryachok.forecastapp.model.domain.ForecastEntity
@@ -18,7 +19,7 @@ import kotlinx.coroutines.runBlocking
 import okio.IOException
 
 
-class Repository(context: Context) {
+class WeatherRepository(context: Context) {
 
     private val remote by lazy { RemoteDataSource() }
     private val local by lazy { LocalDataSource(context) }
@@ -26,13 +27,9 @@ class Repository(context: Context) {
     private var forecastData: ForecastEntity? = null
     private var weatherData: WeatherEntity? = null
 
-//    Getting data by city
-
     suspend fun getWeatherDataByCity(city: String): Result<WeatherEntity> =
         runBlocking {
-            val result = async {
-                remote.getWeatherByCity(city)
-            }
+            val result = async { remote.getWeatherByCity(city) }
             result.await()
         }
 
@@ -41,8 +38,6 @@ class Repository(context: Context) {
             val result = async { remote.getForecastByCity(city) }
             result.await()
         }
-
-//    Getting data by coordinates
 
     private suspend fun getWeatherDataByCoord(lat: Float, lon: Float): Result<WeatherEntity> =
         runBlocking {
@@ -55,8 +50,6 @@ class Repository(context: Context) {
             val result = async { remote.getForecastByCoord(lat, lon) }
             result.await()
         }
-
-//    Initializing data
 
     fun initializeData(lat: Float, lon: Float) {
         if (isFetchNeeded()) {
@@ -90,6 +83,7 @@ class Repository(context: Context) {
                         local.saveWeatherData(result.data)
                     }
                     is Error -> {
+                        //TODO error handling
                     }
                 }
                 weatherData = (getWeatherDataByCoord(lat, lon) as? Success)?.data
@@ -102,26 +96,18 @@ class Repository(context: Context) {
 
     }
 
-//    Checking data availability
-
     private fun isFetchNeeded(): Boolean {
         return if (isLocalDataAvailable()) {
             weatherData = local.readWeatherData()
             forecastData = local.readForecastData()
-            val diff = System.currentTimeMillis() / 1000 - weatherData!!.date
-            diff > BuildConfig.HOUR
+            val diff = System.currentTimeMillis() / SECOND_MS - weatherData!!.date
+            diff > HOUR_MS
         } else {
             true
         }
     }
 
     private fun isLocalDataAvailable() = local.isDataAvailable()
-
-//    fun isDataInitialized(): Boolean {
-//        return weatherData != null && forecastData != null
-//    }
-
-//    Functions to get data from ViewModel
 
     fun getCurrentWeather(): WeatherEntity? {
         return weatherData
