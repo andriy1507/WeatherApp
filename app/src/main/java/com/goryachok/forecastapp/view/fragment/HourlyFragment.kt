@@ -16,7 +16,11 @@ import kotlinx.android.synthetic.main.hourly_forecast_fragment.*
 
 class HourlyFragment : MyFragment() {
 
-    override lateinit var viewModel: HourlyViewModel
+    override val viewModel: HourlyViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(
+            HourlyViewModel::class.java
+        )
+    }
 
     private lateinit var adapter: HourlyForecastAdapter
 
@@ -37,7 +41,6 @@ class HourlyFragment : MyFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(HourlyViewModel::class.java)
         viewModel.data.forEach { liveData ->
             liveData.observe(viewLifecycleOwner, Observer {
                 hourlyForecast_cityName_textView.text =

@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity() {
         initViewPager()
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onResumeFragments() {
+        super.onResumeFragments()
         passCoordinates()
     }
 
