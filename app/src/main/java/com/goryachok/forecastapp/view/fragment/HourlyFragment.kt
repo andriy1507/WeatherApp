@@ -1,6 +1,6 @@
 package com.goryachok.forecastapp.view.fragment
 
-import android.app.AlertDialog
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.hourly_forecast_fragment.*
 
 class HourlyFragment : MyFragment() {
 
-    private lateinit var viewModel: HourlyViewModel
+    override lateinit var viewModel: HourlyViewModel
 
     private lateinit var adapter: HourlyForecastAdapter
 
@@ -38,9 +38,6 @@ class HourlyFragment : MyFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory).get(HourlyViewModel::class.java)
-
-        viewModel.getDataByCoordinates()
-
         viewModel.data.forEach { liveData ->
             liveData.observe(viewLifecycleOwner, Observer {
                 hourlyForecast_cityName_textView.text =
@@ -52,23 +49,18 @@ class HourlyFragment : MyFragment() {
                     layoutManager = LinearLayoutManager(this@HourlyFragment.context)
                 }
                 hourlyForecast_recyclerView.adapter = adapter
+                loadDialog.dismiss()
             })
         }
-        viewModel.errorData.observe(viewLifecycleOwner, Observer {
-            AlertDialog.Builder(this.context)
-                .setTitle("Error")
-                .setMessage(it.exception.message)
-                .setPositiveButton("Close") { dialog, _ ->
-                    dialog.dismiss()
-                }
-        })
     }
 
     override fun onSearchRequest(request: String) {
         viewModel.getDataByCity(request)
+        loadDialog.dismiss()
     }
 
-    override fun onLocationRequest() {
-        viewModel.getDataByCoordinates()
+    override fun onLocationRequest(loc: Location) {
+        viewModel.getDataByCoordinates(loc)
+        loadDialog.dismiss()
     }
 }

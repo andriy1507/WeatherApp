@@ -2,9 +2,11 @@ package com.goryachok.forecastapp.view.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
@@ -41,6 +43,7 @@ class SplashActivity : AppCompatActivity() {
             .setTitle(R.string.app_name)
             .setMessage(R.string.permission_message)
             .setPositiveButton(R.string.ok_button) { dialog, _ ->
+                dialog.dismiss()
             }
             .setOnDismissListener {
                 requestPermissions(
@@ -51,8 +54,6 @@ class SplashActivity : AppCompatActivity() {
             .create()
     }
 
-
-    //TODO use or delete
     private val unavailableLocationDialog by lazy {
         AlertDialog.Builder(this)
             .setTitle(R.string.app_name)
@@ -77,12 +78,12 @@ class SplashActivity : AppCompatActivity() {
 
     private val locationCallback by lazy {
         object : LocationCallback() {
-            override fun onLocationResult(p0: LocationResult?) {
-                super.onLocationResult(p0)
-                p0?.let { result ->
-                    result.locations.let { locations ->
-                        locations.forEach {
-                            it?.let {
+            override fun onLocationResult(result: LocationResult?) {
+                super.onLocationResult(result)
+                result?.let { it ->
+                    it.locations.let { locations ->
+                        locations.forEach { location ->
+                            location?.let {
                                 viewModel.initialize(it.latitude.toFloat(), it.longitude.toFloat())
                             }
                         }
@@ -121,7 +122,6 @@ class SplashActivity : AppCompatActivity() {
         when (requestCode) {
             LOCATION_REQUEST_CODE -> {
                 fusedLocationClient.locationAvailability.addOnSuccessListener {
-                    //TODO Fix bug (When you turn on Location sometimes it doesn't show main activity)
                     getLocation()
                 }
             }
@@ -160,28 +160,25 @@ class SplashActivity : AppCompatActivity() {
 
     @SuppressLint("MissingPermission")
     private fun getLocation() {
-        fusedLocationClient.locationAvailability.addOnSuccessListener {
-            it?.let {
-                if (it.isLocationAvailable) {
-                    fusedLocationClient.lastLocation
-                        .addOnSuccessListener { location ->
-                            location?.let {
-                                initializeData(location)
-                            }
-                        }
-                        .addOnCompleteListener {
-                            stopLocationUpdates()
-                            startActivity(Intent(this, MainActivity::class.java))
-                        }
-                        .addOnFailureListener {
-                            startLocationUpdates()
-                            defaultLocationDialog.show()
-                            startLocationUpdates()
-                        }
-                } else {
-                    unavailableLocationDialog.show()
+        if ((getSystemService(Context.LOCATION_SERVICE) as LocationManager).isProviderEnabled(
+                LocationManager.GPS_PROVIDER
+            )
+        ) {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location ->
+                    location?.let {
+                        initializeData(location)
+                    }
                 }
-            }
+                .addOnCompleteListener {
+                    stopLocationUpdates()
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
+                .addOnFailureListener {
+                    startLocationUpdates()
+                }
+        } else {
+            unavailableLocationDialog.show()
         }
     }
 

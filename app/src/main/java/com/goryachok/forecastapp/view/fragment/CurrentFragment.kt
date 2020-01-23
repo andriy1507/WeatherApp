@@ -1,6 +1,6 @@
 package com.goryachok.forecastapp.view.fragment
 
-import android.app.AlertDialog
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.current_weather_fragment.*
 
 class CurrentFragment : MyFragment() {
 
-    private val viewModel: CurrentViewModel by lazy {
+    override val viewModel: CurrentViewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(
             CurrentViewModel::class.java
         )
@@ -30,10 +30,6 @@ class CurrentFragment : MyFragment() {
         }
     }
 
-    private val loadDialog by lazy {
-        AlertDialog.Builder(this.context).setTitle("Wait").setMessage("Data loading").create()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,7 +37,6 @@ class CurrentFragment : MyFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getCurrentLocationData()
         viewModel.data.forEach { liveData ->
             liveData.observe(viewLifecycleOwner, Observer {
                 it.let {
@@ -57,26 +52,16 @@ class CurrentFragment : MyFragment() {
                 loadDialog.dismiss()
             })
         }
-        viewModel.errorData.observe(viewLifecycleOwner, Observer {
-            loadDialog.dismiss()
-            AlertDialog.Builder(this.context)
-                .setTitle("Error")
-                .setMessage(it.exception.message)
-                .setPositiveButton("Close") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .create().show()
-        })
-        viewModel.loadingData.observe(viewLifecycleOwner, Observer {
-            loadDialog.show()
-        })
+
     }
 
     override fun onSearchRequest(request: String) {
         viewModel.getDataByCity(request)
+        loadDialog.dismiss()
     }
 
-    override fun onLocationRequest() {
-        viewModel.getCurrentLocationData()
+    override fun onLocationRequest(loc: Location) {
+        viewModel.getCurrentLocationData(loc)
+        loadDialog.dismiss()
     }
 }

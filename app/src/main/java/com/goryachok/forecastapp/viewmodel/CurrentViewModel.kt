@@ -4,8 +4,6 @@ import android.content.Context
 import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.goryachok.forecastapp.model.domain.WeatherEntity
 import com.goryachok.forecastapp.model.local.Result
 import com.goryachok.forecastapp.repository.BaseRepository
@@ -16,7 +14,7 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class CurrentViewModel(context: Context) : ViewModel() {
+class CurrentViewModel(context: Context) : MyViewModel() {
 
     private val repository: BaseRepository<WeatherEntity> by lazy { WeatherRepository(context) }
 
@@ -28,23 +26,11 @@ class CurrentViewModel(context: Context) : ViewModel() {
     private val searchedData: LiveData<WeatherEntity>
         get() = _searchedData
 
-    private val _errorData: MutableLiveData<Result.Error> = MutableLiveData()
-    val errorData: LiveData<Result.Error>
-        get() = _errorData
-
-    private val _loadingData: MutableLiveData<Result.Loading> = MutableLiveData()
-    val loadingData: LiveData<Result.Loading>
-        get() = _loadingData
-
-
-    private val fusedLocationClient by lazy { FusedLocationProviderClient(context) }
-
-
     val data = listOf(searchedData, currentData)
 
     fun getDataByCity(city: String) {
         CoroutineScope(IO).launch {
-            _loadingData.postValue(Result.Loading)
+            _loadData.postValue(Result.Loading)
             try {
                 when (val result = repository.getDataByCity(city)) {
                     is Result.Success -> withContext(Main) { _currentData.postValue(result.data) }
@@ -60,7 +46,7 @@ class CurrentViewModel(context: Context) : ViewModel() {
 
     private fun getDataByCoordinates(location: Location) {
         CoroutineScope(IO).launch {
-            _loadingData.postValue(Result.Loading)
+            _loadData.postValue(Result.Loading)
             try {
                 when (val result = repository.getDataByCoordinates(
                     location.latitude.toFloat(),
@@ -77,16 +63,7 @@ class CurrentViewModel(context: Context) : ViewModel() {
         }
     }
 
-    fun getCurrentLocationData() {
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener {
-                it?.let {
-                    getDataByCoordinates(it)
-                }
-            }
-            .addOnFailureListener {
-                //TODO implement request location
-                _errorData.postValue(Result.Error(it))
-            }
+    fun getCurrentLocationData(loc: Location) {
+        getDataByCoordinates(loc)
     }
 }

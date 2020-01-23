@@ -1,11 +1,9 @@
 package com.goryachok.forecastapp.viewmodel
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.location.LocationManager
+import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.goryachok.forecastapp.model.domain.Forecast
 import com.goryachok.forecastapp.model.domain.ForecastEntity
 import com.goryachok.forecastapp.model.local.Result
@@ -17,7 +15,7 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HourlyViewModel(context: Context) : ViewModel() {
+class HourlyViewModel(context: Context) : MyViewModel() {
 
     private val repository: BaseRepository<ForecastEntity> by lazy { ForecastRepository(context) }
 
@@ -29,20 +27,11 @@ class HourlyViewModel(context: Context) : ViewModel() {
     private val searchedData: LiveData<ForecastEntity>
         get() = _searchedData
 
-    private val _errorData: MutableLiveData<Result.Error> = MutableLiveData()
-    val errorData: LiveData<Result.Error>
-        get() = _errorData
-
     val data = listOf(searchedData, currentData)
-
-    @SuppressLint("MissingPermission")
-    private val location =
-        (context.getSystemService(Context.LOCATION_SERVICE) as LocationManager).getLastKnownLocation(
-            LocationManager.GPS_PROVIDER
-        )
 
     fun getDataByCity(city: String) {
         CoroutineScope(IO).launch {
+            _loadData.postValue(Result.Loading)
             when (val result: Result<ForecastEntity> = repository.getDataByCity(city)) {
                 is Result.Success -> {
                     val newList = mutableListOf<Forecast>()
@@ -62,11 +51,12 @@ class HourlyViewModel(context: Context) : ViewModel() {
         }
     }
 
-    fun getDataByCoordinates() {
+    fun getDataByCoordinates(loc: Location) {
         CoroutineScope(IO).launch {
+            _loadData.postValue(Result.Loading)
             when (val result: Result<ForecastEntity> = repository.getDataByCoordinates(
-                location.latitude.toFloat(),
-                location.longitude.toFloat()
+                loc.latitude.toFloat(),
+                loc.longitude.toFloat()
             )) {
                 is Result.Success -> {
                     val newList = mutableListOf<Forecast>()
@@ -83,14 +73,6 @@ class HourlyViewModel(context: Context) : ViewModel() {
                     _errorData.postValue(result)
                 }
             }
-        }
-    }
-
-    private fun initializeData(lat: Float, lon: Float) {
-        CoroutineScope(IO).launch {
-            repository.getDataByCoordinates(
-                lat, lon
-            )
         }
     }
 }

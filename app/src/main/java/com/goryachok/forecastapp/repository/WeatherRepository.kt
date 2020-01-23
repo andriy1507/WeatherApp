@@ -44,7 +44,7 @@ class WeatherRepository(context: Context) : BaseRepository<WeatherEntity>(contex
 
     override fun isFetchNeeded(): Boolean {
         return if (local.isDataAvailable()) {
-            val difference = local.readWeatherData().date * SECOND_MS - System.currentTimeMillis()
+            val difference = System.currentTimeMillis() - local.readWeatherData().date * SECOND_MS
             return difference > HOUR_MS
         } else {
             true
