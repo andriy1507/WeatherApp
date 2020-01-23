@@ -2,9 +2,7 @@ package com.goryachok.forecastapp.view.fragment
 
 import android.location.Location
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -13,7 +11,7 @@ import com.goryachok.forecastapp.utils.Converter
 import com.goryachok.forecastapp.viewmodel.CurrentViewModel
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 
-class CurrentFragment : MyFragment() {
+class CurrentFragment : MyFragment(R.layout.current_weather_fragment) {
 
     override val viewModel: CurrentViewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(
@@ -29,11 +27,6 @@ class CurrentFragment : MyFragment() {
             }
         }
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.current_weather_fragment, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

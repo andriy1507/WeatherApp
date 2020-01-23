@@ -2,9 +2,7 @@ package com.goryachok.forecastapp.view.fragment
 
 import android.location.Location
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -14,7 +12,7 @@ import com.goryachok.forecastapp.view.recyclerviewadapters.HourlyForecastAdapter
 import com.goryachok.forecastapp.viewmodel.HourlyViewModel
 import kotlinx.android.synthetic.main.hourly_forecast_fragment.*
 
-class HourlyFragment : MyFragment() {
+class HourlyFragment : MyFragment(R.layout.hourly_forecast_fragment) {
 
     override val viewModel: HourlyViewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(
@@ -32,12 +30,6 @@ class HourlyFragment : MyFragment() {
             }
         }
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.hourly_forecast_fragment, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

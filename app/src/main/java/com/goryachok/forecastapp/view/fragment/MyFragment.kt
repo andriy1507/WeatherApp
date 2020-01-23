@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.goryachok.forecastapp.viewmodel.MyViewModel
 
-abstract class MyFragment: Fragment() {
+abstract class MyFragment(layout: Int) : Fragment(layout) {
 
     abstract val viewModel: MyViewModel
 
