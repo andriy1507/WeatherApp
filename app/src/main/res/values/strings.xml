@@ -14,5 +14,10 @@
     <string name="pressure_template">%d hPa</string>
     <string name="humidity_template">%d %%</string>
     <string name="location_template">%s, %s</string>
-    <string name="permission_message">App needs your location to get data. Please grant permission</string>
+    <string name="permission_message">Please provide your location so we can get precise data for you</string>
+    <string name="default_location_message">Without location will be show data for default location</string>
+    <string name="unavailable_location_message">Your location is turn off. Do you want to turn it on?</string>
+    <string name="ok_button">OK</string>
+    <string name="yes_button">Yes</string>
+    <string name="no_button">No</string>
 </resources>

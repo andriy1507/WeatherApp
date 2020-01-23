@@ -2,10 +2,7 @@ package com.goryachok.forecastapp.model.domain
 
 
 import android.os.Parcelable
-import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import com.goryachok.forecastapp.base.RemoteEntity
-import com.goryachok.forecastapp.model.local.WeatherModel
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -24,7 +21,3 @@ data class WeatherEntity(
     @SerializedName("wind")
     val wind: Wind
 ) : Parcelable, RemoteEntity()
-
-fun WeatherEntity.toModel(): WeatherModel {
-    return WeatherModel(wind, weather[0])
-}

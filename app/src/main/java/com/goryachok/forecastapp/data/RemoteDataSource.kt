@@ -1,43 +1,55 @@
 package com.goryachok.forecastapp.data
 
-import android.util.Log
-import com.goryachok.forecastapp.api.OpenWeatherMapAPI
-import com.goryachok.forecastapp.base.RemoteEntity
+import com.goryachok.forecastapp.api.ClientProvider
 import com.goryachok.forecastapp.model.domain.ForecastEntity
 import com.goryachok.forecastapp.model.domain.WeatherEntity
-import javax.inject.Inject
-import kotlin.reflect.KClass
+import com.goryachok.forecastapp.model.local.Result
+import com.goryachok.forecastapp.model.local.Result.Error
+import com.goryachok.forecastapp.model.local.Result.Success
+import okio.IOException
 
-class RemoteDataSource @Inject constructor(val api: OpenWeatherMapAPI) {
+class RemoteDataSource {
 
-    companion object {
-        private const val DAGGER_TAG ="DaggerDebug"
+    private val apiService by lazy { ClientProvider().create() }
 
-        private const val FORECAST_QUERY_PARAM = "weather"
-        private const val WEATHER_QUERY_PARAM = "forecast"
-    }
-
-    init {
-        Log.d(DAGGER_TAG, javaClass.name)
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    suspend fun <T : RemoteEntity> getData(
-        clazz: KClass<T>,
-        city: String? = null,
-        lon: Float = 0.0F,
-        lat: Float = 0.0F
-    ): T {
-        val type = when (clazz) {
-            WeatherEntity::class.java -> WEATHER_QUERY_PARAM
-            ForecastEntity::class.java -> FORECAST_QUERY_PARAM
-            else -> throw ClassCastException()
-        }
-        val response = if (city != null) {
-            api.getDataByCityAsync(type, city).await()
+    suspend fun getWeatherByCity(city: String): Result<WeatherEntity> {
+        val response = apiService.getWeatherByCity(city)
+        return if (response.isSuccessful) {
+            val data = response.body()
+            data?.let { Success(data) } ?: Error(NullPointerException("Response data is null"))
         } else {
-            api.getDataByCoordinatesAsync(type, lon, lat).await()
+            Error(IOException(response.message()))
         }
-        return response as T
     }
+
+    suspend fun getForecastByCity(city: String): Result<ForecastEntity> {
+        val response = apiService.getForecastByCity(city)
+        return if (response.isSuccessful) {
+            val data = response.body()
+            data?.let { Success(it) } ?: Error(NullPointerException("Response data is null"))
+        } else {
+            Error(IOException(response.message()))
+        }
+    }
+
+    suspend fun getWeatherByCoordinates(lat: Float, lon: Float): Result<WeatherEntity> {
+        val response = apiService.getWeatherByCoordinates(lat, lon)
+        return if (response.isSuccessful) {
+            val data = response.body()
+            data?.let { Success(data) } ?: Error(NullPointerException("Response data is null"))
+        } else {
+            Error(IOException(response.message()))
+        }
+    }
+
+    suspend fun getForecastByCoordinates(lat: Float, lon: Float): Result<ForecastEntity> {
+        val response = apiService.getForecastByCoordinates(lat, lon)
+        return if (response.isSuccessful) {
+            val data = response.body()
+            data?.let { Success(data) } ?: Error(NullPointerException("Response data is null"))
+        } else {
+            Error(IOException(response.message()))
+        }
+    }
+
 }

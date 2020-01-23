@@ -1,57 +1,47 @@
 package com.goryachok.forecastapp.data
 
 import android.content.Context
-import android.util.Log
-import com.google.gson.Gson
-import com.goryachok.forecastapp.base.RemoteEntity
+import android.content.SharedPreferences
+import com.goryachok.forecastapp.base.forecastFromJson
+import com.goryachok.forecastapp.base.weatherFromJson
 import com.goryachok.forecastapp.model.domain.ForecastEntity
 import com.goryachok.forecastapp.model.domain.WeatherEntity
-import javax.inject.Inject
-import kotlin.reflect.KClass
 
-class LocalDataSource @Inject constructor(context: Context) {
+class LocalDataSource(context: Context) {
 
     companion object {
-        private const val DAGGER_TAG = "DaggerDebug"
 
-        private const val PREFS_NAME = "WEATHER_PREFERENCES"
-        private const val WEATHER_PREFS = "LOCAL_WEATHER_DATA"
-        private const val FORECAST_PREFS = "LOCAL_FORECAST_DATA"
+        private const val PREF_NAME = "WEATHER_APPLICATION_PREFERENCES"
+        private const val WEATHER_PREF = "LOCAL_WEATHER_PREFERENCES"
+        private const val FORECAST_PREF = "LOCAL_FORECAST_PREFERENCES"
     }
 
-    init {
-        Log.d(DAGGER_TAG, javaClass.name)
+    private val preferences: SharedPreferences by lazy {
+        context.getSharedPreferences(
+            PREF_NAME,
+            Context.MODE_PRIVATE
+        )
     }
 
-    private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-
-    fun saveData(remoteEntity: RemoteEntity) {
-        when (remoteEntity) {
-            is WeatherEntity -> {
-                prefs.edit().putString(WEATHER_PREFS, remoteEntity.toJson()).apply()
-            }
-            is ForecastEntity -> {
-                prefs.edit().putString(FORECAST_PREFS, remoteEntity.toJson()).apply()
-            }
-        }
+    fun saveForecastData(data: ForecastEntity) {
+        preferences.edit().putString(FORECAST_PREF, data.toJson()).apply()
     }
 
-    fun lastFetchTime() = if (isDataAvailable()) getData(WeatherEntity::class).date else 0
+    fun saveWeatherData(data: WeatherEntity) {
+        preferences.edit().putString(WEATHER_PREF, data.toJson()).apply()
+    }
 
-    @Suppress("UNCHECKED_CAST")
-    fun <T : RemoteEntity> getData(type: KClass<T>): T =
-        when (type) {
-            WeatherEntity::class -> Gson().fromJson(
-                prefs.getString(WEATHER_PREFS, ""),
-                WeatherEntity::class.java
-            ) as T
-            ForecastEntity::class -> Gson().fromJson(
-                prefs.getString(FORECAST_PREFS, ""),
-                ForecastEntity::class.java
-            ) as T
-            else -> throw ClassCastException()
-        }
+    fun readForecastData(): ForecastEntity {
+        val string = preferences.getString(FORECAST_PREF, "")
+        return string.orEmpty().forecastFromJson()
+    }
 
-    fun isDataAvailable() = prefs.contains(WEATHER_PREFS) && prefs.contains(FORECAST_PREFS)
+    fun readWeatherData(): WeatherEntity {
+        val string = preferences.getString(WEATHER_PREF, "")
+        return string.orEmpty().weatherFromJson()
+    }
 
+    fun isDataAvailable(): Boolean {
+        return preferences.contains(FORECAST_PREF) && preferences.contains(WEATHER_PREF)
+    }
 }

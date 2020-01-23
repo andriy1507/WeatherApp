@@ -1,76 +1,38 @@
 package com.goryachok.forecastapp.viewmodel
 
-import android.annotation.SuppressLint
-import android.location.Criteria
-import android.location.Location
-import android.location.LocationManager
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import com.goryachok.forecastapp.model.domain.ForecastEntity
 import com.goryachok.forecastapp.model.domain.WeatherEntity
-import com.goryachok.forecastapp.repository.Repository
-import com.goryachok.forecastapp.services.GeolocationListener
+import com.goryachok.forecastapp.repository.BaseRepository
+import com.goryachok.forecastapp.repository.ForecastRepository
+import com.goryachok.forecastapp.repository.WeatherRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class SplashViewModel @Inject constructor() : ViewModel() {
+class SplashViewModel(applicationContext: Context) : ViewModel() {
 
-    @Inject
-    lateinit var repository: Repository
+    private val TAG = this::class.java.simpleName
 
-    @Inject
-    lateinit var locationManager: LocationManager
-
-    companion object {
-        private const val DAGGER_TAG = "DaggerDebug"
+    private val weatherRepository: BaseRepository<WeatherEntity> by lazy {
+        WeatherRepository(
+            applicationContext
+        )
     }
 
-    init {
-        Log.d(DAGGER_TAG, javaClass.name)
+    private val forecastRepository: ForecastRepository by lazy {
+        ForecastRepository(applicationContext)
     }
 
-    @SuppressLint("MissingPermission")
-    private fun getLocation() {
-        val criteria = Criteria()
-        criteria.apply {
-            accuracy = Criteria.ACCURACY_FINE
-            isSpeedRequired = false
-            isAltitudeRequired = false
-            isBearingRequired = false
-            isCostAllowed = false
-        }
-        val locationListener = GeolocationListener()
-        locationManager.requestSingleUpdate(criteria, locationListener, null)
-    }
-
-    fun initData() {
-        getLocation()
-        viewModelScope.launch {
-            if (GeolocationListener.geoLocation != null) {
-                val loc: Location = GeolocationListener.geoLocation!!
-                repository.getDataByCoordinates(
-                    type = WeatherEntity::class,
-                    lon = loc.longitude.toFloat(),
-                    lat = loc.latitude.toFloat()
-                )
-                repository.getDataByCoordinates(
-                    type = ForecastEntity::class,
-                    lon = loc.longitude.toFloat(),
-                    lat = loc.latitude.toFloat()
-                )
+    fun initialize(lat: Float, lon: Float) {
+        CoroutineScope(IO).launch {
+            try {
+                weatherRepository.getDataByCoordinates(lat, lon)
+                forecastRepository.getDataByCoordinates(lat, lon)
+            } catch (e: Exception) {
+                Log.e(TAG, e.message, e)
             }
-        }
-    }
-
-    fun isDataInitialized() =
-        repository.isDataUpdated()
-
-    @Suppress("UNCHECKED_CAST")
-    class Factory : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return SplashViewModel() as T
         }
     }
 }
