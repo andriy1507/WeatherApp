@@ -24,6 +24,7 @@ class SplashActivity : AppCompatActivity() {
 
     companion object {
         private const val PERMISSION_REQUEST_CODE = 101
+        private const val LOCATION_REQUEST_CODE = 102
     }
 
     private val defaultLocationDialog by lazy {
@@ -40,7 +41,6 @@ class SplashActivity : AppCompatActivity() {
             .setTitle(R.string.app_name)
             .setMessage(R.string.permission_message)
             .setPositiveButton(R.string.ok_button) { dialog, _ ->
-                dialog.dismiss()
             }
             .setOnDismissListener {
                 requestPermissions(
@@ -57,14 +57,20 @@ class SplashActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle(R.string.app_name)
             .setMessage(R.string.unavailable_location_message)
-            .setPositiveButton(R.string.yes_button) { dialog, _ ->
-                startActivity(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS))
-                dialog.dismiss()
+            .setPositiveButton(R.string.yes_button) { _, _ ->
+                startActivityForResult(
+                    Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS),
+                    LOCATION_REQUEST_CODE
+                )
             }
             .setNegativeButton(R.string.no_button) { dialog, _ ->
                 defaultLocationDialog.show()
                 dialog.dismiss()
             }
+            .setNeutralButton("Close") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
     }
 
     private val fusedLocationClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
@@ -110,6 +116,18 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            LOCATION_REQUEST_CODE -> {
+                fusedLocationClient.locationAvailability.addOnSuccessListener {
+                    //TODO Fix bug (When you turn on Location sometimes it doesn't show main activity)
+                    getLocation()
+                }
+            }
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -142,21 +160,29 @@ class SplashActivity : AppCompatActivity() {
 
     @SuppressLint("MissingPermission")
     private fun getLocation() {
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener {
-                it?.let {
-                    initializeData(it)
+        fusedLocationClient.locationAvailability.addOnSuccessListener {
+            it?.let {
+                if (it.isLocationAvailable) {
+                    fusedLocationClient.lastLocation
+                        .addOnSuccessListener { location ->
+                            location?.let {
+                                initializeData(location)
+                            }
+                        }
+                        .addOnCompleteListener {
+                            stopLocationUpdates()
+                            startActivity(Intent(this, MainActivity::class.java))
+                        }
+                        .addOnFailureListener {
+                            startLocationUpdates()
+                            defaultLocationDialog.show()
+                            startLocationUpdates()
+                        }
+                } else {
+                    unavailableLocationDialog.show()
                 }
             }
-            .addOnCompleteListener {
-                stopLocationUpdates()
-                startActivity(Intent(this, MainActivity::class.java))
-            }
-            .addOnFailureListener {
-                startLocationUpdates()
-                defaultLocationDialog.show()
-                startLocationUpdates()
-            }
+        }
     }
 
     private fun initializeData(location: Location) {
