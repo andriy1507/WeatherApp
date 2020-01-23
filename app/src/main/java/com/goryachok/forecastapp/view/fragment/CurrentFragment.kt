@@ -1,5 +1,6 @@
 package com.goryachok.forecastapp.view.fragment
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,17 +40,31 @@ class CurrentFragment : MyFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getDataByCoord()
+        viewModel.getDataByCoordinates()
         viewModel.data.forEach { liveData ->
             liveData.observe(viewLifecycleOwner, Observer {
-                currentTemp_textView.text = getString(R.string.temperature_template, it.main.temp)
-                curLocation.text = it.city
-                curWindSpeed_textView.text = getString(R.string.windSpeed_template, it.wind.speed)
-                curPress_textView.text = getString(R.string.pressure_template, it.main.pressure)
-                curHumid_textView.text = getString(R.string.humidity_template, it.main.humidity)
-                curWindDir_textView.text = Converter.convertDegreesToDirection(it.wind.deg)
+                it.let {
+                    currentTemp_textView.text =
+                        getString(R.string.temperature_template, it.main.temp)
+                    curLocation.text = it.city
+                    curWindSpeed_textView.text =
+                        getString(R.string.windSpeed_template, it.wind.speed)
+                    curPress_textView.text = getString(R.string.pressure_template, it.main.pressure)
+                    curHumid_textView.text = getString(R.string.humidity_template, it.main.humidity)
+                    curWindDir_textView.text = Converter.convertDegreesToDirection(it.wind.deg)
+                }
+
             })
         }
+        viewModel.errorData.observe(viewLifecycleOwner, Observer {
+            AlertDialog.Builder(this.context)
+                .setTitle("Error")
+                .setMessage(it.exception.message)
+                .setPositiveButton("Close") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .create().show()
+        })
     }
 
     override fun onSearchRequest(request: String) {
@@ -57,6 +72,6 @@ class CurrentFragment : MyFragment() {
     }
 
     override fun onLocationRequest() {
-        viewModel.getDataByCoord()
+        viewModel.getDataByCoordinates()
     }
 }

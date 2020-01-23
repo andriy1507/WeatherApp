@@ -1,5 +1,6 @@
 package com.goryachok.forecastapp.view.fragment
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -53,6 +54,14 @@ class HourlyFragment : MyFragment() {
                 hourlyForecast_recyclerView.adapter = adapter
             })
         }
+        viewModel.errorData.observe(viewLifecycleOwner, Observer {
+            AlertDialog.Builder(this.context)
+                .setTitle("Error")
+                .setMessage(it.exception.message)
+                .setPositiveButton("Close") { dialog, _ ->
+                    dialog.dismiss()
+                }
+        })
     }
 
     override fun onSearchRequest(request: String) {

@@ -9,7 +9,6 @@ import androidx.appcompat.widget.SearchView
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.view.FragmentsAdapter
 import com.goryachok.forecastapp.view.fragment.CurrentFragment
-import com.goryachok.forecastapp.view.fragment.HourlyFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -59,7 +58,7 @@ class MainActivity : AppCompatActivity() {
     private fun initViewPager() {
         forecast_viewPager.apply {
             adapter = pagerAdapter.apply {
-                addFragments(listOf(CurrentFragment(), HourlyFragment()))
+                addFragments(listOf(CurrentFragment()))
             }
         }
     }

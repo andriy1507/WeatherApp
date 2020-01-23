@@ -32,8 +32,8 @@ class RemoteDataSource {
         }
     }
 
-    suspend fun getWeatherByCoord(lat: Float, lon: Float): Result<WeatherEntity> {
-        val response = apiService.getWeatherByCoord(lat, lon)
+    suspend fun getWeatherByCoordinates(lat: Float, lon: Float): Result<WeatherEntity> {
+        val response = apiService.getWeatherByCoordinates(lat, lon)
         return if (response.isSuccessful) {
             val data = response.body()
             data?.let { Success(data) } ?: Error(NullPointerException("Response data is null"))
@@ -42,8 +42,8 @@ class RemoteDataSource {
         }
     }
 
-    suspend fun getForecastByCoord(lat: Float, lon: Float): Result<ForecastEntity> {
-        val response = apiService.getForecastByCoord(lat, lon)
+    suspend fun getForecastByCoordinates(lat: Float, lon: Float): Result<ForecastEntity> {
+        val response = apiService.getForecastByCoordinates(lat, lon)
         return if (response.isSuccessful) {
             val data = response.body()
             data?.let { Success(data) } ?: Error(NullPointerException("Response data is null"))

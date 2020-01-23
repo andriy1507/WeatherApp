@@ -14,7 +14,7 @@ interface WeatherApiService {
     ): Response<WeatherEntity>
 
     @GET("data/2.5/weather")
-    suspend fun getWeatherByCoord(
+    suspend fun getWeatherByCoordinates(
         @Query("lat") latitude: Float,
         @Query("lon") longitude: Float
     ): Response<WeatherEntity>
@@ -25,7 +25,7 @@ interface WeatherApiService {
     ): Response<ForecastEntity>
 
     @GET("data/2.5/forecast")
-    suspend fun getForecastByCoord(
+    suspend fun getForecastByCoordinates(
         @Query("lat") latitude: Float,
         @Query("lon") longitude: Float
     ): Response<ForecastEntity>

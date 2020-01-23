@@ -9,18 +9,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.goryachok.forecastapp.model.domain.WeatherEntity
 import com.goryachok.forecastapp.model.local.Result
+import com.goryachok.forecastapp.repository.BaseRepository
 import com.goryachok.forecastapp.repository.WeatherRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okio.IOException
-import timber.log.Timber
 
 class CurrentViewModel(context: Context) : ViewModel() {
 
-    private val repository: WeatherRepository = WeatherRepository(context)
+    private val repository: BaseRepository<WeatherEntity> by lazy { WeatherRepository(context) }
 
     private val _currentData: MutableLiveData<WeatherEntity> = MutableLiveData()
     private val currentData: LiveData<WeatherEntity>
@@ -29,6 +28,10 @@ class CurrentViewModel(context: Context) : ViewModel() {
     private val _searchedData: MutableLiveData<WeatherEntity> = MutableLiveData()
     private val searchedData: LiveData<WeatherEntity>
         get() = _searchedData
+
+    private val _errorData: MutableLiveData<Result.Error> = MutableLiveData()
+    val errorData: LiveData<Result.Error>
+        get() = _errorData
 
     @SuppressLint("MissingPermission")
     private val location =
@@ -41,26 +44,37 @@ class CurrentViewModel(context: Context) : ViewModel() {
     fun getDataByCity(city: String) {
         CoroutineScope(IO).launch {
             try {
-                when (val result = repository.getWeatherDataByCity(city)) {
-                    is Result.Success -> withContext(Main) { _searchedData.postValue(result.data) }
-                    is Result.Error -> {
-                    }
+                when (val result = repository.getDataByCity(city)) {
+                    is Result.Success -> withContext(Main) { _currentData.postValue(result.data) }
+                    is Result.Error -> withContext(Main) { _errorData.postValue(result) }
                 }
-            } catch (e: IOException) {
-                Timber.e(e.message, e)
+            } catch (e: Exception) {
+                withContext(Main) {
+                    _errorData.postValue(Result.Error(e))
+                }
             }
         }
     }
 
-    fun getDataByCoord() {
-        initializeData()
-        _currentData.postValue(repository.getCurrentWeather())
+    fun getDataByCoordinates() {
+        CoroutineScope(IO).launch {
+            try {
+                when (val result = repository.getDataByCoordinates(
+                    location.latitude.toFloat(),
+                    location.longitude.toFloat()
+                )) {
+                    is Result.Success -> _currentData.postValue(result.data)
+                    is Result.Error -> _errorData.postValue(result)
+                }
+            } catch (e: Exception) {
+                withContext(Main) {
+                    _errorData.postValue(Result.Error(e))
+                }
+            }
+        }
     }
 
-    private fun initializeData() {
-        repository.initializeData(
-            this.location.latitude.toFloat(),
-            this.location.longitude.toFloat()
-        )
+    fun initializeData() {
+        getDataByCoordinates()
     }
 }
