@@ -2,22 +2,22 @@ package com.goryachok.forecastapp.view.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.goryachok.forecastapp.R
-import com.goryachok.forecastapp.base.LOC_UPDATE_DISTANCE
-import com.goryachok.forecastapp.base.MINUTE_MS
 import com.goryachok.forecastapp.viewmodel.SplashViewModel
 
 class SplashActivity : AppCompatActivity() {
@@ -51,6 +51,8 @@ class SplashActivity : AppCompatActivity() {
             .create()
     }
 
+
+    //TODO use or delete
     private val unavailableLocationDialog by lazy {
         AlertDialog.Builder(this)
             .setTitle(R.string.app_name)
@@ -63,6 +65,25 @@ class SplashActivity : AppCompatActivity() {
                 defaultLocationDialog.show()
                 dialog.dismiss()
             }
+    }
+
+    private val fusedLocationClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
+
+    private val locationCallback by lazy {
+        object : LocationCallback() {
+            override fun onLocationResult(p0: LocationResult?) {
+                super.onLocationResult(p0)
+                p0?.let { result ->
+                    result.locations.let { locations ->
+                        locations.forEach {
+                            it?.let {
+                                viewModel.initialize(it.latitude.toFloat(), it.longitude.toFloat())
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private val viewModel: SplashViewModel by lazy {
@@ -85,7 +106,7 @@ class SplashActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestLocationPermission()
         } else {
-            startMainActivity()
+            getLocation()
         }
     }
 
@@ -100,7 +121,7 @@ class SplashActivity : AppCompatActivity() {
             if (grantResults.isNotEmpty()) {
                 when (grantResults.first()) {
                     PackageManager.PERMISSION_GRANTED -> {
-                        startMainActivity()
+                        getLocation()
                     }
                     PackageManager.PERMISSION_DENIED -> {
                         defaultLocationDialog.show()
@@ -115,56 +136,42 @@ class SplashActivity : AppCompatActivity() {
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             locationRequestDialog.show()
         } else {
-            startMainActivity()
+            getLocation()
         }
     }
 
     @SuppressLint("MissingPermission")
-    private fun startMainActivity() {
-        val locationManger = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        var lastKnownLocation: Location? =
-            locationManger.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        if (lastKnownLocation != null) {
-            viewModel.initialize(
-                lastKnownLocation.latitude.toFloat(),
-                lastKnownLocation.longitude.toFloat()
-            )
-            startActivity(Intent(this, MainActivity::class.java))
-        } else {
-            locationManger.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                MINUTE_MS,
-                LOC_UPDATE_DISTANCE,
-                object : LocationListener {
+    private fun getLocation() {
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener {
+                it?.let {
+                    initializeData(it)
+                }
+            }
+            .addOnCompleteListener {
+                stopLocationUpdates()
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+            .addOnFailureListener {
+                startLocationUpdates()
+                defaultLocationDialog.show()
+                startLocationUpdates()
+            }
+    }
 
-                    override fun onLocationChanged(location: Location?) {
-                        location?.let {
-                            viewModel.initialize(
-                                it.latitude.toFloat(),
-                                it.longitude.toFloat()
-                            )
-                        }
-                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                    }
+    private fun initializeData(location: Location) {
+        viewModel.initialize(location.latitude.toFloat(), location.longitude.toFloat())
+    }
 
-                    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+    private fun startLocationUpdates() {
+        fusedLocationClient.requestLocationUpdates(
+            LocationRequest.create(),
+            locationCallback,
+            Looper.getMainLooper()
+        )
+    }
 
-                    override fun onProviderEnabled(provider: String?) {
-                        lastKnownLocation =
-                            locationManger.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                        lastKnownLocation?.let {
-                            viewModel.initialize(
-                                it.latitude.toFloat(),
-                                it.longitude.toFloat()
-                            )
-                        }
-                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                    }
-
-                    override fun onProviderDisabled(provider: String?) {
-                        unavailableLocationDialog.show()
-                    }
-                })
-        }
+    private fun stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 }

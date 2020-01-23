@@ -54,6 +54,7 @@ dependencies {
     implementation appDependencies.okhttp
     implementation appDependencies.coroutines
     implementation appDependencies.logging
+    implementation appDependencies.fusedLocationProvider
 
     testImplementation appDependencies.test
     androidTestImplementation appDependencies.androidTest

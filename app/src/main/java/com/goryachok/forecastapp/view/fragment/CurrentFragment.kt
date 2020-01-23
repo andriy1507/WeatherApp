@@ -15,7 +15,11 @@ import kotlinx.android.synthetic.main.current_weather_fragment.*
 
 class CurrentFragment : MyFragment() {
 
-    private lateinit var viewModel: CurrentViewModel
+    private val viewModel: CurrentViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(
+            CurrentViewModel::class.java
+        )
+    }
 
     private val viewModelFactory: ViewModelProvider.Factory by lazy {
         object : ViewModelProvider.Factory {
@@ -26,11 +30,8 @@ class CurrentFragment : MyFragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(
-            CurrentViewModel::class.java
-        )
+    private val loadDialog by lazy {
+        AlertDialog.Builder(this.context).setTitle("Wait").setMessage("Data loading").create()
     }
 
     override fun onCreateView(
@@ -40,7 +41,7 @@ class CurrentFragment : MyFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getDataByCoordinates()
+        viewModel.getCurrentLocationData()
         viewModel.data.forEach { liveData ->
             liveData.observe(viewLifecycleOwner, Observer {
                 it.let {
@@ -53,10 +54,11 @@ class CurrentFragment : MyFragment() {
                     curHumid_textView.text = getString(R.string.humidity_template, it.main.humidity)
                     curWindDir_textView.text = Converter.convertDegreesToDirection(it.wind.deg)
                 }
-
+                loadDialog.dismiss()
             })
         }
         viewModel.errorData.observe(viewLifecycleOwner, Observer {
+            loadDialog.dismiss()
             AlertDialog.Builder(this.context)
                 .setTitle("Error")
                 .setMessage(it.exception.message)
@@ -65,6 +67,9 @@ class CurrentFragment : MyFragment() {
                 }
                 .create().show()
         })
+        viewModel.loadingData.observe(viewLifecycleOwner, Observer {
+            loadDialog.show()
+        })
     }
 
     override fun onSearchRequest(request: String) {
@@ -72,6 +77,6 @@ class CurrentFragment : MyFragment() {
     }
 
     override fun onLocationRequest() {
-        viewModel.getDataByCoordinates()
+        viewModel.getCurrentLocationData()
     }
 }
