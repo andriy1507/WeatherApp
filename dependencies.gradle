@@ -24,7 +24,11 @@ def okhttpVersion = "4.3.1"
 //Timber
 def timberVersion = "4.7.1"
 
+//Fused location provider
 def fusedLocationProviderVersion = "17.0.0"
+
+//Material
+def materialVersion = "1.2.0-alpha04"
 
 //Tests
 def junitVersion = "4.13-rc-2"
@@ -87,6 +91,8 @@ ext.appDependencies = [
                 ["com.jakewharton.timber:timber:$timberVersion"],
         "fusedLocationProvider":
                 ["com.google.android.gms:play-services-location:$fusedLocationProviderVersion"],
+        "material":
+                ["com.google.android.material:material:$materialVersion"],
         "test"                 :
                 ["junit:junit:$junitVersion"],
         "androidTest"          :

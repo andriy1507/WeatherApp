@@ -14,16 +14,15 @@ import kotlinx.android.synthetic.main.current_weather_fragment.*
 class CurrentFragment : MyFragment(R.layout.current_weather_fragment) {
 
     override val viewModel: CurrentViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(
-            CurrentViewModel::class.java
-        )
+        ViewModelProvider(this, viewModelFactory)
+            .get(CurrentViewModel::class.java)
     }
 
     private val viewModelFactory: ViewModelProvider.Factory by lazy {
         object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return activity?.applicationContext?.let { CurrentViewModel(it) } as T
+                return CurrentViewModel(this@CurrentFragment.requireActivity()) as T
             }
         }
     }
@@ -45,7 +44,6 @@ class CurrentFragment : MyFragment(R.layout.current_weather_fragment) {
                 loadDialog.dismiss()
             })
         }
-
     }
 
     override fun onSearchRequest(request: String) {
@@ -53,8 +51,10 @@ class CurrentFragment : MyFragment(R.layout.current_weather_fragment) {
         loadDialog.dismiss()
     }
 
-    override fun onLocationRequest(loc: Location) {
-        viewModel.getCurrentLocationData(loc)
+    override fun onLocationRequest(loc: Location?) {
+        loc?.let {
+            viewModel.getCurrentLocationData(loc)
+        }
         loadDialog.dismiss()
     }
 }

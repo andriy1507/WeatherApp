@@ -20,14 +20,23 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.goryachok.forecastapp.R
+import com.goryachok.forecastapp.base.SECOND_MS
 import com.goryachok.forecastapp.viewmodel.SplashViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class SplashActivity : AppCompatActivity() {
 
     companion object {
         private const val PERMISSION_REQUEST_CODE = 101
         private const val LOCATION_REQUEST_CODE = 102
+        private const val ACTIVITY_LIFETIME = SECOND_MS
     }
+
+    private var startTime: Long = 0
 
     private val defaultLocationDialog by lazy {
         AlertDialog.Builder(this)
@@ -74,6 +83,8 @@ class SplashActivity : AppCompatActivity() {
             .create()
     }
 
+    //TODO Move geolocation to separate class
+
     private val fusedLocationClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
 
     private val locationCallback by lazy {
@@ -90,6 +101,15 @@ class SplashActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private val locationRequest by lazy {
+        LocationRequest.create().apply {
+            numUpdates = 5
+            interval = SECOND_MS / 2
+            fastestInterval = SECOND_MS / 4
+            expirationTime = 25 / 10 * SECOND_MS
         }
     }
 
@@ -110,9 +130,12 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        startTime = System.currentTimeMillis()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Timber.d("permissionNotGranted")
             requestLocationPermission()
         } else {
+            Timber.d("permissionGranted")
             getLocation()
         }
     }
@@ -121,9 +144,10 @@ class SplashActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             LOCATION_REQUEST_CODE -> {
-                fusedLocationClient.locationAvailability.addOnSuccessListener {
-                    getLocation()
-                }
+                fusedLocationClient.locationAvailability
+                    .addOnSuccessListener {
+                        getLocation()
+                    }
             }
         }
     }
@@ -151,7 +175,7 @@ class SplashActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun requestLocationPermission() {
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (!isPermissionGranted()) {
             locationRequestDialog.show()
         } else {
             getLocation()
@@ -160,41 +184,64 @@ class SplashActivity : AppCompatActivity() {
 
     @SuppressLint("MissingPermission")
     private fun getLocation() {
-        if ((getSystemService(Context.LOCATION_SERVICE) as LocationManager).isProviderEnabled(
-                LocationManager.GPS_PROVIDER
-            )
-        ) {
+        if (isLocationEnabled()) {
+            Timber.d("getLocation ${fusedLocationClient.lastLocation}")
             fusedLocationClient.lastLocation
-                .addOnSuccessListener { location ->
-                    location?.let {
-                        initializeData(location)
+                .addOnCompleteListener { task ->
+                    task.addOnSuccessListener { location ->
+                        location?.let {
+                            passCoordinates(it)
+                            stopLocationUpdates()
+                            val endTime = System.currentTimeMillis()
+                            val difference = endTime - startTime
+                            Timber.d("Difference $difference")
+                            if (difference < ACTIVITY_LIFETIME) {
+                                CoroutineScope(Main).launch {
+                                    delay(ACTIVITY_LIFETIME - difference)
+                                    startActivity(
+                                        Intent(
+                                            this@SplashActivity,
+                                            MainActivity::class.java
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                        location ?: startLocationUpdates()
                     }
-                }
-                .addOnCompleteListener {
-                    stopLocationUpdates()
-                    startActivity(Intent(this, MainActivity::class.java))
-                }
-                .addOnFailureListener {
-                    startLocationUpdates()
+                    task.addOnFailureListener {
+                        startLocationUpdates()
+                    }
                 }
         } else {
             unavailableLocationDialog.show()
         }
     }
 
-    private fun initializeData(location: Location) {
+    private fun passCoordinates(location: Location) {
         viewModel.initialize(location.latitude.toFloat(), location.longitude.toFloat())
     }
 
     private fun startLocationUpdates() {
         fusedLocationClient.requestLocationUpdates(
-            LocationRequest.create(),
+            locationRequest,
             locationCallback,
             Looper.getMainLooper()
-        )
+        ).addOnSuccessListener {
+            getLocation()
+        }
     }
 
     private fun stopLocationUpdates() {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
+
+    private fun isLocationEnabled() =
+        (getSystemService(Context.LOCATION_SERVICE) as LocationManager).isProviderEnabled(
+            LocationManager.GPS_PROVIDER
+        )
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun isPermissionGranted() =
+        checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
 }

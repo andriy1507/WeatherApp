@@ -26,7 +26,7 @@ class HourlyFragment : MyFragment(R.layout.hourly_forecast_fragment) {
         object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return activity?.applicationContext?.let { HourlyViewModel(it) } as T
+                return HourlyViewModel(this@HourlyFragment.requireActivity()) as T
             }
         }
     }
@@ -54,8 +54,10 @@ class HourlyFragment : MyFragment(R.layout.hourly_forecast_fragment) {
         loadDialog.dismiss()
     }
 
-    override fun onLocationRequest(loc: Location) {
-        viewModel.getDataByCoordinates(loc)
+    override fun onLocationRequest(loc: Location?) {
+        loc?.let {
+            viewModel.getDataByCoordinates(loc)
+        }
         loadDialog.dismiss()
     }
 }
