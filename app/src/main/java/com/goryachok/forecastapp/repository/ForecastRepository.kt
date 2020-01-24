@@ -15,7 +15,9 @@ class ForecastRepository(context: Context) : BaseRepository<ForecastEntity>(cont
     ): Result<ForecastEntity> =
         runBlocking {
             val result = async { remote.getForecastByCoordinates(lat, lon) }
-            result.await()
+            val await = result.await() as Result.Success
+            local.saveForecastData(await.data)
+            return@runBlocking await
         }
 
     override suspend fun getRemoteDataByCity(city: String): Result<ForecastEntity> =

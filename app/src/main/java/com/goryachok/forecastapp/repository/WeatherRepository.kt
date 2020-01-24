@@ -13,7 +13,9 @@ class WeatherRepository(context: Context) : BaseRepository<WeatherEntity>(contex
     override suspend fun getRemoteDataByCoordinates(lat: Float, lon: Float): Result<WeatherEntity> =
         runBlocking {
             val result = async { remote.getWeatherByCoordinates(lat, lon) }
-            result.await()
+            val await = result.await() as Result.Success
+            local.saveWeatherData(await.data)
+            return@runBlocking await
         }
 
     override suspend fun getRemoteDataByCity(city: String): Result<WeatherEntity> =
