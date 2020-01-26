@@ -20,11 +20,11 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:fullBackupContent="true"
         tools:ignore="GoogleAppIndexingWarning">
         <!--            TODO Solve view model binding on app recreation-->
         <activity
             android:name=".view.activity.SplashActivity"
-            android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>

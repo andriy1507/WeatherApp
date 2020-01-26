@@ -41,20 +41,17 @@ class CurrentFragment : MyFragment(R.layout.current_weather_fragment) {
                     curHumid_textView.text = getString(R.string.humidity_template, it.main.humidity)
                     curWindDir_textView.text = Converter.convertDegreesToDirection(it.wind.deg)
                 }
-                loadDialog.dismiss()
             })
         }
     }
 
     override fun onSearchRequest(request: String) {
         viewModel.getDataByCity(request)
-        loadDialog.dismiss()
     }
 
     override fun onLocationRequest(loc: Location?) {
         loc?.let {
             viewModel.getCurrentLocationData(loc)
         }
-        loadDialog.dismiss()
     }
 }

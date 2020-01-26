@@ -44,20 +44,17 @@ class HourlyFragment : MyFragment(R.layout.hourly_forecast_fragment) {
                     layoutManager = LinearLayoutManager(this@HourlyFragment.context)
                 }
                 hourlyForecast_recyclerView.adapter = adapter
-                loadDialog.dismiss()
             })
         }
     }
 
     override fun onSearchRequest(request: String) {
         viewModel.getDataByCity(request)
-        loadDialog.dismiss()
     }
 
     override fun onLocationRequest(loc: Location?) {
         loc?.let {
             viewModel.getDataByCoordinates(loc)
         }
-        loadDialog.dismiss()
     }
 }
