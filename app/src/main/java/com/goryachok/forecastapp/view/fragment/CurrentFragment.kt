@@ -3,6 +3,7 @@ package com.goryachok.forecastapp.view.fragment
 import android.location.Location
 import android.os.Bundle
 import android.view.View
+import android.widget.ProgressBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -40,7 +41,18 @@ class CurrentFragment : MyFragment(R.layout.current_weather_fragment) {
                     curPress_textView.text = getString(R.string.pressure_template, it.main.pressure)
                     curHumid_textView.text = getString(R.string.humidity_template, it.main.humidity)
                     curWindDir_textView.text = Converter.convertDegreesToDirection(it.wind.deg)
+                    currentLoadingProgressBar.visibility = ProgressBar.INVISIBLE
                 }
+            })
+            viewModel.errorData.observe(viewLifecycleOwner, Observer { result ->
+                this.context?.let { _ ->
+                    currentLoadingProgressBar.visibility = ProgressBar.INVISIBLE
+                    errorDialog.setMessage(result.exception.message)
+                    errorDialog.show()
+                }
+            })
+            viewModel.loadData.observe(viewLifecycleOwner, Observer {
+                currentLoadingProgressBar.visibility = ProgressBar.VISIBLE
             })
         }
     }

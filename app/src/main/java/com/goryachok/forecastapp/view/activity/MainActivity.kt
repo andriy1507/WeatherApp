@@ -122,6 +122,8 @@ class MainActivity : AppCompatActivity() {
                 (pagerAdapter.getItem(forecast_viewPager.currentItem) as? MyFragment)?.onLocationRequest(
                     location
                 )
+                viewModel.locationCache = location
+                viewModel.requestCache = ""
             }
             .addOnFailureListener {
                 AlertDialog.Builder(this)
