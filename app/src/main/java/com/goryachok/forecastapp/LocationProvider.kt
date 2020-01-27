@@ -12,7 +12,6 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import timber.log.Timber
 
 abstract class LocationProvider(private val context: Context) {
 
@@ -63,11 +62,9 @@ abstract class LocationProvider(private val context: Context) {
 
     fun start() {
         if (permissionGranted() && isLocationEnabled()) {
-            Timber.d("Permission GRANTED")
             lastLocation()
             currentLocation ?: updateLocation()
         } else {
-            Timber.d("Permission NOT GRANTED")
             doTask(MOCK_LOCATION)
         }
     }

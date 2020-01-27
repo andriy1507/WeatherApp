@@ -28,16 +28,15 @@ class ConnectivityListener(context: Context, layout: View) {
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onLost(network: Network) {
             super.onLost(network)
-            if (!connectionAvailableSnackBar.isShown) {
-                _isNetworkAvailable = false
-                connectionLostSnackBar.show()
-                isFirstLaunch = false
-            }
+            _isNetworkAvailable = false
+            connectionLostSnackBar.show()
+            isFirstLaunch = false
         }
 
         override fun onAvailable(network: Network) {
             super.onAvailable(network)
             _isNetworkAvailable = true
+            connectionLostSnackBar.dismiss()
             if (!isFirstLaunch) {
                 connectionAvailableSnackBar.show()
             }
@@ -58,7 +57,7 @@ class ConnectivityListener(context: Context, layout: View) {
         Snackbar.make(
             layout,
             "Connection lost",
-            Snackbar.LENGTH_SHORT
+            Snackbar.LENGTH_INDEFINITE
         ).setBackgroundTint(Color.parseColor("#EBC334"))
             .setTextColor(Color.parseColor("#E0E0E0"))
     }
