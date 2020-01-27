@@ -14,6 +14,7 @@ import com.goryachok.forecastapp.ConnectivityListener
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.view.FragmentsAdapter
 import com.goryachok.forecastapp.view.fragment.CurrentFragment
+import com.goryachok.forecastapp.view.fragment.DailyFragment
 import com.goryachok.forecastapp.view.fragment.HourlyFragment
 import com.goryachok.forecastapp.view.fragment.MyFragment
 import com.goryachok.forecastapp.viewmodel.MainViewModel
@@ -138,7 +139,7 @@ class MainActivity : AppCompatActivity() {
     private fun initViewPager() {
         forecast_viewPager.apply {
             adapter = pagerAdapter.apply {
-                addFragments(listOf(CurrentFragment(), HourlyFragment()))
+                addFragments(listOf(CurrentFragment(), HourlyFragment(), DailyFragment()))
             }
         }
     }

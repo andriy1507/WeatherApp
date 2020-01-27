@@ -11,3 +11,5 @@ fun String.forecastFromJson(): ForecastEntity {
 fun String.weatherFromJson(): WeatherEntity {
     return Gson().fromJson(this, WeatherEntity::class.java)
 }
+
+fun <T> Collection<T>.getEveryEighth() = filterIndexed { index, _ -> index % 8 == 0 }
