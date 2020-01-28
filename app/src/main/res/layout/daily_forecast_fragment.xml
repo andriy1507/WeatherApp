@@ -33,12 +33,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/dailyForecast_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/margin_big"
-        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dailyForecast_textView" />
+        app:layout_constraintTop_toBottomOf="@+id/dailyForecast_textView"/>
 
     <ProgressBar
         android:id="@+id/dailyLoading_progressBar"
