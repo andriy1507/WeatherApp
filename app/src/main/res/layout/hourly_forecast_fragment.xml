@@ -9,9 +9,10 @@
     <TextView
         android:id="@+id/hourlyForecast_cityName_textView"
         style="@style/WeatherText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_big"
+        android:gravity="center"
         android:textSize="@dimen/cityName_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,9 +22,10 @@
     <TextView
         android:id="@+id/hourlyForecast_textView"
         style="@style/WeatherText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_big"
+        android:gravity="center"
         android:text="@string/hourly_forecast"
         android:textSize="@dimen/cityName_size"
         app:layout_constraintEnd_toEndOf="@+id/hourlyForecast_recyclerView"

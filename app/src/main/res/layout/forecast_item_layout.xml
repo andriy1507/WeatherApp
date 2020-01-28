@@ -16,6 +16,7 @@
         app:layout_constraintEnd_toStartOf="@+id/desc_textView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
         tools:text="temp"/>
 
     <TextView
@@ -29,6 +30,7 @@
         app:layout_constraintStart_toEndOf="@+id/temp_textView"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteY="0dp"
+        android:gravity="center"
         tools:text="desc"/>
 
     <TextView
@@ -42,6 +44,7 @@
         app:layout_constraintStart_toEndOf="@+id/desc_textView"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteY="0dp"
+        android:gravity="center"
         tools:text="date"/>
 
 

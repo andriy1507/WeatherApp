@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     private val connectionLostSnackBar by lazy {
         Snackbar.make(
             constraintLayout_activityMain,
-            "Connection lost",
+            getString(R.string.lost_connection),
             Snackbar.LENGTH_INDEFINITE
         ).apply {
             setBackgroundTint(

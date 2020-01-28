@@ -22,4 +22,5 @@
     <string name="no_button">No</string>
     <string name="close_button">Close</string>
     <string name="error">Error</string>
+    <string name="lost_connection">"Connection lost"</string>
 </resources>

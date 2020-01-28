@@ -9,38 +9,38 @@
     <TextView
         android:id="@+id/curLocation"
         style="@style/WeatherText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="40sp"
+        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@id/currentTemp_textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textSize="@dimen/location_textSize"
         tools:text="Location"/>
 
     <TextView
         android:id="@+id/currentTemp_textView"
         style="@style/WeatherText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="75sp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textSize="@dimen/temp_textSize"
         tools:text="t"/>
 
     <TextView
         android:id="@+id/speed_textView"
         style="@style/WeatherText.SmallParameters"
         android:layout_width="0dp"
-        android:layout_marginStart="@dimen/margin"
-        android:layout_marginLeft="@dimen/margin"
         android:text="@string/speed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/direction_textView"
         app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/currentTemp_textView"/>
 
     <TextView
@@ -51,6 +51,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/humidity_textView"
         app:layout_constraintStart_toEndOf="@id/speed_textView"
+        android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/currentTemp_textView"/>
 
     <TextView
@@ -61,18 +62,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/pressure_textView"
         app:layout_constraintStart_toEndOf="@id/direction_textView"
+        android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/currentTemp_textView"/>
 
     <TextView
         android:id="@+id/pressure_textView"
         style="@style/WeatherText.SmallParameters"
         android:layout_width="0dp"
-        android:layout_marginStart="@dimen/margin"
-        android:layout_marginLeft="@dimen/margin"
         android:text="@string/pres"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/humidity_textView"
+        android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/currentTemp_textView"/>
 
 
@@ -80,13 +81,12 @@
         android:id="@+id/curWindSpeed_textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin"
-        android:layout_marginLeft="@dimen/margin"
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toStartOf="@+id/curWindDir_textView"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/speed_textView"
+        android:gravity="center"
         tools:text="speed"/>
 
     <TextView
@@ -97,6 +97,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/curWindSpeed_textView"
         app:layout_constraintTop_toTopOf="@+id/curWindSpeed_textView"
+        android:gravity="center"
         tools:layout_editor_absoluteY="608dp"
         tools:text="dir"/>
 
@@ -108,6 +109,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/curWindDir_textView"
         app:layout_constraintTop_toTopOf="@+id/curWindSpeed_textView"
+        android:gravity="center"
         tools:layout_editor_absoluteY="608dp"
         tools:text="hum"/>
 
@@ -115,13 +117,11 @@
         android:id="@+id/curPress_textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin"
-        android:layout_marginLeft="@dimen/margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/curHumid_textView"
         app:layout_constraintTop_toTopOf="@+id/curWindSpeed_textView"
-        tools:layout_editor_absoluteY="608dp"
+        android:gravity="center"
         tools:text="pres"/>
 
     <ProgressBar
