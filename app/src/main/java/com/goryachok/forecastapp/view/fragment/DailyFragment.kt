@@ -31,7 +31,7 @@ class DailyFragment : MyFragment(R.layout.daily_forecast_fragment) {
         ).get(DailyViewModel::class.java)
     }
 
-    private lateinit var adapter: DailyForecastAdapter
+    private lateinit var forecastAdapter: DailyForecastAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,15 +39,14 @@ class DailyFragment : MyFragment(R.layout.daily_forecast_fragment) {
             liveData.observe(viewLifecycleOwner, Observer {
                 dailyForecast_cityName_textView.text =
                     getString(R.string.location_template, it.city.name, it.city.country)
-                adapter = DailyForecastAdapter().apply {
+                forecastAdapter = DailyForecastAdapter().apply {
                     setNewItemList(it.list)
                 }
-                dailyForecast_recyclerView.adapter = adapter
-
                 dailyForecast_recyclerView.apply {
+                    adapter = forecastAdapter
                     layoutManager = LinearLayoutManager(this@DailyFragment.context)
                 }
-                dailyLoading_progressBar.visibility = ProgressBar.INVISIBLE
+                dailyLoading_progressBar.visibility = ProgressBar.GONE
             })
         }
         viewModel.loadData.observe(viewLifecycleOwner, Observer {
@@ -55,7 +54,7 @@ class DailyFragment : MyFragment(R.layout.daily_forecast_fragment) {
         })
         viewModel.errorData.observe(viewLifecycleOwner, Observer { result ->
             this.context?.let { _ ->
-                dailyLoading_progressBar.visibility = ProgressBar.INVISIBLE
+                dailyLoading_progressBar.visibility = ProgressBar.GONE
                 errorDialog.setMessage(result.exception.message)
                 errorDialog.show()
             }

@@ -41,12 +41,12 @@ class CurrentFragment : MyFragment(R.layout.current_weather_fragment) {
                     curPress_textView.text = getString(R.string.pressure_template, it.main.pressure)
                     curHumid_textView.text = getString(R.string.humidity_template, it.main.humidity)
                     curWindDir_textView.text = Converter.convertDegreesToDirection(it.wind.deg)
-                    currentLoadingProgressBar.visibility = ProgressBar.INVISIBLE
+                    currentLoadingProgressBar.visibility = ProgressBar.GONE
                 }
             })
             viewModel.errorData.observe(viewLifecycleOwner, Observer { result ->
                 this.context?.let { _ ->
-                    currentLoadingProgressBar.visibility = ProgressBar.INVISIBLE
+                    currentLoadingProgressBar.visibility = ProgressBar.GONE
                     errorDialog.setMessage(result.exception.message)
                     errorDialog.show()
                 }

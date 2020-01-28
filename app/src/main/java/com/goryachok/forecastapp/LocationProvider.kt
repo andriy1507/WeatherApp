@@ -16,17 +16,21 @@ import com.google.android.gms.location.LocationServices
 abstract class LocationProvider(private val context: Context) {
 
     companion object {
-        private val MOCK_LOCATION =
-            Location("MOCK PROVIDER").apply { latitude = 90.0; longitude = 0.0 }
+        private val DEFAULT_LOCATION =
+            Location("DEFAULT PROVIDER").apply { latitude = 90.0; longitude = 0.0 }
 
         private var currentLocation: Location? = null
+
+        private const val numOfUpdates = 1
+        private const val updateInterval = 25L
     }
 
     private val locationProviderClient = LocationServices.getFusedLocationProviderClient(context)
 
     private val locationRequest by lazy {
         LocationRequest.create().apply {
-            priority = LocationRequest.PRIORITY_LOW_POWER; numUpdates = 1; interval = 25
+            priority = LocationRequest.PRIORITY_LOW_POWER; numUpdates = numOfUpdates; interval =
+            updateInterval
         }
     }
 
@@ -65,7 +69,7 @@ abstract class LocationProvider(private val context: Context) {
             lastLocation()
             currentLocation ?: updateLocation()
         } else {
-            doTask(MOCK_LOCATION)
+            doTask(DEFAULT_LOCATION)
         }
     }
 

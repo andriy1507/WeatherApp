@@ -45,11 +45,11 @@ class HourlyFragment : MyFragment(R.layout.hourly_forecast_fragment) {
                     layoutManager = LinearLayoutManager(this@HourlyFragment.context)
                 }
                 hourlyForecast_recyclerView.adapter = adapter
-                hourlyLoadingProgressBar.visibility = ProgressBar.INVISIBLE
+                hourlyLoadingProgressBar.visibility = ProgressBar.GONE
             })
             viewModel.errorData.observe(viewLifecycleOwner, Observer { result ->
                 this.context?.let { _ ->
-                    hourlyLoadingProgressBar.visibility = ProgressBar.INVISIBLE
+                    hourlyLoadingProgressBar.visibility = ProgressBar.GONE
                     errorDialog.setMessage(result.exception.message)
                     errorDialog.show()
                 }

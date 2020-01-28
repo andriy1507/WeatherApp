@@ -1,15 +1,18 @@
 package com.goryachok.forecastapp.view.activity
 
 import android.app.SearchManager
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.snackbar.Snackbar
 import com.goryachok.forecastapp.ConnectivityListener
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.view.FragmentsAdapter
@@ -38,11 +41,32 @@ class MainActivity : AppCompatActivity() {
         ).get(MainViewModel::class.java)
     }
 
-    private val connectivityListener by lazy {
-        ConnectivityListener(
-            this,
-            constraintLayout_activityMain
-        )
+    private val connectionLostSnackBar by lazy {
+        Snackbar.make(
+            constraintLayout_activityMain,
+            "Connection lost",
+            Snackbar.LENGTH_INDEFINITE
+        ).apply {
+            setBackgroundTint(
+                ContextCompat.getColor(
+                    this@MainActivity,
+                    R.color.lostSnackBarBackground
+                )
+            )
+            setTextColor(ContextCompat.getColor(this@MainActivity, R.color.lostSnackBarTextColor))
+        }
+    }
+
+    private val connectivityListener: ConnectivityListener by lazy {
+        object : ConnectivityListener(this) {
+            override fun onConnectionLost() {
+                connectionLostSnackBar.show()
+            }
+
+            override fun onConnectionAvailable() {
+                connectionLostSnackBar.dismiss()
+            }
+        }
     }
 
     private val pagerAdapter by lazy { FragmentsAdapter(supportFragmentManager) }
@@ -58,7 +82,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        connectivityListener.start()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            connectivityListener.start()
+        }
     }
 
     override fun onResumeFragments() {
@@ -82,7 +108,7 @@ class MainActivity : AppCompatActivity() {
                         setQuery("", false)
                     }
                     (pagerAdapter.getItem(forecast_viewPager.currentItem) as? MyFragment)?.onSearchRequest(
-                        query ?: ""
+                        query.orEmpty()
                     )
                     searchItem.collapseActionView()
                     query?.let { viewModel.requestCache = it }
@@ -107,14 +133,11 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onPause() {
-        super.onPause()
-        connectivityListener.isFirstLaunch = true
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        connectivityListener.stop()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            connectivityListener.stop()
+        }
     }
 
     private fun passCoordinates() {
@@ -128,9 +151,9 @@ class MainActivity : AppCompatActivity() {
             }
             .addOnFailureListener {
                 AlertDialog.Builder(this)
-                    .setTitle("Error")
+                    .setTitle(getString(R.string.error))
                     .setMessage(it.message)
-                    .setPositiveButton("Close") { dialog, _ ->
+                    .setPositiveButton(getString(R.string.close_button)) { dialog, _ ->
                         dialog.dismiss()
                     }
             }

@@ -1,19 +1,16 @@
 package com.goryachok.forecastapp
 
 import android.content.Context
-import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import android.view.View
-import com.google.android.material.snackbar.Snackbar
+import android.os.Build
+import androidx.annotation.RequiresApi
 
-class ConnectivityListener(context: Context, layout: View) {
-    // TODO Move constants to separate file
-    var isFirstLaunch = true
+abstract class ConnectivityListener(context: Context) {
 
-    private var _isNetworkAvailable = false
+    private var _isNetworkAvailable = Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
     val isNetworkAvailable
         get() = _isNetworkAvailable
 
@@ -21,51 +18,35 @@ class ConnectivityListener(context: Context, layout: View) {
     private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private val networkRequest =
         NetworkRequest.Builder().addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
             .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR).build()
 
-    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
+    private val networkCallback = @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    object : ConnectivityManager.NetworkCallback() {
         override fun onLost(network: Network) {
             super.onLost(network)
             _isNetworkAvailable = false
-            connectionLostSnackBar.show()
-            isFirstLaunch = false
+            onConnectionLost()
         }
 
         override fun onAvailable(network: Network) {
             super.onAvailable(network)
             _isNetworkAvailable = true
-            connectionLostSnackBar.dismiss()
-            if (!isFirstLaunch) {
-                connectionAvailableSnackBar.show()
-            }
-            isFirstLaunch = false
+            onConnectionAvailable()
         }
-
-    }
-    private val connectionAvailableSnackBar by lazy {
-        Snackbar.make(
-            layout,
-            "Connection available",
-            Snackbar.LENGTH_SHORT
-        ).setBackgroundTint(Color.parseColor("#52EB34"))
-            .setTextColor(Color.parseColor("#E0E0E0"))
     }
 
-    private val connectionLostSnackBar by lazy {
-        Snackbar.make(
-            layout,
-            "Connection lost",
-            Snackbar.LENGTH_INDEFINITE
-        ).setBackgroundTint(Color.parseColor("#EBC334"))
-            .setTextColor(Color.parseColor("#E0E0E0"))
-    }
+    abstract fun onConnectionLost()
+    abstract fun onConnectionAvailable()
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun start() {
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun stop() {
         connectivityManager.unregisterNetworkCallback(networkCallback)
     }
