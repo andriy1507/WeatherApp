@@ -1,10 +1,9 @@
 package com.goryachok.forecastapp.view.fragment
 
-import android.app.AlertDialog
+import android.location.Location
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -13,34 +12,24 @@ import com.goryachok.forecastapp.utils.Converter
 import com.goryachok.forecastapp.viewmodel.CurrentViewModel
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 
-class CurrentFragment : MyFragment() {
+class CurrentFragment : MyFragment(R.layout.current_weather_fragment) {
 
-    private lateinit var viewModel: CurrentViewModel
+    override val viewModel: CurrentViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)
+            .get(CurrentViewModel::class.java)
+    }
 
     private val viewModelFactory: ViewModelProvider.Factory by lazy {
         object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return activity?.applicationContext?.let { CurrentViewModel(it) } as T
+                return CurrentViewModel(this@CurrentFragment.requireActivity()) as T
             }
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(
-            CurrentViewModel::class.java
-        )
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.current_weather_fragment, container, false)
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getDataByCoordinates()
         viewModel.data.forEach { liveData ->
             liveData.observe(viewLifecycleOwner, Observer {
                 it.let {
@@ -52,26 +41,29 @@ class CurrentFragment : MyFragment() {
                     curPress_textView.text = getString(R.string.pressure_template, it.main.pressure)
                     curHumid_textView.text = getString(R.string.humidity_template, it.main.humidity)
                     curWindDir_textView.text = Converter.convertDegreesToDirection(it.wind.deg)
+                    currentLoadingProgressBar.visibility = ProgressBar.GONE
                 }
-
+            })
+            viewModel.errorData.observe(viewLifecycleOwner, Observer { result ->
+                this.context?.let { _ ->
+                    currentLoadingProgressBar.visibility = ProgressBar.GONE
+                    errorDialog.setMessage(result.exception.message)
+                    errorDialog.show()
+                }
+            })
+            viewModel.loadData.observe(viewLifecycleOwner, Observer {
+                currentLoadingProgressBar.visibility = ProgressBar.VISIBLE
             })
         }
-        viewModel.errorData.observe(viewLifecycleOwner, Observer {
-            AlertDialog.Builder(this.context)
-                .setTitle("Error")
-                .setMessage(it.exception.message)
-                .setPositiveButton("Close") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .create().show()
-        })
     }
 
     override fun onSearchRequest(request: String) {
         viewModel.getDataByCity(request)
     }
 
-    override fun onLocationRequest() {
-        viewModel.getDataByCoordinates()
+    override fun onLocationRequest(loc: Location?) {
+        loc?.let {
+            viewModel.getCurrentLocationData(loc)
+        }
     }
 }

@@ -1,10 +1,9 @@
 package com.goryachok.forecastapp.view.fragment
 
-import android.app.AlertDialog
+import android.location.Location
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -14,9 +13,13 @@ import com.goryachok.forecastapp.view.recyclerviewadapters.HourlyForecastAdapter
 import com.goryachok.forecastapp.viewmodel.HourlyViewModel
 import kotlinx.android.synthetic.main.hourly_forecast_fragment.*
 
-class HourlyFragment : MyFragment() {
+class HourlyFragment : MyFragment(R.layout.hourly_forecast_fragment) {
 
-    private lateinit var viewModel: HourlyViewModel
+    override val viewModel: HourlyViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(
+            HourlyViewModel::class.java
+        )
+    }
 
     private lateinit var adapter: HourlyForecastAdapter
 
@@ -24,23 +27,13 @@ class HourlyFragment : MyFragment() {
         object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return activity?.applicationContext?.let { HourlyViewModel(it) } as T
+                return HourlyViewModel(this@HourlyFragment.requireActivity()) as T
             }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.hourly_forecast_fragment, container, false)
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(HourlyViewModel::class.java)
-
-        viewModel.getDataByCoordinates()
-
         viewModel.data.forEach { liveData ->
             liveData.observe(viewLifecycleOwner, Observer {
                 hourlyForecast_cityName_textView.text =
@@ -52,23 +45,28 @@ class HourlyFragment : MyFragment() {
                     layoutManager = LinearLayoutManager(this@HourlyFragment.context)
                 }
                 hourlyForecast_recyclerView.adapter = adapter
+                hourlyLoadingProgressBar.visibility = ProgressBar.GONE
+            })
+            viewModel.errorData.observe(viewLifecycleOwner, Observer { result ->
+                this.context?.let { _ ->
+                    hourlyLoadingProgressBar.visibility = ProgressBar.GONE
+                    errorDialog.setMessage(result.exception.message)
+                    errorDialog.show()
+                }
+            })
+            viewModel.loadData.observe(viewLifecycleOwner, Observer {
+                hourlyLoadingProgressBar.visibility = ProgressBar.VISIBLE
             })
         }
-        viewModel.errorData.observe(viewLifecycleOwner, Observer {
-            AlertDialog.Builder(this.context)
-                .setTitle("Error")
-                .setMessage(it.exception.message)
-                .setPositiveButton("Close") { dialog, _ ->
-                    dialog.dismiss()
-                }
-        })
     }
 
     override fun onSearchRequest(request: String) {
         viewModel.getDataByCity(request)
     }
 
-    override fun onLocationRequest() {
-        viewModel.getDataByCoordinates()
+    override fun onLocationRequest(loc: Location?) {
+        loc?.let {
+            viewModel.getDataByCoordinates(loc)
+        }
     }
 }

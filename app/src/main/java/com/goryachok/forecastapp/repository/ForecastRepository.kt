@@ -15,7 +15,9 @@ class ForecastRepository(context: Context) : BaseRepository<ForecastEntity>(cont
     ): Result<ForecastEntity> =
         runBlocking {
             val result = async { remote.getForecastByCoordinates(lat, lon) }
-            result.await()
+            val await = result.await() as Result.Success
+            local.saveForecastData(await.data)
+            return@runBlocking await
         }
 
     override suspend fun getRemoteDataByCity(city: String): Result<ForecastEntity> =
@@ -46,7 +48,7 @@ class ForecastRepository(context: Context) : BaseRepository<ForecastEntity>(cont
 
     override fun isFetchNeeded(): Boolean {
         return if (local.isDataAvailable()) {
-            val difference = local.readWeatherData().date * SECOND_MS - System.currentTimeMillis()
+            val difference = System.currentTimeMillis() - local.readWeatherData().date * SECOND_MS
             return difference > HOUR_MS
         } else {
             true

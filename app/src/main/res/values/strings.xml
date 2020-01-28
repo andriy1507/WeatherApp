@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Forecast App</string>
-    <string name="min">SPD</string>
-    <string name="max">DIR</string>
+    <string name="speed">SPD</string>
+    <string name="direction">DIR</string>
     <string name="hum">HUM</string>
     <string name="pres">PRES</string>
     <string name="hourly_forecast">Hourly forecast</string>
@@ -20,4 +20,6 @@
     <string name="ok_button">OK</string>
     <string name="yes_button">Yes</string>
     <string name="no_button">No</string>
+    <string name="close_button">Close</string>
+    <string name="error">Error</string>
 </resources>
