@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.goryachok.forecastapp.R
+import com.goryachok.forecastapp.base.getDate
 import com.goryachok.forecastapp.model.domain.Forecast
 import kotlinx.android.synthetic.main.forecast_item_layout.view.*
 
@@ -38,7 +39,7 @@ class DailyForecastAdapter :
         private val date = itemView.date_textView
 
         fun bind(item: Forecast) {
-            date.text = item.dateText.substringBefore(" ")
+            date.text = item.date.getDate()
             desc.text = item.weather.first().description
             temp.text = itemView.context.getString(R.string.temperature_template, item.main.temp)
         }

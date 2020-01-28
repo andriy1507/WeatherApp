@@ -2,4 +2,7 @@
 <resources>
     <dimen name="splash_picture_size">250dp</dimen>
     <dimen name="margin">8dp</dimen>
+    <dimen name="margin_big">16dp</dimen>
+    <dimen name="cityName_size">24sp</dimen>
+    <dimen name="splashActivity_textSize">48sp</dimen>
 </resources>

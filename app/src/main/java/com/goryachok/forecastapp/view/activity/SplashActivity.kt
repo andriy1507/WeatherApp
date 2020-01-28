@@ -3,6 +3,7 @@ package com.goryachok.forecastapp.view.activity
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -62,7 +63,7 @@ class SplashActivity : AppCompatActivity() {
             }
         })
 
-        if (!viewModel.locationProvider.permissionGranted()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !viewModel.locationProvider.permissionGranted()) {
             //TODO inform user about location usage
             requestPermissions(
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),

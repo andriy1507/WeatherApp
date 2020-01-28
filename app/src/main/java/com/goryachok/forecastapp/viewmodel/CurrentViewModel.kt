@@ -13,7 +13,6 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 class CurrentViewModel(context: Context) : MyViewModel() {
 
@@ -54,7 +53,6 @@ class CurrentViewModel(context: Context) : MyViewModel() {
                     location.longitude.toFloat()
                 )) {
                     is Result.Success -> {
-                        Timber.d("System time: ${System.currentTimeMillis()} Api time: ${result.data.date} Timezone: ${result.data.timezone}")
                         _currentData.postValue(result.data)
                     }
                     is Result.Error -> _errorData.postValue(result)
