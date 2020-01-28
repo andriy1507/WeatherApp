@@ -5,10 +5,11 @@
     style="@style/PageStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <TextView
         android:id="@+id/curLocation"
         style="@style/WeatherText"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="40sp"
@@ -16,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Location" />
+        tools:text="Location"/>
 
     <TextView
         android:id="@+id/currentTemp_textView"
@@ -28,73 +29,110 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="t" />
+        tools:text="t"/>
 
-    <TableLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/speed_textView"
+        style="@style/WeatherText.SmallParameters"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin"
+        android:text="@string/speed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/direction_textView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/currentTemp_textView"/>
+
+    <TextView
+        android:id="@+id/direction_textView"
+        style="@style/WeatherText.SmallParameters"
+        android:layout_width="0dp"
+        android:text="@string/direction"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/humidity_textView"
+        app:layout_constraintStart_toEndOf="@id/speed_textView"
+        app:layout_constraintTop_toBottomOf="@id/currentTemp_textView"/>
+
+    <TextView
+        android:id="@+id/humidity_textView"
+        style="@style/WeatherText.SmallParameters"
+        android:layout_width="0dp"
+        android:text="@string/hum"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/pressure_textView"
+        app:layout_constraintStart_toEndOf="@id/direction_textView"
+        app:layout_constraintTop_toBottomOf="@id/currentTemp_textView"/>
+
+    <TextView
+        android:id="@+id/pressure_textView"
+        style="@style/WeatherText.SmallParameters"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin"
+        android:text="@string/pres"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/humidity_textView"
+        app:layout_constraintTop_toBottomOf="@id/currentTemp_textView"/>
+
+
+    <TextView
+        android:id="@+id/curWindSpeed_textView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currentTemp_textView">
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/curWindDir_textView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/speed_textView"
+        tools:text="speed"/>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/curWindDir_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/curHumid_textView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/curWindSpeed_textView"
+        app:layout_constraintTop_toTopOf="@+id/curWindSpeed_textView"
+        tools:layout_editor_absoluteY="608dp"
+        tools:text="dir"/>
 
-            <TextView
-                android:id="@+id/curWindSpeed_textView"
-                style="@style/WeatherText.SmallParameters"
-                tools:text="speed" />
+    <TextView
+        android:id="@+id/curHumid_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/curPress_textView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/curWindDir_textView"
+        app:layout_constraintTop_toTopOf="@+id/curWindSpeed_textView"
+        tools:layout_editor_absoluteY="608dp"
+        tools:text="hum"/>
 
-            <TextView
-                android:id="@+id/curWindDir_textView"
-                style="@style/WeatherText.SmallParameters"
-                tools:text="dir" />
-
-            <TextView
-                android:id="@+id/curHumid_textView"
-                style="@style/WeatherText.SmallParameters"
-                tools:text="hum" />
-
-            <TextView
-                android:id="@+id/curPress_textView"
-                style="@style/WeatherText.SmallParameters"
-                tools:text="pres" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/WeatherText.SmallParameters"
-                android:text="@string/min" />
-
-            <TextView
-                style="@style/WeatherText.SmallParameters"
-                android:text="@string/max" />
-
-            <TextView
-                style="@style/WeatherText.SmallParameters"
-                android:text="@string/hum" />
-
-            <TextView
-                style="@style/WeatherText.SmallParameters"
-                android:text="@string/pres" />
-        </TableRow>
-
-    </TableLayout>
+    <TextView
+        android:id="@+id/curPress_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/curHumid_textView"
+        app:layout_constraintTop_toTopOf="@+id/curWindSpeed_textView"
+        tools:layout_editor_absoluteY="608dp"
+        tools:text="pres"/>
 
     <ProgressBar
         android:id="@+id/currentLoadingProgressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

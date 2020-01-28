@@ -3,10 +3,10 @@ package com.goryachok.forecastapp.view.recyclerviewadapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.model.domain.Forecast
+import kotlinx.android.synthetic.main.forecast_item_layout.view.*
 
 class DailyForecastAdapter :
     RecyclerView.Adapter<DailyForecastAdapter.DailyForecastViewHolder>() {
@@ -21,9 +21,7 @@ class DailyForecastAdapter :
         )
     }
 
-    override fun getItemCount(): Int {
-        return forecast.size
-    }
+    override fun getItemCount(): Int = forecast.size
 
     override fun onBindViewHolder(holder: DailyForecastViewHolder, position: Int) {
         forecast[position].let { holder.bind(it) }
@@ -35,9 +33,9 @@ class DailyForecastAdapter :
     }
 
     class DailyForecastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var temp: TextView = itemView.findViewById(R.id.temp_textView)
-        var desc: TextView = itemView.findViewById(R.id.desc_textView)
-        var date: TextView = itemView.findViewById(R.id.date_textView)
+        private val temp = itemView.temp_textView
+        private val desc = itemView.desc_textView
+        private val date = itemView.date_textView
 
         fun bind(item: Forecast) {
             date.text = item.dateText.substringBefore(" ")

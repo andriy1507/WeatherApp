@@ -39,7 +39,6 @@ class DailyViewModel(context: Context) : MyViewModel() {
                     withContext(Dispatchers.Main) {
                         _currentData.postValue(result.data.copy(list = newList))
                     }
-//                    }
                 }
                 is Result.Error -> withContext(Dispatchers.Main) {
                     _errorData.postValue(result)
@@ -60,7 +59,6 @@ class DailyViewModel(context: Context) : MyViewModel() {
                     withContext(Dispatchers.Main) {
                         _currentData.postValue(result.data.copy(list = newList))
                     }
-//                    }
                 }
                 is Result.Error -> withContext(Dispatchers.Main) {
                     _errorData.postValue(result)
