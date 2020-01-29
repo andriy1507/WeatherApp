@@ -24,5 +24,4 @@ class DataSourceModule {
     fun provideLocalDataSource(prefs: SharedPreferences): LocalDataSource {
         return LocalDataSourceImpl(prefs)
     }
-
 }

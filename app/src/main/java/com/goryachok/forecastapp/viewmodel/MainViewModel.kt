@@ -17,7 +17,6 @@ class MainViewModel @Inject constructor(
             setOnConnectionAvailableCallback { connectionStatus.postValue(true) }
             setOnConnectionLostCallback { connectionStatus.postValue(false) }
         }
-
     }
 
     val connectionStatus = MutableLiveData<Boolean>()
@@ -25,5 +24,4 @@ class MainViewModel @Inject constructor(
     var requestCache = ""
 
     var locationCache: Location? = null
-
 }

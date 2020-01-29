@@ -21,9 +21,7 @@ class LocationProvider(private val context: Context) {
     companion object {
         private val DEFAULT_LOCATION =
             Location("DEFAULT PROVIDER").apply { latitude = 0.0; longitude = 0.0 }
-
         private var currentLocation: Location? = null
-
         private const val numOfUpdates = 1
         private const val updateInterval = SECOND_MS
     }

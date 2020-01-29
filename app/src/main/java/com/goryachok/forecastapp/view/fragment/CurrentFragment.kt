@@ -7,7 +7,7 @@ import android.widget.ProgressBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.goryachok.forecastapp.R
-import com.goryachok.forecastapp.utils.Converter.Companion.convertDegreesToDirection
+import com.goryachok.forecastapp.utils.convertDegreesToDirection
 import com.goryachok.forecastapp.viewmodel.CurrentViewModel
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import javax.inject.Inject

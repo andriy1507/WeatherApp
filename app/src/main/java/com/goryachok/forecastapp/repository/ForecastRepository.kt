@@ -13,6 +13,7 @@ class ForecastRepository(
     override val remote: RemoteDataSource,
     override val local: LocalDataSource
 ) : BaseRepository<ForecastEntity> {
+
     override suspend fun getRemoteDataByCoordinates(
         lat: Float,
         lon: Float
@@ -33,13 +34,11 @@ class ForecastRepository(
     override fun getLocalData(): ForecastEntity =
         local.readForecastData()
 
-
     override suspend fun getDataByCity(city: String): Result<ForecastEntity> =
         runBlocking {
             val result = async { remote.getForecastByCity(city) }
             result.await()
         }
-
 
     override suspend fun getDataByCoordinates(lat: Float, lon: Float): Result<ForecastEntity> {
         return if (isFetchNeeded()) {

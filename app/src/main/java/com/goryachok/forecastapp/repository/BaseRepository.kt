@@ -5,7 +5,6 @@ import com.goryachok.forecastapp.data.RemoteDataSource
 import com.goryachok.forecastapp.model.domain.RemoteEntity
 import com.goryachok.forecastapp.model.local.Result
 
-
 interface BaseRepository<T : RemoteEntity> {
 
     val remote: RemoteDataSource
