@@ -1,21 +1,23 @@
 package com.goryachok.forecastapp.viewmodel
 
-import android.content.Context
 import android.location.Location
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.goryachok.forecastapp.ConnectivityListener
 import com.goryachok.forecastapp.LocationProvider
+import javax.inject.Inject
 
-class MainViewModel(context: Context) : ViewModel() {
+class MainViewModel @Inject constructor(
+    val locationProvider: LocationProvider,
+    val connectivityListener: ConnectivityListener
+) : ViewModel() {
 
-    val locationProvider by lazy { LocationProvider(context) }
-
-    val connectivityListener: ConnectivityListener by lazy {
-        ConnectivityListener(context).apply {
+    init {
+        connectivityListener.apply {
             setOnConnectionAvailableCallback { connectionStatus.postValue(true) }
             setOnConnectionLostCallback { connectionStatus.postValue(false) }
         }
+
     }
 
     val connectionStatus = MutableLiveData<Boolean>()

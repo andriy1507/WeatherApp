@@ -6,18 +6,27 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.viewmodel.SplashViewModel
+import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : DaggerAppCompatActivity() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val viewModel: SplashViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)
+            .get(SplashViewModel::class.java)
+    }
 
     companion object {
         private const val PERMISSION_REQUEST_CODE = 101
         private const val LOCATION_REQUEST_CODE = 102
+
     }
 
     private val mainActivityIntent by lazy {
@@ -61,20 +70,6 @@ class SplashActivity : AppCompatActivity() {
             }.setOnDismissListener {
                 viewModel.locationProvider.start()
             }
-    }
-
-    private val viewModel: SplashViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory)
-            .get(SplashViewModel::class.java)
-    }
-
-    private val viewModelFactory: ViewModelProvider.Factory by lazy {
-        object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return SplashViewModel(applicationContext) as T
-            }
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

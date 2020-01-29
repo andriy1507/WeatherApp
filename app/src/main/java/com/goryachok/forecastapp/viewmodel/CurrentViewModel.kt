@@ -1,22 +1,20 @@
 package com.goryachok.forecastapp.viewmodel
 
-import android.content.Context
 import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.goryachok.forecastapp.model.domain.WeatherEntity
 import com.goryachok.forecastapp.model.local.Result
 import com.goryachok.forecastapp.repository.BaseRepository
-import com.goryachok.forecastapp.repository.WeatherRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class CurrentViewModel(context: Context) : MyViewModel() {
-
-    private val repository: BaseRepository<WeatherEntity> by lazy { WeatherRepository(context) }
+class CurrentViewModel @Inject constructor(val repository: BaseRepository<WeatherEntity>) :
+    MyViewModel() {
 
     private val _currentData: MutableLiveData<WeatherEntity> = MutableLiveData()
     private val currentData: LiveData<WeatherEntity>

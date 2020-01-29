@@ -5,27 +5,21 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.goryachok.forecastapp.R
-import com.goryachok.forecastapp.utils.convertDegreesToDirection
+import com.goryachok.forecastapp.utils.Converter.Companion.convertDegreesToDirection
 import com.goryachok.forecastapp.viewmodel.CurrentViewModel
 import kotlinx.android.synthetic.main.current_weather_fragment.*
+import javax.inject.Inject
 
 class CurrentFragment : MyFragment(R.layout.current_weather_fragment) {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override val viewModel: CurrentViewModel by lazy {
         ViewModelProvider(this, viewModelFactory)
             .get(CurrentViewModel::class.java)
-    }
-
-    private val viewModelFactory: ViewModelProvider.Factory by lazy {
-        object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return CurrentViewModel(this@CurrentFragment.requireActivity()) as T
-            }
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

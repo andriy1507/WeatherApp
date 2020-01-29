@@ -5,24 +5,18 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.view.recyclerviewadapters.DailyForecastAdapter
 import com.goryachok.forecastapp.viewmodel.DailyViewModel
 import kotlinx.android.synthetic.main.daily_forecast_fragment.*
+import javax.inject.Inject
 
 class DailyFragment : MyFragment(R.layout.daily_forecast_fragment) {
 
-    private val viewModelFactory: ViewModelProvider.Factory by lazy {
-        object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return DailyViewModel(this@DailyFragment.requireActivity()) as T
-            }
-        }
-    }
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override val viewModel by lazy {
         ViewModelProvider(

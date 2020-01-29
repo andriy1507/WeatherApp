@@ -1,14 +1,18 @@
 package com.goryachok.forecastapp.repository
 
-import android.content.Context
 import com.goryachok.forecastapp.base.HOUR_MS
 import com.goryachok.forecastapp.base.SECOND_MS
+import com.goryachok.forecastapp.data.LocalDataSource
+import com.goryachok.forecastapp.data.RemoteDataSource
 import com.goryachok.forecastapp.model.domain.WeatherEntity
 import com.goryachok.forecastapp.model.local.Result
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
-class WeatherRepository(context: Context) : BaseRepository<WeatherEntity>(context) {
+class WeatherRepository(
+    override val remote: RemoteDataSource,
+    override val local: LocalDataSource
+) : BaseRepository<WeatherEntity> {
 
     override suspend fun getRemoteDataByCoordinates(lat: Float, lon: Float): Result<WeatherEntity> =
         runBlocking {

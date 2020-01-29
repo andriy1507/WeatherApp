@@ -5,12 +5,10 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.goryachok.forecastapp.R
@@ -20,18 +18,14 @@ import com.goryachok.forecastapp.view.fragment.DailyFragment
 import com.goryachok.forecastapp.view.fragment.HourlyFragment
 import com.goryachok.forecastapp.view.fragment.MyFragment
 import com.goryachok.forecastapp.viewmodel.MainViewModel
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : DaggerAppCompatActivity() {
 
-    private val viewModelFactory by lazy {
-        object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MainViewModel(this@MainActivity) as T
-            }
-        }
-    }
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     val viewModel by lazy {
         ViewModelProvider(

@@ -5,15 +5,18 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.view.recyclerviewadapters.HourlyForecastAdapter
 import com.goryachok.forecastapp.viewmodel.HourlyViewModel
 import kotlinx.android.synthetic.main.hourly_forecast_fragment.*
+import javax.inject.Inject
 
 class HourlyFragment : MyFragment(R.layout.hourly_forecast_fragment) {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     override val viewModel: HourlyViewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(
@@ -22,15 +25,6 @@ class HourlyFragment : MyFragment(R.layout.hourly_forecast_fragment) {
     }
 
     private lateinit var adapter: HourlyForecastAdapter
-
-    private val viewModelFactory: ViewModelProvider.Factory by lazy {
-        object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return HourlyViewModel(this@HourlyFragment.requireActivity()) as T
-            }
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
