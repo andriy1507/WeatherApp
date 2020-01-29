@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/large">
 
     <TextView
         android:id="@+id/temp_textView"
         style="@style/WeatherText.SmallParameters"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="24dp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/desc_textView"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +24,7 @@
         style="@style/WeatherText.SmallParameters"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="24dp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/date_textView"
         app:layout_constraintStart_toEndOf="@+id/temp_textView"
@@ -36,7 +37,7 @@
         style="@style/WeatherText.SmallParameters"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="24dp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/desc_textView"

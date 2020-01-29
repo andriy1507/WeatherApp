@@ -34,9 +34,33 @@ class SplashActivity : AppCompatActivity() {
                 )
             }
             .setNegativeButton(R.string.no_button) { dialog, _ ->
-                viewModel.locationProvider.start()
+                defaultLocationDialog.show()
                 dialog.dismiss()
             }.create()
+    }
+
+    @Suppress("NewApi")
+    private val locationUsageDialog: AlertDialog by lazy {
+        AlertDialog.Builder(this).setTitle(R.string.info_title)
+            .setMessage(R.string.location_usage_text)
+            .setPositiveButton(getString(R.string.ok_button)) { dialog, _ ->
+                dialog.dismiss()
+            }.setOnDismissListener {
+                requestPermissions(
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    PERMISSION_REQUEST_CODE
+                )
+            }.create()
+    }
+
+    private val defaultLocationDialog by lazy {
+        AlertDialog.Builder(this).setTitle(R.string.info_title)
+            .setMessage(R.string.default_location_message)
+            .setPositiveButton(getString(R.string.ok_button)) { dialog, _ ->
+                dialog.dismiss()
+            }.setOnDismissListener {
+                viewModel.locationProvider.start()
+            }
     }
 
     private val viewModel: SplashViewModel by lazy {
@@ -64,11 +88,7 @@ class SplashActivity : AppCompatActivity() {
         })
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !viewModel.locationProvider.permissionGranted()) {
-            //TODO inform user about location usage
-            requestPermissions(
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                PERMISSION_REQUEST_CODE
-            )
+            locationUsageDialog.show()
         } else {
             if (viewModel.locationProvider.isLocationEnabled()) {
                 viewModel.locationProvider.start()
@@ -93,8 +113,9 @@ class SplashActivity : AppCompatActivity() {
                 } else {
                     enableLocationDialog.show()
                 }
+            } else {
+                defaultLocationDialog.show()
             }
-            //TODO inform about default location
         }
     }
 
@@ -104,8 +125,9 @@ class SplashActivity : AppCompatActivity() {
         if (requestCode == LOCATION_REQUEST_CODE && viewModel.locationProvider.isLocationEnabled()) {
             viewModel.locationProvider.start()
             viewModel.startTime = System.currentTimeMillis()
+        } else {
+            defaultLocationDialog.show()
         }
-        //TODO inform about default location
     }
 
     override fun onDestroy() {

@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.goryachok.forecastapp.R
-import com.goryachok.forecastapp.utils.Converter
+import com.goryachok.forecastapp.utils.convertDegreesToDirection
 import com.goryachok.forecastapp.viewmodel.CurrentViewModel
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 
@@ -40,7 +40,7 @@ class CurrentFragment : MyFragment(R.layout.current_weather_fragment) {
                         getString(R.string.windSpeed_template, it.wind.speed)
                     curPress_textView.text = getString(R.string.pressure_template, it.main.pressure)
                     curHumid_textView.text = getString(R.string.humidity_template, it.main.humidity)
-                    curWindDir_textView.text = Converter.convertDegreesToDirection(it.wind.deg)
+                    curWindDir_textView.text = convertDegreesToDirection(it.wind.deg)
                     currentLoadingProgressBar.visibility = ProgressBar.GONE
                 }
             })

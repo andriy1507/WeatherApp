@@ -9,26 +9,28 @@
     <TextView
         android:id="@+id/dailyForecast_cityName_textView"
         style="@style/WeatherText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_big"
-        android:textSize="@dimen/cityName_size"
+        android:textSize="@dimen/normal_textSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="City name" />
+        android:gravity="center"
+        tools:text="City name"/>
 
     <TextView
         android:id="@+id/dailyForecast_textView"
         style="@style/WeatherText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_big"
         android:text="@string/daily_forecast"
-        android:textSize="@dimen/cityName_size"
+        android:textSize="@dimen/normal_textSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dailyForecast_cityName_textView" />
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/dailyForecast_cityName_textView"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/dailyForecast_recyclerView"
