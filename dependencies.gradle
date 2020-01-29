@@ -30,6 +30,9 @@ def fusedLocationProviderVersion = "17.0.0"
 //Material
 def materialVersion = "1.2.0-alpha04"
 
+//Dagger
+def daggerVersion = "2.25.4"
+
 //Tests
 def junitVersion = "4.13-rc-2"
 def junitAndroidVersion = "1.1.2-alpha03"
@@ -55,29 +58,29 @@ ext.testRunner = "androidx.test.runner.AndroidJUnitRunner"
 
 //Dependencies
 ext.appDependencies = [
-        "kotlin"               :
+        "kotlin"                :
                 ["org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"],
-        "android"              :
+        "android"               :
                 ["androidx.appcompat:appcompat:$appCompatVersion",
 
                  "androidx.core:core-ktx:$coreVersion",
 
                  "androidx.lifecycle:lifecycle-livedata-ktx:$liveDataVersion"],
-        "okhttp"               :
+        "okhttp"                :
                 ["com.squareup.okhttp3:okhttp:$okhttpVersion",
 
                  "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"],
-        "retrofit"             : [
+        "retrofit"              : [
                 "com.squareup.retrofit2:retrofit:$retrofitVersion",
 
                 "com.squareup.retrofit2:converter-gson:$retrofitVersion"],
-        "gson"                 :
+        "gson"                  :
                 ["com.google.code.gson:gson:$gsonVersion"],
-        "coroutines"           :
+        "coroutines"            :
                 ["org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion",
 
                  "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"],
-        "ui"                   :
+        "ui"                    :
                 ["androidx.recyclerview:recyclerview:$recyclerviewVersion",
 
                  "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion",
@@ -87,15 +90,25 @@ ext.appDependencies = [
                  "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion",
 
                  "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"],
-        "logging"              :
+        "logging"               :
                 ["com.jakewharton.timber:timber:$timberVersion"],
-        "fusedLocationProvider":
+        "fusedLocationProvider" :
                 ["com.google.android.gms:play-services-location:$fusedLocationProviderVersion"],
-        "material":
+        "material"              :
                 ["com.google.android.material:material:$materialVersion"],
-        "test"                 :
+        "dagger"                :
+                ["com.google.dagger:dagger:$daggerVersion"],
+        "daggerAndroid"         :
+                ["com.google.dagger:dagger-android:$daggerVersion",
+
+                 "com.google.dagger:dagger-android-support:$daggerVersion"],
+        "daggerCompiler"        :
+                ["com.google.dagger:dagger-compiler:$daggerVersion"],
+        "daggerAndroidProcessor":
+                ["com.google.dagger:dagger-android-processor:$daggerVersion"],
+        "test"                  :
                 ["junit:junit:$junitVersion"],
-        "androidTest"          :
+        "androidTest"           :
                 ["androidx.test.ext:junit:$junitAndroidVersion",
 
                  "androidx.test.espresso:espresso-core:$espressoVersion"]
