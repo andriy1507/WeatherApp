@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textSize="@dimen/location_textSize"
+        android:textSize="@dimen/big_textSize"
         tools:text="Location"/>
 
     <TextView
@@ -29,13 +29,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textSize="@dimen/temp_textSize"
+        android:textSize="@dimen/biggest_TextSize"
         tools:text="t"/>
 
     <TextView
         android:id="@+id/speed_textView"
         style="@style/WeatherText.SmallParameters"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:text="@string/speed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/direction_textView"
@@ -47,6 +48,7 @@
         android:id="@+id/direction_textView"
         style="@style/WeatherText.SmallParameters"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:text="@string/direction"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/humidity_textView"
@@ -58,6 +60,7 @@
         android:id="@+id/humidity_textView"
         style="@style/WeatherText.SmallParameters"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:text="@string/hum"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/pressure_textView"
@@ -69,6 +72,7 @@
         android:id="@+id/pressure_textView"
         style="@style/WeatherText.SmallParameters"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:text="@string/pres"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,6 +83,7 @@
 
     <TextView
         android:id="@+id/curWindSpeed_textView"
+        style="@style/WeatherText.SmallParameters"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -91,6 +96,7 @@
 
     <TextView
         android:id="@+id/curWindDir_textView"
+        style="@style/WeatherText.SmallParameters"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@+id/curHumid_textView"
@@ -103,6 +109,7 @@
 
     <TextView
         android:id="@+id/curHumid_textView"
+        style="@style/WeatherText.SmallParameters"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@+id/curPress_textView"
@@ -115,6 +122,7 @@
 
     <TextView
         android:id="@+id/curPress_textView"
+        style="@style/WeatherText.SmallParameters"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
