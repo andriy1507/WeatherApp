@@ -86,7 +86,7 @@
         style="@style/WeatherText.SmallParameters"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/large"
         app:layout_constraintEnd_toStartOf="@+id/curWindDir_textView"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +104,6 @@
         app:layout_constraintStart_toEndOf="@+id/curWindSpeed_textView"
         app:layout_constraintTop_toTopOf="@+id/curWindSpeed_textView"
         android:gravity="center"
-        tools:layout_editor_absoluteY="608dp"
         tools:text="dir"/>
 
     <TextView
@@ -117,7 +116,6 @@
         app:layout_constraintStart_toEndOf="@+id/curWindDir_textView"
         app:layout_constraintTop_toTopOf="@+id/curWindSpeed_textView"
         android:gravity="center"
-        tools:layout_editor_absoluteY="608dp"
         tools:text="hum"/>
 
     <TextView

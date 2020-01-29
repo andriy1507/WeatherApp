@@ -67,23 +67,28 @@ class MainActivity : AppCompatActivity() {
             (pagerAdapter.getItem(forecast_viewPager.currentItem) as? MyFragment)?.onLocationRequest(
                 it
             )
-            viewModel.locationCache = it
-            viewModel.requestCache = ""
-            viewModel.locationProvider.stop()
+            with(viewModel) {
+                locationCache = it
+                requestCache = ""
+                locationProvider.stop()
+            }
         }
     }
 
     override fun onStart() {
         super.onStart()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            viewModel.connectivityListener.start()
-            viewModel.connectionStatus.observe(this, Observer {
-                if (it) {
-                    connectionLostSnackBar.dismiss()
-                } else {
-                    connectionLostSnackBar.show()
-                }
-            })
+            with(viewModel) {
+                connectivityListener.start()
+                viewModel.connectionStatus.observe(this@MainActivity, Observer {
+                    if (it) {
+                        connectionLostSnackBar.dismiss()
+                    } else {
+                        connectionLostSnackBar.show()
+                    }
+                })
+            }
+
         }
     }
 
