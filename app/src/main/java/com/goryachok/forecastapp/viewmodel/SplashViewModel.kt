@@ -21,24 +21,22 @@ import timber.log.Timber
 class SplashViewModel(applicationContext: Context) : ViewModel() {
 
     private val weatherRepository: BaseRepository<WeatherEntity> by lazy {
-        WeatherRepository(
-            applicationContext
-        )
+        WeatherRepository(applicationContext)
     }
 
+    private val forecastRepository: ForecastRepository by lazy {
+        ForecastRepository(applicationContext)
+    }
     private val _startData: MutableLiveData<Boolean> = MutableLiveData()
+
     val startData: LiveData<Boolean>
         get() = _startData
 
     var startTime = 0L
 
-    private val forecastRepository: ForecastRepository by lazy {
-        ForecastRepository(applicationContext)
-    }
-
     val locationProvider by lazy {
-        object : LocationProvider(applicationContext) {
-            override fun doTask(location: Location) {
+        LocationProvider(applicationContext).apply {
+            setTask { location: Location ->
                 initialize(location.latitude.toFloat(), location.longitude.toFloat())
                 val time = System.currentTimeMillis() - startTime
                 if (time < SECOND_MS) {
@@ -53,7 +51,7 @@ class SplashViewModel(applicationContext: Context) : ViewModel() {
         }
     }
 
-    fun initialize(lat: Float, lon: Float) {
+    private fun initialize(lat: Float, lon: Float) {
         CoroutineScope(IO).launch {
             try {
                 weatherRepository.getDataByCoordinates(lat, lon)

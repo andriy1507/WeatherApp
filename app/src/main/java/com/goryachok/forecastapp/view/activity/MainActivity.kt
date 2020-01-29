@@ -5,15 +5,14 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
-import com.goryachok.forecastapp.ConnectivityListener
 import com.goryachok.forecastapp.R
 import com.goryachok.forecastapp.view.FragmentsAdapter
 import com.goryachok.forecastapp.view.fragment.CurrentFragment
@@ -29,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MainViewModel() as T
+                return MainViewModel(this@MainActivity) as T
             }
         }
     }
@@ -57,38 +56,39 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val connectivityListener: ConnectivityListener by lazy {
-        object : ConnectivityListener(this) {
-            override fun onConnectionLost() {
-                connectionLostSnackBar.show()
-            }
-
-            override fun onConnectionAvailable() {
-                connectionLostSnackBar.dismiss()
-            }
-        }
-    }
-
     private val pagerAdapter by lazy { FragmentsAdapter(supportFragmentManager) }
-
-    private val fusedLocationClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.title = ""
         initViewPager()
+        viewModel.locationProvider.setTask {
+            (pagerAdapter.getItem(forecast_viewPager.currentItem) as? MyFragment)?.onLocationRequest(
+                it
+            )
+            viewModel.locationCache = it
+            viewModel.requestCache = ""
+            viewModel.locationProvider.stop()
+        }
     }
 
     override fun onStart() {
         super.onStart()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            connectivityListener.start()
+            viewModel.connectivityListener.start()
+            viewModel.connectionStatus.observe(this, Observer {
+                if (it) {
+                    connectionLostSnackBar.dismiss()
+                } else {
+                    connectionLostSnackBar.show()
+                }
+            })
         }
     }
 
-    override fun onResumeFragments() {
-        super.onResumeFragments()
+    override fun onAttachFragment(fragment: Fragment) {
+        super.onAttachFragment(fragment)
         passCoordinates()
     }
 
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                return if (connectivityListener.isNetworkAvailable) {
+                return if (viewModel.connectivityListener.isNetworkAvailable) {
                     searchView.apply {
                         clearFocus()
                         setQuery("", false)
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.geoLocationItem -> {
-                if (connectivityListener.isNetworkAvailable)
+                if (viewModel.connectivityListener.isNetworkAvailable)
                     passCoordinates()
             }
         }
@@ -136,27 +136,13 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            connectivityListener.stop()
+            viewModel.connectivityListener.stop()
         }
+        viewModel.locationProvider.stop()
     }
 
     private fun passCoordinates() {
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                (pagerAdapter.getItem(forecast_viewPager.currentItem) as? MyFragment)?.onLocationRequest(
-                    location
-                )
-                viewModel.locationCache = location
-                viewModel.requestCache = ""
-            }
-            .addOnFailureListener {
-                AlertDialog.Builder(this)
-                    .setTitle(getString(R.string.error))
-                    .setMessage(it.message)
-                    .setPositiveButton(getString(R.string.close_button)) { dialog, _ ->
-                        dialog.dismiss()
-                    }
-            }
+        viewModel.locationProvider.start()
     }
 
     private fun initViewPager() {

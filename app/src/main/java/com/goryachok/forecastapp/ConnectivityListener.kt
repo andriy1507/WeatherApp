@@ -8,7 +8,10 @@ import android.net.NetworkRequest
 import android.os.Build
 import androidx.annotation.RequiresApi
 
-abstract class ConnectivityListener(context: Context) {
+class ConnectivityListener(context: Context) {
+
+    private var connectionAvailableCallback: (() -> Unit)? = null
+    private var connectionLostCallback: (() -> Unit)? = null
 
     private var _isNetworkAvailable = Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
     val isNetworkAvailable
@@ -28,18 +31,15 @@ abstract class ConnectivityListener(context: Context) {
         override fun onLost(network: Network) {
             super.onLost(network)
             _isNetworkAvailable = false
-            onConnectionLost()
+            connectionLostCallback?.invoke()
         }
 
         override fun onAvailable(network: Network) {
             super.onAvailable(network)
             _isNetworkAvailable = true
-            onConnectionAvailable()
+            connectionAvailableCallback?.invoke()
         }
     }
-
-    abstract fun onConnectionLost()
-    abstract fun onConnectionAvailable()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun start() {
@@ -49,5 +49,13 @@ abstract class ConnectivityListener(context: Context) {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun stop() {
         connectivityManager.unregisterNetworkCallback(networkCallback)
+    }
+
+    fun setOnConnectionAvailableCallback(callback: () -> Unit) {
+        connectionAvailableCallback = callback
+    }
+
+    fun setOnConnectionLostCallback(callback: () -> Unit) {
+        connectionLostCallback = callback
     }
 }

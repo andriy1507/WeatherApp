@@ -12,25 +12,29 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.goryachok.forecastapp.base.SECOND_MS
 
-abstract class LocationProvider(private val context: Context) {
+class LocationProvider(private val context: Context) {
+
+    private var task: ((location: Location) -> Unit)? = null
 
     companion object {
         private val DEFAULT_LOCATION =
-            Location("DEFAULT PROVIDER").apply { latitude = 90.0; longitude = 0.0 }
+            Location("DEFAULT PROVIDER").apply { latitude = 0.0; longitude = 0.0 }
 
         private var currentLocation: Location? = null
 
         private const val numOfUpdates = 1
-        private const val updateInterval = 25L
+        private const val updateInterval = SECOND_MS
     }
 
     private val locationProviderClient = LocationServices.getFusedLocationProviderClient(context)
 
     private val locationRequest by lazy {
         LocationRequest.create().apply {
-            priority = LocationRequest.PRIORITY_LOW_POWER; numUpdates = numOfUpdates; interval =
-            updateInterval
+            priority = LocationRequest.PRIORITY_LOW_POWER
+            numUpdates = numOfUpdates
+            interval = updateInterval
         }
     }
 
@@ -41,11 +45,10 @@ abstract class LocationProvider(private val context: Context) {
                 locationResult.locations.let {
                     it.forEach { location ->
                         location?.let {
-                            doTask(location)
+                            task?.invoke(location)
                         }
                     }
                 }
-
             }
         }
     }
@@ -67,9 +70,15 @@ abstract class LocationProvider(private val context: Context) {
     fun start() {
         if (permissionGranted() && isLocationEnabled()) {
             lastLocation()
-            currentLocation ?: updateLocation()
+            if (currentLocation != null) {
+                currentLocation?.let {
+                    task?.invoke(it)
+                }
+            } else {
+                updateLocation()
+            }
         } else {
-            doTask(DEFAULT_LOCATION)
+            task?.invoke(DEFAULT_LOCATION)
         }
     }
 
@@ -86,5 +95,7 @@ abstract class LocationProvider(private val context: Context) {
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
 
-    abstract fun doTask(location: Location)
+    fun setTask(func: ((location: Location) -> Unit)) {
+        task = func
+    }
 }
