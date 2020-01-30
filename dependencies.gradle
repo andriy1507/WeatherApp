@@ -60,9 +60,9 @@ ext.appDependencies = [
         "android"              :
                 ["androidx.appcompat:appcompat:$appCompatVersion",
 
-                 "androidx.core:core-ktx:$coreVersion",
-
-                 "androidx.lifecycle:lifecycle-livedata-ktx:$liveDataVersion"],
+                 "androidx.core:core-ktx:$coreVersion"],
+        "livedata"             :
+                ["androidx.lifecycle:lifecycle-livedata-ktx:$liveDataVersion"],
         "okhttp"               :
                 ["com.squareup.okhttp3:okhttp:$okhttpVersion",
 
@@ -91,7 +91,7 @@ ext.appDependencies = [
                 ["com.jakewharton.timber:timber:$timberVersion"],
         "fusedLocationProvider":
                 ["com.google.android.gms:play-services-location:$fusedLocationProviderVersion"],
-        "material":
+        "material"             :
                 ["com.google.android.material:material:$materialVersion"],
         "test"                 :
                 ["junit:junit:$junitVersion"],
