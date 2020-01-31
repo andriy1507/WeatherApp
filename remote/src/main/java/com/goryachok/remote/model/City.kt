@@ -21,4 +21,4 @@ data class City(
     val sunset: Int,
     @SerializedName("timezone")
     val timezone: Int
-) : Parcelable
+) : Parcelable, RemoteEntity()

@@ -9,4 +9,4 @@ import kotlinx.android.parcel.Parcelize
 data class Weather(
     @SerializedName("description")
     val description: String
-) : Parcelable
+) : Parcelable, RemoteEntity()

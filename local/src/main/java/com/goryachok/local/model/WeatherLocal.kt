@@ -7,6 +7,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class WeatherLocal(
     val city: String,
+    val description: String = "",
     val temp: Double,
     val humidity: Int,
     val pressure: Int,

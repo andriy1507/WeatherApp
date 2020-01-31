@@ -11,4 +11,4 @@ data class Wind(
     val deg: Int,
     @SerializedName("speed")
     val speed: Double
-) : Parcelable
+) : Parcelable, RemoteEntity()

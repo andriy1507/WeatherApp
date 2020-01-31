@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Main(
+data class MainBodyRemote(
     @SerializedName("feels_like")
     val feelsLike: Double,
     @SerializedName("grnd_level")
@@ -25,4 +25,4 @@ data class Main(
     val tempMax: Double,
     @SerializedName("temp_min")
     val tempMin: Double
-) : Parcelable
+) : Parcelable, RemoteEntity()

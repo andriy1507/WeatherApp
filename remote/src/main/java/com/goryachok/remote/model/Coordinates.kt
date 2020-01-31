@@ -11,4 +11,4 @@ data class Coordinates(
     val lat: Double,
     @SerializedName("lon")
     val lon: Double
-) : Parcelable
+) : Parcelable, RemoteEntity()

@@ -11,7 +11,7 @@ data class WeatherEntity(
     @SerializedName("dt")
     val date: Long,
     @SerializedName("main")
-    val main: Main,
+    val mainBodyRemote: MainBodyRemote,
     @SerializedName("name")
     val city: String,
     @SerializedName("timezone")
