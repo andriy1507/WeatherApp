@@ -1,25 +1,24 @@
 package com.goryachok.repository.di
 
-import com.goryachok.core.LocalDataSourceProvider
-import com.goryachok.core.RemoteDataSourceProvider
 import com.goryachok.core.RepositoryProvider
-import com.goryachok.repository.ForecastRepository
-import com.goryachok.repository.WeatherRepository
+import com.goryachok.local.di.LocalDataSourceProvider
+import com.goryachok.remote.di.RemoteDataSourceProvider
 import dagger.Component
+import javax.inject.Singleton
 
-@Component(dependencies = [LocalDataSourceProvider::class, RemoteDataSourceProvider::class])
-interface RepositoryComponent:RepositoryProvider {
-
-    fun inject(repo: ForecastRepository)
-
-    fun inject(repo: WeatherRepository)
+@Singleton
+@Component(
+    modules = [RepositoryModule::class],
+    dependencies = [RemoteDataSourceProvider::class, LocalDataSourceProvider::class]
+)
+interface RepositoryComponent : RepositoryProvider {
 
     @Component.Builder
     interface Builder {
 
-        fun localComponent(component: LocalDataSourceProvider):Builder
+        fun component(component: LocalDataSourceProvider): Builder
 
-        fun remoteComponent(component: RemoteDataSourceProvider):Builder
+        fun component(component: RemoteDataSourceProvider): Builder
 
         fun build(): RepositoryComponent
     }

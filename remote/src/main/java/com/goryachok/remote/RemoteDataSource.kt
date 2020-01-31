@@ -1,12 +1,10 @@
 package com.goryachok.remote
 
+import com.goryachok.remote.model.ApiResponse
 import com.goryachok.remote.model.ForecastEntity
 import com.goryachok.remote.model.WeatherEntity
-import com.goryachok.remote.model.ApiResponse
 
 interface RemoteDataSource {
-
-    val api: WeatherApiService
 
     suspend fun getWeatherByCity(city: String): ApiResponse<WeatherEntity>
 

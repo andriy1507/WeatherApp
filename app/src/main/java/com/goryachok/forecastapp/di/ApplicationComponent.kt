@@ -1,23 +1,28 @@
 package com.goryachok.forecastapp.di
 
-import android.app.Application
 import com.goryachok.core.ApplicationProvider
 import com.goryachok.core.RepositoryProvider
+import com.goryachok.forecastapp.WeatherApp
 import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Singleton
 
-@Component(dependencies = [RepositoryProvider::class])
+@Singleton
+@Component(
+    modules = [ApplicationModule::class],
+    dependencies = [RepositoryProvider::class]
+)
 interface ApplicationComponent : ApplicationProvider {
-
-    fun inject(app: Application)
 
     @Component.Builder
     interface Builder {
 
-        fun repoComponent(component: RepositoryProvider)
+//        fun component(component: UtilsProvider)
+
+        fun component(component: RepositoryProvider)
 
         @BindsInstance
-        fun application(app: Application): Builder
+        fun application(app: WeatherApp): Builder
 
         fun build(): ApplicationComponent
     }

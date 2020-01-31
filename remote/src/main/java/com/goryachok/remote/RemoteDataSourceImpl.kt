@@ -1,11 +1,13 @@
 package com.goryachok.remote
 
-import com.goryachok.remote.model.ForecastEntity
 import com.goryachok.remote.model.ApiResponse
+import com.goryachok.remote.model.ForecastEntity
 import com.goryachok.remote.model.WeatherEntity
 import java.io.IOException
+import javax.inject.Inject
 
-class RemoteDataSourceImpl(override val api: WeatherApiService) : RemoteDataSource {
+class RemoteDataSourceImpl @Inject constructor(private val api: WeatherApiService) :
+    RemoteDataSource {
     override suspend fun getWeatherByCity(city: String): ApiResponse<WeatherEntity> {
         val response = api.getWeatherByCity(city)
         return if (response.isSuccessful) {

@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class LocalWeather(
+data class WeatherLocal(
     val city: String,
     val temp: Double,
     val humidity: Int,
@@ -13,10 +13,10 @@ data class LocalWeather(
     val windSpd: Double,
     val windDir: Int,
     val timeStamp: Long
-) : Parcelable,LocalData
+) : Parcelable, LocalEntity
 
-fun LocalWeather.toJson(): String? = Gson().toJson(this, LocalWeather::class.java)
+fun WeatherLocal.toJson(): String? = Gson().toJson(this, WeatherLocal::class.java)
 
 
-fun String.weatherFromJson(): LocalWeather =
-    Gson().fromJson<LocalWeather>(this, LocalWeather::class.java)
+fun String.weatherFromJson(): WeatherLocal =
+    Gson().fromJson<WeatherLocal>(this, WeatherLocal::class.java)

@@ -1,20 +1,15 @@
 package com.goryachok.local
 
-import android.content.SharedPreferences
-import com.goryachok.local.model.LocalForecast
-import com.goryachok.local.model.LocalWeather
+import com.goryachok.local.model.ForecastLocal
+import com.goryachok.local.model.WeatherLocal
 
 interface LocalDataSource {
 
-    val preferences:SharedPreferences
+    fun saveForecastData(data: ForecastLocal)
 
-    fun saveForecastData(data: LocalForecast)
+    fun saveWeatherData(data: WeatherLocal)
 
-    fun saveWeatherData(data: LocalWeather)
+    fun readForecastData(): ForecastLocal
 
-    fun readForecastData(): LocalForecast
-
-    fun readWeatherData(): LocalWeather
-
-    fun isDataAvailable(): Boolean
+    fun readWeatherData(): WeatherLocal
 }

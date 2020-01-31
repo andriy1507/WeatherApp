@@ -1,3 +1,3 @@
 package com.goryachok.local.model
 
-interface LocalData
+interface LocalEntity

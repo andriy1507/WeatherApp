@@ -1,13 +1,17 @@
 package com.goryachok.remote.di
 
-import com.goryachok.core.RemoteDataSourceProvider
 import com.goryachok.remote.RemoteDataSource
 import dagger.Component
+import javax.inject.Singleton
 
-@Component
-interface RemoteDataSourceComponent:RemoteDataSourceProvider {
+interface RemoteDataSourceProvider {
 
-    fun inject(source: RemoteDataSource)
+    fun provideRemoteDataSource(): RemoteDataSource
+}
+
+@Singleton
+@Component(modules = [WeatherApiModule::class, RemoteDataSourceModule::class])
+interface RemoteDataSourceComponent : RemoteDataSourceProvider {
 
     @Component.Builder
     interface Builder {
