@@ -1,8 +1,11 @@
 package com.goryachok.core
 
+import android.app.Activity
 import com.goryachok.core.base.*
 
 interface ApplicationProvider : RepositoryProvider {
+
+    fun inject(activity: Activity)
 
     fun provideApp(): App
 }
