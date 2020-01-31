@@ -30,6 +30,9 @@ def fusedLocationProviderVersion = "17.0.0"
 //Material
 def materialVersion = "1.2.0-alpha04"
 
+//Dagger
+def daggerVersion = "2.25.4"
+
 //Tests
 def junitVersion = "4.13-rc-2"
 def junitAndroidVersion = "1.1.2-alpha03"
@@ -93,6 +96,10 @@ ext.appDependencies = [
                 ["com.google.android.gms:play-services-location:$fusedLocationProviderVersion"],
         "material"             :
                 ["com.google.android.material:material:$materialVersion"],
+        "dagger"               :
+                ["com.google.dagger:dagger:$daggerVersion"],
+        "daggerCompiler"       :
+                ["com.google.dagger:dagger-compiler:$daggerVersion"],
         "test"                 :
                 ["junit:junit:$junitVersion"],
         "androidTest"          :
