@@ -2,12 +2,12 @@ package com.goryachok.repository
 
 import com.goryachok.local.model.ForecastLocal
 import com.goryachok.local.model.WeatherLocal
-import com.goryachok.remote.model.ForecastEntity
-import com.goryachok.remote.model.WeatherEntity
+import com.goryachok.remote.model.ForecastRemote
+import com.goryachok.remote.model.WeatherRemote
 
 private const val SECOND = 1000L
 
-fun WeatherEntity.mapWeatherToLocal(): WeatherLocal {
+fun WeatherRemote.mapWeatherToLocal(): WeatherLocal {
     return WeatherLocal(
         city = city,
         temp = mainBodyRemote.temp,
@@ -19,7 +19,7 @@ fun WeatherEntity.mapWeatherToLocal(): WeatherLocal {
     )
 }
 
-fun ForecastEntity.mapForecastToLocal(): ForecastLocal {
+fun ForecastRemote.mapForecastToLocal(): ForecastLocal {
     val mapedList = mutableListOf<WeatherLocal>()
     list.forEach {
         mapedList.add(

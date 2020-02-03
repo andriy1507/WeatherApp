@@ -1,10 +1,8 @@
 package com.goryachok.main
 
+import android.os.Bundle
 import com.goryachok.core.base.App
-import com.goryachok.core.base.ForecastRepository
-import com.goryachok.core.base.WeatherRepository
 import com.goryachok.core_ui.base.MainActivity
-import javax.inject.Inject
 
 class MainActivityImpl : MainActivity() {
 
@@ -12,10 +10,9 @@ class MainActivityImpl : MainActivity() {
         (applicationContext as App).component.inject(this)
     }
 
-    @Inject
-    lateinit var forecastRepository: ForecastRepository
-
-
-    @Inject
-    lateinit var weatherRepository: WeatherRepository
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        supportActionBar?.title = ""
+    }
 }

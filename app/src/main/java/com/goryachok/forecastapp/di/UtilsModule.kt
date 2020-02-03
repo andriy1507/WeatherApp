@@ -1,9 +1,9 @@
-package com.goryachok.core_util.di
+package com.goryachok.forecastapp.di
 
 import com.goryachok.core.base.ConnectivityListener
 import com.goryachok.core.base.LocationProvider
-import com.goryachok.core_util.ConnectivityListenerImpl
-import com.goryachok.core_util.LocationProviderImpl
+import com.goryachok.forecastapp.utils.ConnectivityListenerImpl
+import com.goryachok.forecastapp.utils.LocationProviderImpl
 import dagger.Binds
 import dagger.Module
 

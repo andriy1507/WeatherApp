@@ -34,4 +34,8 @@ class LocalDataSourceImpl @Inject constructor(app: App) : LocalDataSource {
         val string = preferences.getString(WEATHER_PREF, "")
         return string.orEmpty().weatherFromJson()
     }
+
+    override fun isDataAvailable(): Boolean {
+        return preferences.contains(WEATHER_PREF) && preferences.contains(FORECAST_PREF)
+    }
 }

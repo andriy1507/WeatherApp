@@ -27,8 +27,8 @@ class SplashViewModel(applicationContext: Context) : ViewModel() {
     private val forecastRepository: ForecastRepository by lazy {
         ForecastRepository(applicationContext)
     }
-    private val _startData: MutableLiveData<Boolean> = MutableLiveData()
 
+    private val _startData: MutableLiveData<Boolean> = MutableLiveData()
     val startData: LiveData<Boolean>
         get() = _startData
 
@@ -61,5 +61,4 @@ class SplashViewModel(applicationContext: Context) : ViewModel() {
             }
         }
     }
-
 }

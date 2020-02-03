@@ -33,6 +33,7 @@ dependencies {
 
     implementation appDependencies.kotlin
     implementation appDependencies.android
+    implementation appDependencies.ui
     testImplementation appDependencies.test
     androidTestImplementation appDependencies.androidTest
 }

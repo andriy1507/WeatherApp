@@ -1,3 +1,8 @@
 package com.goryachok.core.base
 
-interface ForecastRepository
+interface ForecastRepository {
+
+    fun getDataByCity()
+
+    fun getDataByCoordinates()
+}

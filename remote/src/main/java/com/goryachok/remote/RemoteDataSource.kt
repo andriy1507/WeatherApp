@@ -1,16 +1,16 @@
 package com.goryachok.remote
 
 import com.goryachok.remote.model.ApiResponse
-import com.goryachok.remote.model.ForecastEntity
-import com.goryachok.remote.model.WeatherEntity
+import com.goryachok.remote.model.ForecastRemote
+import com.goryachok.remote.model.WeatherRemote
 
 interface RemoteDataSource {
 
-    suspend fun getWeatherByCity(city: String): ApiResponse<WeatherEntity>
+    suspend fun getWeatherByCity(city: String): ApiResponse<WeatherRemote>
 
-    suspend fun getForecastByCity(city: String): ApiResponse<ForecastEntity>
+    suspend fun getForecastByCity(city: String): ApiResponse<ForecastRemote>
 
-    suspend fun getWeatherByCoordinates(lat: Float, lon: Float): ApiResponse<WeatherEntity>
+    suspend fun getWeatherByCoordinates(lat: Float, lon: Float): ApiResponse<WeatherRemote>
 
-    suspend fun getForecastByCoordinates(lat: Float, lon: Float): ApiResponse<ForecastEntity>
+    suspend fun getForecastByCoordinates(lat: Float, lon: Float): ApiResponse<ForecastRemote>
 }

@@ -1,4 +1,4 @@
-package com.goryachok.core_util
+package com.goryachok.forecastapp.utils
 
 import android.content.Context
 import android.net.ConnectivityManager

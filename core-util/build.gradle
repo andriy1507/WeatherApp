@@ -34,6 +34,7 @@ dependencies {
     implementation appDependencies.kotlin
     implementation appDependencies.android
     implementation appDependencies.dagger
+    implementation appDependencies.coroutines
     implementation appDependencies.fusedLocationProvider
     kapt appDependencies.daggerCompiler
     testImplementation appDependencies.test

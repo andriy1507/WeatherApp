@@ -1,2 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.goryachok.repository" />
+<manifest package="com.goryachok.repository" />

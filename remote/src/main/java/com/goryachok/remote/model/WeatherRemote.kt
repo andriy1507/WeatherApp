@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class WeatherEntity(
+data class WeatherRemote(
     val coordinates: Coordinates,
     @SerializedName("dt")
     val date: Long,

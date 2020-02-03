@@ -1,7 +1,7 @@
 package com.goryachok.remote
 
-import com.goryachok.remote.model.ForecastEntity
-import com.goryachok.remote.model.WeatherEntity
+import com.goryachok.remote.model.ForecastRemote
+import com.goryachok.remote.model.WeatherRemote
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -10,22 +10,22 @@ interface WeatherApiService {
     @GET("data/2.5/weather")
     suspend fun getWeatherByCity(
         @Query("q") city: String
-    ): Response<WeatherEntity>
+    ): Response<WeatherRemote>
 
     @GET("data/2.5/weather")
     suspend fun getWeatherByCoordinates(
         @Query("lat") latitude: Float,
         @Query("lon") longitude: Float
-    ): Response<WeatherEntity>
+    ): Response<WeatherRemote>
 
     @GET("data/2.5/forecast")
     suspend fun getForecastByCity(
         @Query("q") city: String
-    ): Response<ForecastEntity>
+    ): Response<ForecastRemote>
 
     @GET("data/2.5/forecast")
     suspend fun getForecastByCoordinates(
         @Query("lat") latitude: Float,
         @Query("lon") longitude: Float
-    ): Response<ForecastEntity>
+    ): Response<ForecastRemote>
 }

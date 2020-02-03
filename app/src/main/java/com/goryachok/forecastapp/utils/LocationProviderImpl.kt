@@ -1,4 +1,4 @@
-package com.goryachok.core_util
+package com.goryachok.forecastapp.utils
 
 import android.Manifest
 import android.content.Context
@@ -31,7 +31,8 @@ class LocationProviderImpl @Inject constructor(app: App) : LocationProvider {
         private var currentLocation: Location? = null
 
         private const val numOfUpdates = 1
-        private const val updateInterval = SECOND_MS
+        private const val updateInterval =
+            SECOND_MS
     }
 
     private val locationProviderClient = LocationServices.getFusedLocationProviderClient(context)
@@ -39,8 +40,10 @@ class LocationProviderImpl @Inject constructor(app: App) : LocationProvider {
     private val locationRequest by lazy {
         LocationRequest.create().apply {
             priority = LocationRequest.PRIORITY_LOW_POWER
-            numUpdates = numOfUpdates
-            interval = updateInterval
+            numUpdates =
+                numOfUpdates
+            interval =
+                updateInterval
         }
     }
 

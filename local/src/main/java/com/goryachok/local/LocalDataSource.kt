@@ -12,4 +12,6 @@ interface LocalDataSource {
     fun readForecastData(): ForecastLocal
 
     fun readWeatherData(): WeatherLocal
+
+    fun isDataAvailable(): Boolean
 }

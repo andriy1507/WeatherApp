@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class ForecastEntity(
+data class ForecastRemote(
     @SerializedName("city")
     val city: City,
     @SerializedName("list")
