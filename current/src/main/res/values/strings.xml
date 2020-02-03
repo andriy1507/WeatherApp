@@ -1,0 +1,26 @@
+<resources>
+    <string name="speed">SPD</string>
+    <string name="direction">DIR</string>
+    <string name="hum">HUM</string>
+    <string name="pres">PRES</string>
+    <string name="logo">Logo</string>
+    <string name="search">Search</string>
+    <string name="location">location</string>
+
+    <!--    Templates-->
+    <string name="temperature_template">%.0f \u00B0</string>
+    <string name="windSpeed_template">%.0f m/s</string>
+    <string name="pressure_template">%d hPa</string>
+    <string name="humidity_template">%d %%</string>
+    <string name="location_template">%s, %s</string>
+
+    <!--    Buttons-->
+    <string name="ok_button">OK</string>
+    <string name="yes_button">Yes</string>
+    <string name="no_button">No</string>
+    <string name="close_button">Close</string>
+
+    <!--    Titles-->
+    <string name="error">Error</string>
+    <string name="info_title">Information</string>
+</resources>

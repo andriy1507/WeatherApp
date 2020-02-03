@@ -1,9 +1,7 @@
-apply plugin: 'com.android.application'
-
-apply plugin: 'kotlin-android'
-
-apply plugin: 'kotlin-android-extensions'
-
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-android-extensions"
+apply plugin: "kotlin-kapt"
 android {
     compileSdkVersion targetSdkVer
     buildToolsVersion toolsVer
@@ -44,10 +42,17 @@ androidExtensions {
 }
 
 dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(":core")
+    implementation project(":core-util")
+    implementation project(":core-ui")
+    implementation project(":repository")
+    implementation project(":main")
+
     implementation appDependencies.kotlin
     implementation appDependencies.android
+    implementation appDependencies.livedata
     implementation appDependencies.ui
     implementation appDependencies.gson
     implementation appDependencies.retrofit
@@ -56,6 +61,8 @@ dependencies {
     implementation appDependencies.logging
     implementation appDependencies.fusedLocationProvider
     implementation appDependencies.material
+    implementation appDependencies.dagger
+    kapt appDependencies.daggerCompiler
 
     testImplementation appDependencies.test
     androidTestImplementation appDependencies.androidTest

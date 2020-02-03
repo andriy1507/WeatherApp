@@ -1,0 +1,19 @@
+<resources>
+    <string name="daily_forecast">Daily Forecast</string>
+    <string name="search">Search</string>
+    <string name="location">location</string>
+
+    <!--    Templates-->
+    <string name="temperature_template">%.0f \u00B0</string>
+    <string name="location_template">%s, %s</string>
+
+    <!--    Buttons-->
+    <string name="ok_button">OK</string>
+    <string name="yes_button">Yes</string>
+    <string name="no_button">No</string>
+    <string name="close_button">Close</string>
+
+    <!--    Titles-->
+    <string name="error">Error</string>
+    <string name="info_title">Information</string>
+</resources>

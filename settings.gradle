@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':core', ':repository', ':local', ':remote', ':core-util', ':core-ui', ':main', ':current', ':hourly', ':daily'
 rootProject.name='ForecastApp'
