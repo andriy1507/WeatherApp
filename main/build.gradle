@@ -36,6 +36,7 @@ dependencies {
     implementation appDependencies.android
     implementation appDependencies.dagger
     implementation appDependencies.ui
+    implementation appDependencies.material
     kapt appDependencies.daggerCompiler
     testImplementation appDependencies.test
     androidTestImplementation appDependencies.androidTest

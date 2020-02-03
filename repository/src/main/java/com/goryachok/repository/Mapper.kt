@@ -1,13 +1,12 @@
 package com.goryachok.repository
 
+import com.goryachok.core.SECOND_MS
 import com.goryachok.core.model.ForecastDomain
 import com.goryachok.core.model.WeatherDomain
 import com.goryachok.local.model.ForecastLocal
 import com.goryachok.local.model.WeatherLocal
 import com.goryachok.remote.model.ForecastRemote
 import com.goryachok.remote.model.WeatherRemote
-
-private const val SECOND = 1000L
 
 fun WeatherRemote.mapWeatherToLocal(): WeatherLocal {
     return WeatherLocal(
@@ -17,7 +16,7 @@ fun WeatherRemote.mapWeatherToLocal(): WeatherLocal {
         pressure = mainBodyRemote.pressure,
         windSpd = wind.speed,
         windDir = wind.deg,
-        timeStamp = date * SECOND
+        timeStamp = date * SECOND_MS
     )
 }
 
@@ -29,7 +28,7 @@ fun WeatherRemote.mapWeatherToDomain(): WeatherDomain {
         pressure = mainBodyRemote.pressure,
         windSpd = wind.speed,
         windDir = wind.deg,
-        timeStamp = date * SECOND
+        timeStamp = date * SECOND_MS
     )
 }
 
@@ -57,7 +56,7 @@ fun ForecastRemote.mapForecastToLocal(): ForecastLocal {
                 pressure = it.mainBodyRemote.pressure,
                 windSpd = it.wind.speed,
                 windDir = it.wind.deg,
-                timeStamp = it.date * SECOND
+                timeStamp = it.date * SECOND_MS
             )
         )
     }
@@ -76,7 +75,7 @@ fun ForecastRemote.mapForecastToDomain(): ForecastDomain {
                 pressure = it.mainBodyRemote.pressure,
                 windSpd = it.wind.speed,
                 windDir = it.wind.deg,
-                timeStamp = it.date * SECOND
+                timeStamp = it.date * SECOND_MS
             )
         )
     }

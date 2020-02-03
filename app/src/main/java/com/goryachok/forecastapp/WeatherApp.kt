@@ -2,8 +2,8 @@ package com.goryachok.forecastapp
 
 import android.app.Application
 import android.content.Context
-import com.goryachok.core.ApplicationProvider
-import com.goryachok.core.base.App
+import com.goryachok.core.App
+import com.goryachok.core.di.ApplicationProvider
 import com.goryachok.forecastapp.di.DaggerApplicationComponent
 import timber.log.Timber
 

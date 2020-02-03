@@ -1,6 +1,6 @@
 package com.goryachok.forecastapp.di
 
-import com.goryachok.core.base.App
+import com.goryachok.core.App
 import com.goryachok.forecastapp.WeatherApp
 import dagger.Module
 import dagger.Provides

@@ -1,7 +1,7 @@
 package com.goryachok.repository
 
-import com.goryachok.core.base.WeatherRepository
 import com.goryachok.core.model.ResponseResult
+import com.goryachok.core.repository.WeatherRepository
 import com.goryachok.local.LocalDataSource
 import com.goryachok.local.model.WeatherLocal
 import com.goryachok.remote.RemoteDataSource

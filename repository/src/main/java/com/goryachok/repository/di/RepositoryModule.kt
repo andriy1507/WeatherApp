@@ -1,7 +1,7 @@
 package com.goryachok.repository.di
 
-import com.goryachok.core.base.ForecastRepository
-import com.goryachok.core.base.WeatherRepository
+import com.goryachok.core.repository.ForecastRepository
+import com.goryachok.core.repository.WeatherRepository
 import com.goryachok.local.LocalDataSource
 import com.goryachok.remote.RemoteDataSource
 import com.goryachok.repository.ForecastRepositoryImpl

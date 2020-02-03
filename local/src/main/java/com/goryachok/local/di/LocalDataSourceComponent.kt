@@ -1,6 +1,6 @@
 package com.goryachok.local.di
 
-import com.goryachok.core.ApplicationProvider
+import com.goryachok.core.di.ApplicationProvider
 import com.goryachok.local.LocalDataSource
 import dagger.Component
 import javax.inject.Singleton

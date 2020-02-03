@@ -1,6 +1,6 @@
 package com.goryachok.repository.di
 
-import com.goryachok.core.RepositoryProvider
+import com.goryachok.core.di.RepositoryProvider
 import com.goryachok.local.di.LocalDataSourceProvider
 import com.goryachok.remote.di.RemoteDataSourceProvider
 import dagger.Component

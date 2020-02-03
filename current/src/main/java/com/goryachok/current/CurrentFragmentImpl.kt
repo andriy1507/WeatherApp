@@ -1,7 +1,8 @@
 package com.goryachok.current
 
-import com.goryachok.core.base.App
-import com.goryachok.core_ui.base.CurrentFragment
+import android.location.Location
+import com.goryachok.core.App
+import com.goryachok.core_ui.CurrentFragment
 
 class CurrentFragmentImpl : CurrentFragment(R.layout.current_weather_fragment) {
 
@@ -9,11 +10,11 @@ class CurrentFragmentImpl : CurrentFragment(R.layout.current_weather_fragment) {
         (activity?.applicationContext as App).component.inject(this)
     }
 
-    override fun onSearchRequest() {
+    override fun onSearchRequest(query: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onLocationRequest() {
+    override fun onLocationRequest(location: Location) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

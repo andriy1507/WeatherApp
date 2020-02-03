@@ -1,7 +1,8 @@
 package com.goryachok.repository
 
-import com.goryachok.core.base.ForecastRepository
+import com.goryachok.core.HOUR_MS
 import com.goryachok.core.model.ResponseResult
+import com.goryachok.core.repository.ForecastRepository
 import com.goryachok.local.LocalDataSource
 import com.goryachok.local.model.WeatherLocal
 import com.goryachok.remote.RemoteDataSource
@@ -16,12 +17,6 @@ class ForecastRepositoryImpl @Inject constructor(
     private val local: LocalDataSource,
     private val remote: RemoteDataSource
 ) : ForecastRepository {
-
-    companion object {
-        private const val SECOND_MS = 1000
-        private const val MINUTE_MS = 60 * SECOND_MS
-        private const val HOUR_MS = 60 * MINUTE_MS
-    }
 
     private suspend fun getRemoteDataByCoordinates(
         lat: Float,
