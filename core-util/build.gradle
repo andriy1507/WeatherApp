@@ -35,6 +35,7 @@ dependencies {
     implementation appDependencies.android
     implementation appDependencies.dagger
     implementation appDependencies.coroutines
+    implementation appDependencies.logging
     implementation appDependencies.fusedLocationProvider
     kapt appDependencies.daggerCompiler
     testImplementation appDependencies.test
