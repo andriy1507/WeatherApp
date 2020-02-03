@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class WeatherRemote(
-    val coordinates: Coordinates,
+    val coordinates: CoordinatesRemote,
     @SerializedName("dt")
     val date: Long,
     @SerializedName("main")
@@ -17,7 +17,7 @@ data class WeatherRemote(
     @SerializedName("timezone")
     val timezone: Int,
     @SerializedName("weather")
-    val weather: List<Weather>,
+    val weather: List<DescriptionRemote>,
     @SerializedName("wind")
-    val wind: Wind
+    val wind: WindRemote
 ) : Parcelable, RemoteEntity()

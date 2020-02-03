@@ -6,9 +6,9 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class City(
+data class CityRemote(
     @SerializedName("coord")
-    val coordinates: Coordinates,
+    val coordinates: CoordinatesRemote,
     @SerializedName("country")
     val country: String,
     @SerializedName("id")

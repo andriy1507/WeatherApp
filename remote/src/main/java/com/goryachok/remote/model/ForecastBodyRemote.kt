@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Forecast(
+data class ForecastBodyRemote(
     @SerializedName("dt")
     val date: Int,
     @SerializedName("dt_txt")
@@ -14,7 +14,7 @@ data class Forecast(
     @SerializedName("main")
     val mainBodyRemote: MainBodyRemote,
     @SerializedName("weather")
-    val weather: List<Weather>,
+    val weather: List<DescriptionRemote>,
     @SerializedName("wind")
-    val wind: Wind
+    val wind: WindRemote
 ) : Parcelable, RemoteEntity()
