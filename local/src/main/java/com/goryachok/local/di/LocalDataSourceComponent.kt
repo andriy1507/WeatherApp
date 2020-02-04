@@ -1,7 +1,8 @@
 package com.goryachok.local.di
 
-import com.goryachok.core.di.ApplicationProvider
+import com.goryachok.core.App
 import com.goryachok.local.LocalDataSource
+import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
@@ -11,13 +12,14 @@ interface LocalDataSourceProvider {
 }
 
 @Singleton
-@Component(modules = [LocalDataSourceModule::class], dependencies = [ApplicationProvider::class])
+@Component(modules = [LocalDataSourceModule::class])
 interface LocalDataSourceComponent : LocalDataSourceProvider {
 
     @Component.Builder
     interface Builder {
 
-        fun provider(provider: ApplicationProvider): Builder
+        @BindsInstance
+        fun app(app: App): Builder
 
         fun build(): LocalDataSourceComponent
     }

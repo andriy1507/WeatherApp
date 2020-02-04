@@ -1,4 +1,4 @@
-package com.goryachok.core_util.di.utils
+package com.goryachok.core_util.di
 
 import com.goryachok.core.business.ConnectivityListener
 import com.goryachok.core.business.LocationProvider

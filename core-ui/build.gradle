@@ -30,6 +30,8 @@ dependencies {
 
     implementation appDependencies.kotlin
     implementation appDependencies.android
+    implementation appDependencies.dagger
+
     testImplementation appDependencies.test
     androidTestImplementation appDependencies.androidTest
 }

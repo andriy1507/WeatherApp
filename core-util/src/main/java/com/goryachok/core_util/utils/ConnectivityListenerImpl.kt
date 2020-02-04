@@ -16,13 +16,10 @@ class ConnectivityListenerImpl @Inject constructor(app: App) : ConnectivityListe
     private var connectionAvailableCallback: (() -> Unit)? = null
     private var connectionLostCallback: (() -> Unit)? = null
 
-    private var _isNetworkAvailable = Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
-    val isNetworkAvailable
-        get() = _isNetworkAvailable
-
-
     private val connectivityManager =
         app.getContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    private var _isNetworkAvailable = false
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private val networkRequest =
@@ -61,4 +58,17 @@ class ConnectivityListenerImpl @Inject constructor(app: App) : ConnectivityListe
     override fun setOnConnectionLostCallback(callback: () -> Unit) {
         connectionLostCallback = callback
     }
+
+    override fun isNetworkAvailable(): Boolean {
+//        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+//            connectivityManager.activeNetworkInfo?.let {
+//                return it.isConnectedOrConnecting
+//            }
+//            return false
+//        } else {
+//            _isNetworkAvailable
+//        }
+        return true
+    }
+
 }

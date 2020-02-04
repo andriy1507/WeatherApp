@@ -1,17 +1,19 @@
-package com.goryachok.core_util.viewmodelfactories
+package com.goryachok.main
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.goryachok.core.business.ConnectivityListener
 import com.goryachok.core.business.LocationProvider
-import com.goryachok.core.viewmodels.factories.MainViewModelFactory
-import com.goryachok.core_util.viewmodels.MainViewModelImpl
 import javax.inject.Inject
 
-class MainViewModelFactoryImpl @Inject constructor(
+class MainViewModelFactory @Inject constructor(
     private val locationProvider: LocationProvider,
     private val connectivityListener: ConnectivityListener
-) : MainViewModelFactory {
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return MainViewModelImpl(locationProvider, connectivityListener) as T
+        return MainViewModel(
+            locationProvider,
+            connectivityListener
+        ) as T
     }
 }

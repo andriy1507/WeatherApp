@@ -9,4 +9,6 @@ interface ConnectivityListener {
     fun setOnConnectionAvailableCallback(callback: () -> Unit)
 
     fun setOnConnectionLostCallback(callback: () -> Unit)
+
+    fun isNetworkAvailable(): Boolean
 }

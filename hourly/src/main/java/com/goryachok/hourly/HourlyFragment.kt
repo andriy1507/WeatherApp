@@ -1,12 +1,13 @@
 package com.goryachok.hourly
 
 import android.location.Location
-import com.goryachok.core.App
-import com.goryachok.core_ui.HourlyFragment
+import android.os.Bundle
+import com.goryachok.core_ui.base.BaseFragment
 
-class HourlyFragmentImpl : HourlyFragment(R.layout.hourly_forecast_fragment) {
+class HourlyFragment : BaseFragment(R.layout.hourly_forecast_fragment) {
+
     override fun setupDependencies() {
-        (activity?.applicationContext as App).component.inject(this)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onSearchRequest(query: String) {
@@ -15,5 +16,13 @@ class HourlyFragmentImpl : HourlyFragment(R.layout.hourly_forecast_fragment) {
 
     override fun onLocationRequest(location: Location) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    companion object {
+        private const val CITY_NAME_KEY = "city_name"
+
+        fun newInstance() = HourlyFragment().apply {
+            arguments = Bundle()
+        }
     }
 }

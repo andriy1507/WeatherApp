@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.goryachok.forecastapp.R
+import com.goryachok.forecastapp.utils.StartMainActivityImpl
 import com.goryachok.forecastapp.viewmodel.SplashViewModel
 
 class SplashActivity : AppCompatActivity() {
@@ -83,7 +84,8 @@ class SplashActivity : AppCompatActivity() {
 
         viewModel.startData.observe(this, Observer {
             if (it == true) {
-                startActivity(mainActivityIntent)
+//                startActivity(mainActivityIntent)
+                StartMainActivityImpl().start(this)
             }
         })
 
