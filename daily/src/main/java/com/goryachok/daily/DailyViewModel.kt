@@ -4,6 +4,7 @@ import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.goryachok.core.extensions.getEveryEighth
 import com.goryachok.core.model.Forecast
 import com.goryachok.core.model.ResponseResult
@@ -70,6 +71,14 @@ class DailyViewModel @Inject constructor(private val repository: ForecastReposit
                     _errorData.postValue(result)
                 }
             }
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    class Factory @Inject constructor(private val repository: ForecastRepository) :
+        ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return DailyViewModel(repository) as T
         }
     }
 }
