@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.goryachok.core_ui.BaseActivity
+import com.goryachok.core_ui.ErrorSnackBar
 import com.goryachok.core_ui.base.BaseFragment
 import com.goryachok.current.CurrentFragment
 import com.goryachok.daily.DailyFragment
@@ -25,26 +25,13 @@ class MainActivity : BaseActivity() {
     lateinit var viewModel: MainViewModel
 
     private val connectionLostSnackBar by lazy {
-
-        //TODO refactor this to view class and store in the core-ui
-        Snackbar.make(
-            constraintLayout_activityMain,
-            getString(R.string.lost_connection),
-            Snackbar.LENGTH_INDEFINITE
-        ).apply {
-            setBackgroundTint(
-                ContextCompat.getColor(
-                    this@MainActivity,
-                    R.color.lostSnackBarBackground
-                )
-            )
-            setTextColor(
-                ContextCompat.getColor(
-                    this@MainActivity,
-                    R.color.lostSnackBarTextColor
-                )
-            )
-        }
+        ErrorSnackBar.Builder(this)
+            .setLayout(constraintLayout_activityMain)
+            .setMessage(R.string.lost_connection)
+            .setDuration(Snackbar.LENGTH_INDEFINITE)
+            .setBackgroundColor(R.color.lostSnackBarBackground)
+            .setTextColor(R.color.lostSnackBarTextColor)
+            .build()
     }
 
     private val pagerAdapter by lazy { FragmentAdapter(supportFragmentManager) }

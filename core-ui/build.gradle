@@ -31,6 +31,7 @@ dependencies {
     implementation appDependencies.kotlin
     implementation appDependencies.android
     implementation appDependencies.dagger
+    implementation appDependencies.material
 
     testImplementation appDependencies.test
     androidTestImplementation appDependencies.androidTest
