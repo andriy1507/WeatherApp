@@ -23,4 +23,10 @@ interface LocalDataSourceComponent : LocalDataSourceProvider {
 
         fun build(): LocalDataSourceComponent
     }
+
+    class Initializer {
+        fun init(app: App): LocalDataSourceComponent {
+            return DaggerLocalDataSourceComponent.builder().app(app).build()
+        }
+    }
 }

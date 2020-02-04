@@ -28,7 +28,6 @@ interface MainActivityComponent {
     }
 
     class Initializer {
-
         fun init(activity: MainActivity): MainActivityComponent =
             DaggerMainActivityComponent.builder()
                 .component((activity.applicationContext as App).component)

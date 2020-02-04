@@ -18,4 +18,8 @@ interface RemoteDataSourceComponent : RemoteDataSourceProvider {
 
         fun build(): RemoteDataSourceComponent
     }
+
+    class Initializer {
+        fun init(): RemoteDataSourceComponent = DaggerRemoteDataSourceComponent.create()
+    }
 }

@@ -17,7 +17,7 @@ interface UtilsComponent : UtilsProvider {
         fun build(): UtilsComponent
     }
 
-    object Initializer {
+    class Initializer {
         fun init(app: App): UtilsProvider =
             DaggerUtilsComponent.builder().app(app).build()
     }

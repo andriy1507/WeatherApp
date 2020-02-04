@@ -28,7 +28,6 @@ interface CurrentFragmentComponent {
     }
 
     class Initializer {
-
         fun init(fragment: CurrentFragment): CurrentFragmentComponent {
             return DaggerCurrentFragmentComponent
                 .builder()

@@ -28,7 +28,6 @@ interface HourlyFragmentComponent {
     }
 
     class Initializer {
-
         fun init(fragment: HourlyFragment): HourlyFragmentComponent {
             return DaggerHourlyFragmentComponent
                 .builder()

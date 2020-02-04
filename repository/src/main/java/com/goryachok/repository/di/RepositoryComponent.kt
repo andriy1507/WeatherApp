@@ -2,9 +2,9 @@ package com.goryachok.repository.di
 
 import com.goryachok.core.App
 import com.goryachok.core.di.RepositoryProvider
-import com.goryachok.local.di.DaggerLocalDataSourceComponent
+import com.goryachok.local.di.LocalDataSourceComponent
 import com.goryachok.local.di.LocalDataSourceProvider
-import com.goryachok.remote.di.DaggerRemoteDataSourceComponent
+import com.goryachok.remote.di.RemoteDataSourceComponent
 import com.goryachok.remote.di.RemoteDataSourceProvider
 import dagger.Component
 import javax.inject.Singleton
@@ -26,12 +26,11 @@ interface RepositoryComponent : RepositoryProvider {
         fun build(): RepositoryComponent
     }
 
-    object Initializer {
-
+    class Initializer {
         fun init(app: App): RepositoryProvider {
             return DaggerRepositoryComponent.builder()
-                .component(DaggerLocalDataSourceComponent.builder().app(app).build())
-                .component(DaggerRemoteDataSourceComponent.create())
+                .component(LocalDataSourceComponent.Initializer().init(app))
+                .component(RemoteDataSourceComponent.Initializer().init())
                 .build()
         }
     }
