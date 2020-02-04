@@ -4,9 +4,9 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class WeatherDomain(
+data class Weather(
     val city: String,
-    val description: String = "",
+    val description: String,
     val temp: Double,
     val humidity: Int,
     val pressure: Int,

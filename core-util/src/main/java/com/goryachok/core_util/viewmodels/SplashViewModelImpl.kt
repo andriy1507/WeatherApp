@@ -3,10 +3,10 @@ package com.goryachok.core_util.viewmodels
 import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.goryachok.core.business.LocationProvider
 import com.goryachok.core.repository.ForecastRepository
 import com.goryachok.core.repository.WeatherRepository
-import com.goryachok.core.viewmodels.SplashViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 //TODO fix initialization
 
-class SplashViewModelImpl : SplashViewModel() {
+class SplashViewModelImpl : ViewModel() {
 
     init {
         locationProvider.apply {

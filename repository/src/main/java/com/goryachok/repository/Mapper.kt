@@ -1,8 +1,8 @@
 package com.goryachok.repository
 
 import com.goryachok.core.SECOND_MS
-import com.goryachok.core.model.ForecastDomain
-import com.goryachok.core.model.WeatherDomain
+import com.goryachok.core.model.Forecast
+import com.goryachok.core.model.Weather
 import com.goryachok.local.model.ForecastLocal
 import com.goryachok.local.model.WeatherLocal
 import com.goryachok.remote.model.ForecastRemote
@@ -20,10 +20,11 @@ fun WeatherRemote.mapWeatherToLocal(): WeatherLocal {
     )
 }
 
-fun WeatherRemote.mapWeatherToDomain(): WeatherDomain {
-    return WeatherDomain(
+fun WeatherRemote.mapWeatherToDomain(): Weather {
+    return Weather(
         city = city,
         temp = mainBodyRemote.temp,
+        description = weather.first().description,
         humidity = mainBodyRemote.humidity,
         pressure = mainBodyRemote.pressure,
         windSpd = wind.speed,
@@ -32,9 +33,10 @@ fun WeatherRemote.mapWeatherToDomain(): WeatherDomain {
     )
 }
 
-fun WeatherLocal.mapWeatherToDomain(): WeatherDomain {
-    return WeatherDomain(
+fun WeatherLocal.mapWeatherToDomain(): Weather {
+    return Weather(
         city = city,
+        description = description,
         temp = temp,
         humidity = humidity,
         pressure = pressure,
@@ -63,11 +65,11 @@ fun ForecastRemote.mapForecastToLocal(): ForecastLocal {
     return ForecastLocal(city.name, city.country, mappedList)
 }
 
-fun ForecastRemote.mapForecastToDomain(): ForecastDomain {
-    val mapedList = mutableListOf<WeatherDomain>()
+fun ForecastRemote.mapForecastToDomain(): Forecast {
+    val mapedList = mutableListOf<Weather>()
     list.forEach {
         mapedList.add(
-            WeatherDomain(
+            Weather(
                 city = city.name,
                 description = it.weather.first().description,
                 temp = it.mainBodyRemote.temp,
@@ -79,15 +81,15 @@ fun ForecastRemote.mapForecastToDomain(): ForecastDomain {
             )
         )
     }
-    return ForecastDomain(city.name, city.country, mapedList)
+    return Forecast(city.name, city.country, mapedList)
 }
 
-fun ForecastLocal.mapForecastToDomain(): ForecastDomain {
-    val mappedList = mutableListOf<WeatherDomain>()
+fun ForecastLocal.mapForecastToDomain(): Forecast {
+    val mappedList = mutableListOf<Weather>()
     weatherList.forEach {
         mappedList.add(it.mapWeatherToDomain())
     }
-    return ForecastDomain(
+    return Forecast(
         city = city,
         country = country,
         weatherList = mappedList

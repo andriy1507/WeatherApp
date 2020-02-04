@@ -1,37 +1,36 @@
-package com.goryachok.core_util.viewmodels
+package com.goryachok.current
 
 import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.goryachok.core.model.ResponseResult
-import com.goryachok.core.model.WeatherDomain
+import com.goryachok.core.model.Weather
 import com.goryachok.core.repository.WeatherRepository
-import com.goryachok.core.viewmodels.CurrentViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class CurrentViewModelImpl : CurrentViewModel() {
+class CurrentViewModel @Inject constructor(private val repository: WeatherRepository) :
+    ViewModel() {
 
-    private val currentData = MutableLiveData<WeatherDomain>()
-    private val searchedData = MutableLiveData<WeatherDomain>()
+    private val currentData = MutableLiveData<Weather>()
+    private val searchedData = MutableLiveData<Weather>()
 
     private val _loadData: MutableLiveData<ResponseResult.Loading> = MutableLiveData()
-    override val loadData: LiveData<ResponseResult.Loading>
+    val loadData: LiveData<ResponseResult.Loading>
         get() = _loadData
 
     private val _errorData: MutableLiveData<ResponseResult.Error> = MutableLiveData()
-    override val errorData: LiveData<ResponseResult.Error>
+    val errorData: LiveData<ResponseResult.Error>
         get() = _errorData
 
-    override val data: List<MutableLiveData<WeatherDomain>> = listOf(currentData, searchedData)
+    val data: List<MutableLiveData<Weather>> = listOf(currentData, searchedData)
 
-    @Inject
-    lateinit var repository: WeatherRepository
-
-    override fun getCurrentLocationData(location: Location) {
+    fun getCurrentLocationData(location: Location) {
         CoroutineScope(Dispatchers.IO).launch {
             _loadData.postValue(ResponseResult.Loading)
             try {
@@ -40,7 +39,7 @@ class CurrentViewModelImpl : CurrentViewModel() {
                     location.longitude.toFloat()
                 )) {
                     is ResponseResult.Success<*> -> {
-                        currentData.postValue(result.data as WeatherDomain)
+                        currentData.postValue(result.data as Weather)
                     }
                     is ResponseResult.Error -> _errorData.postValue(result)
                 }
@@ -52,14 +51,15 @@ class CurrentViewModelImpl : CurrentViewModel() {
         }
     }
 
-    override fun getDataByCity(city: String) {
+
+    fun getDataByCity(city: String) {
         CoroutineScope(Dispatchers.IO).launch {
             _loadData.postValue(ResponseResult.Loading)
             try {
                 when (val result = repository.getDataByCity(city)) {
                     is ResponseResult.Success<*> -> withContext(Dispatchers.Main) {
                         currentData.postValue(
-                            result.data as WeatherDomain
+                            result.data as Weather
                         )
                     }
                     is ResponseResult.Error -> withContext(Dispatchers.Main) {
@@ -73,6 +73,15 @@ class CurrentViewModelImpl : CurrentViewModel() {
                     _errorData.postValue(ResponseResult.Error(e))
                 }
             }
+        }
+    }
+
+
+    @Suppress("UNCHECKED_CAST")
+    class Factory @Inject constructor(private val repository: WeatherRepository) :
+        ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return CurrentViewModel(repository) as T
         }
     }
 }

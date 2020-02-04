@@ -3,11 +3,16 @@ package com.goryachok.current
 import android.location.Location
 import android.os.Bundle
 import com.goryachok.core_ui.base.BaseFragment
+import com.goryachok.current.di.CurrentFragmentComponent
+import javax.inject.Inject
 
 class CurrentFragment : BaseFragment(R.layout.current_weather_fragment) {
 
+    @Inject
+    lateinit var viewModel: CurrentViewModel
+
     override fun setupDependencies() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        CurrentFragmentComponent.Initializer().init(this).inject(this)
     }
 
     override fun onSearchRequest(query: String) {

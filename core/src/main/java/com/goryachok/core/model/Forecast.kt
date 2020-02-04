@@ -4,8 +4,8 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class ForecastDomain(
+data class Forecast(
     val city: String,
     val country: String,
-    val weatherList: List<WeatherDomain>
+    val weatherList: List<Weather>
 ) : Parcelable, DomainEntity
