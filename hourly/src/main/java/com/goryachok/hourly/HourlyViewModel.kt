@@ -4,6 +4,7 @@ import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.goryachok.core.model.Forecast
 import com.goryachok.core.model.ResponseResult
 import com.goryachok.core.model.Weather
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class HourlyViewModelImpl : ViewModel() {
+class HourlyViewModel @Inject constructor(private val repository: ForecastRepository) :
+    ViewModel() {
 
     private val currentData = MutableLiveData<Forecast>()
     private val searchedData = MutableLiveData<Forecast>()
@@ -29,9 +31,7 @@ class HourlyViewModelImpl : ViewModel() {
 
     val data: List<MutableLiveData<Forecast>> = listOf(currentData, searchedData)
 
-    @Inject
-    lateinit var repository: ForecastRepository
-
+    @Suppress("UNCHECKED_CAST")
     fun getCurrentLocationData(location: Location) {
         CoroutineScope(Dispatchers.IO).launch {
             _loadData.postValue(ResponseResult.Loading)
@@ -58,6 +58,7 @@ class HourlyViewModelImpl : ViewModel() {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun getDataByCity(city: String) {
         CoroutineScope(Dispatchers.IO).launch {
             _loadData.postValue(ResponseResult.Loading)
@@ -78,6 +79,14 @@ class HourlyViewModelImpl : ViewModel() {
                     _errorData.postValue(result)
                 }
             }
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    class Factory @Inject constructor(private val repository: ForecastRepository) :
+        ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return HourlyViewModel(repository) as T
         }
     }
 }

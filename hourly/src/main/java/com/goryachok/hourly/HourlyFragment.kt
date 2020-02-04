@@ -3,19 +3,24 @@ package com.goryachok.hourly
 import android.location.Location
 import android.os.Bundle
 import com.goryachok.core_ui.base.BaseFragment
+import com.goryachok.hourly.di.HourlyFragmentComponent
+import javax.inject.Inject
 
 class HourlyFragment : BaseFragment(R.layout.hourly_forecast_fragment) {
 
+    @Inject
+    lateinit var viewModel: HourlyViewModel
+
     override fun setupDependencies() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        HourlyFragmentComponent.Initializer().init(this).inject(this)
     }
 
     override fun onSearchRequest(query: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        viewModel.getDataByCity(query)
     }
 
     override fun onLocationRequest(location: Location) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        viewModel.getCurrentLocationData(location)
     }
 
     companion object {
