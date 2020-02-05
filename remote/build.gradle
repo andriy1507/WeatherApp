@@ -21,6 +21,8 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            buildConfigField("String", "API_KEY", "\"f19f55d718abb04df88d9190337bd5b9\"")
+            buildConfigField("String", "DOMAIN", "\"https://api.openweathermap.org/\"")
         }
         debug{
             minifyEnabled false
