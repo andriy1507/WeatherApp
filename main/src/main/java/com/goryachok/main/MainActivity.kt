@@ -76,21 +76,6 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    override fun onAttachFragment(fragment: Fragment) {
-        super.onAttachFragment(fragment)
-        supportFragmentManager.registerFragmentLifecycleCallbacks(object :
-            FragmentManager.FragmentLifecycleCallbacks() {
-            override fun onFragmentResumed(fm: FragmentManager, fragment: Fragment) {
-                super.onFragmentResumed(fm, fragment)
-                if (viewModel.requestCache.isNotBlank())
-                    (fragment as? BaseFragment)?.onSearchRequest(viewModel.requestCache)
-                else
-                    viewModel.locationCache?.let { (fragment as? BaseFragment)?.onLocationRequest(it) }
-            }
-        }, true)
-        passCoordinates()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.search_menu, menu)
 
@@ -154,6 +139,21 @@ class MainActivity : BaseActivity() {
                         DailyFragment.newInstance()
                     )
                 )
+                supportFragmentManager.registerFragmentLifecycleCallbacks(object :
+                    FragmentManager.FragmentLifecycleCallbacks() {
+                    override fun onFragmentResumed(fm: FragmentManager, fragment: Fragment) {
+                        super.onFragmentResumed(fm, fragment)
+                        if (viewModel.requestCache.isNotBlank())
+                            (fragment as? BaseFragment)?.onSearchRequest(viewModel.requestCache)
+                        else
+                            viewModel.locationCache?.let {
+                                (fragment as? BaseFragment)?.onLocationRequest(
+                                    it
+                                )
+                            } ?: passCoordinates()
+                    }
+
+                }, true)
             }
         }
     }
