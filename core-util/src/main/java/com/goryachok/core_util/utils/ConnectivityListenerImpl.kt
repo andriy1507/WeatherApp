@@ -60,15 +60,12 @@ class ConnectivityListenerImpl @Inject constructor(app: App) : ConnectivityListe
     }
 
     override fun isNetworkAvailable(): Boolean {
-//        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-//            connectivityManager.activeNetworkInfo?.let {
-//                return it.isConnectedOrConnecting
-//            }
-//            return false
-//        } else {
-//            _isNetworkAvailable
-//        }
-        return true
+        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            connectivityManager.activeNetworkInfo?.let { return it.isConnectedOrConnecting }
+                ?: false
+        } else {
+            _isNetworkAvailable
+        }
     }
 
 }

@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.Splash" parent="Theme.AppCompat.NoActionBar" />
+
+    <style name="WeatherText">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="WeatherText.SmallParameters">
+        <item name="android:padding">@dimen/extra_small</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="PageStyle">
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+</resources>

@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <dist:module dist:instant="true" />
 
@@ -24,7 +23,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <!--            TODO Solve view model binding on app recreation-->
         <activity
-            android:name=".view.activity.SplashActivity"
+            android:name="com.goryachok.splash.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
@@ -32,11 +31,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- TODO Solve view model binding on app recreation -->
-        <activity
-            android:name=".view.activity.MainActivity"
-            android:screenOrientation="portrait" />
-        <!--             TODO Solve view model binding on app recreation -->
+        </activity>
+        <!-- TODO Solve view model binding on app recreation -->
         <activity
             android:name="com.goryachok.main.MainActivity"
             android:screenOrientation="portrait" />

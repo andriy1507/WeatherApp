@@ -1,6 +1,7 @@
 package com.goryachok.forecastapp.di
 
 import com.goryachok.core.di.ApplicationProvider
+import com.goryachok.core.di.NavigationProvider
 import com.goryachok.core.di.RepositoryProvider
 import com.goryachok.core.di.UtilsProvider
 import com.goryachok.core_util.di.UtilsComponent
@@ -13,7 +14,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [ApplicationModule::class],
-    dependencies = [RepositoryProvider::class, UtilsProvider::class]
+    dependencies = [RepositoryProvider::class, UtilsProvider::class, NavigationProvider::class]
 )
 interface ApplicationComponent : ApplicationProvider {
 
@@ -23,6 +24,8 @@ interface ApplicationComponent : ApplicationProvider {
         fun component(component: UtilsProvider): Builder
 
         fun component(component: RepositoryProvider): Builder
+
+        fun component(component: NavigationProvider): Builder
 
         @BindsInstance
         fun application(app: WeatherApp): Builder
@@ -36,6 +39,7 @@ interface ApplicationComponent : ApplicationProvider {
                 .builder()
                 .component(UtilsComponent.Initializer().init(app))
                 .component(RepositoryComponent.Initializer().init(app))
+                .component(NavigationComponent.Initializer().init())
                 .application(app)
                 .build()
         }
