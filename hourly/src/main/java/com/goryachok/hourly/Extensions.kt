@@ -6,6 +6,6 @@ import java.util.*
 
 fun Long.getTime(): String {
     val format = SimpleDateFormat("HH:mm")
-    val date = Date(this * SECOND_MS)
+    val date = Date(this)
     return format.format(date)
 }
