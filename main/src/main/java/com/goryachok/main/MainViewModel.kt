@@ -20,11 +20,11 @@ class MainViewModel(
         }
     }
 
-    val connectionStatus = MutableLiveData<Boolean>()
-
     var requestCache = ""
 
     var locationCache: Location? = null
+
+    val connectionStatus = MutableLiveData<Boolean>()
 
     fun setTaskForLocationProvider(func: (location: Location) -> Unit) {
         locationProvider.setTask(func)

@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.goryachok.core_ui.BaseActivity
@@ -44,12 +45,13 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //TODO use no action bar theme
+
         supportActionBar?.title = ""
         initViewPager()
         viewModel.setTaskForLocationProvider {
-            (pagerAdapter.getItem(forecast_viewPager.currentItem) as? BaseFragment)?.onLocationRequest(
-                it
-            )
+            (pagerAdapter.getItem(forecast_viewPager.currentItem) as? BaseFragment)
+                ?.onLocationRequest(it)
             with(viewModel) {
                 locationCache = it
                 requestCache = ""
@@ -76,6 +78,16 @@ class MainActivity : BaseActivity() {
 
     override fun onAttachFragment(fragment: Fragment) {
         super.onAttachFragment(fragment)
+        supportFragmentManager.registerFragmentLifecycleCallbacks(object :
+            FragmentManager.FragmentLifecycleCallbacks() {
+            override fun onFragmentResumed(fm: FragmentManager, fragment: Fragment) {
+                super.onFragmentResumed(fm, fragment)
+                if (viewModel.requestCache.isNotBlank())
+                    (fragment as? BaseFragment)?.onSearchRequest(viewModel.requestCache)
+                else
+                    viewModel.locationCache?.let { (fragment as? BaseFragment)?.onLocationRequest(it) }
+            }
+        }, true)
         passCoordinates()
     }
 

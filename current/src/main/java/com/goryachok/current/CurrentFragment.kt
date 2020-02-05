@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.current_weather_fragment.*
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-class CurrentFragment : BaseFragment(R.layout.current_weather_fragment) {
+class CurrentFragment private constructor() : BaseFragment(R.layout.current_weather_fragment) {
 
     @Inject
     lateinit var viewModel: CurrentViewModel
@@ -26,8 +26,8 @@ class CurrentFragment : BaseFragment(R.layout.current_weather_fragment) {
                 curWindDir_textView.text = convertDegreesToDirection(it.windDir)
                 curHumid_textView.text = getString(R.string.humidity_template, it.humidity)
                 curPress_textView.text = getString(R.string.pressure_template, it.pressure)
+                currentLoadingProgressBar.visibility = View.GONE
             })
-            currentLoadingProgressBar.visibility = View.GONE
         }
         viewModel.loadData.observe(viewLifecycleOwner, Observer {
             currentLoadingProgressBar.visibility = View.VISIBLE
@@ -40,6 +40,7 @@ class CurrentFragment : BaseFragment(R.layout.current_weather_fragment) {
                     .setPositiveButton(getString(R.string.close_button)) { dialog, _ ->
                         dialog.dismiss()
                     }
+                    .show()
             }
         })
     }

@@ -4,7 +4,7 @@ import com.goryachok.core.HOUR_MS
 import com.goryachok.core.model.ResponseResult
 import com.goryachok.core.repository.ForecastRepository
 import com.goryachok.local.LocalDataSource
-import com.goryachok.local.model.WeatherLocal
+import com.goryachok.local.model.ForecastLocal
 import com.goryachok.remote.RemoteDataSource
 import com.goryachok.remote.model.ApiResponse
 import com.goryachok.remote.model.ForecastRemote
@@ -30,8 +30,8 @@ class ForecastRepositoryImpl @Inject constructor(
             return@runBlocking await
         }
 
-    private fun getLocalData(): WeatherLocal =
-        local.readWeatherData()
+    private fun getLocalData(): ForecastLocal =
+        local.readForecastData()
 
 
     override suspend fun getDataByCity(city: String): ResponseResult<*> =
@@ -51,15 +51,16 @@ class ForecastRepositoryImpl @Inject constructor(
                 is ApiResponse.Error -> ResponseResult.Error(response.exception)
             }
         } else {
-            ResponseResult.Success(getLocalData().mapWeatherToDomain())
+            ResponseResult.Success(getLocalData().mapForecastToDomain())
         }
 
     }
 
     private fun isFetchNeeded(): Boolean {
         return if (local.isDataAvailable()) {
-            val difference = System.currentTimeMillis() - local.readWeatherData().timeStamp
-            return difference > HOUR_MS
+            val difference =
+                System.currentTimeMillis() - local.readForecastData().weatherList.first().timeStamp
+            return difference > 3 * HOUR_MS
         } else {
             true
         }
