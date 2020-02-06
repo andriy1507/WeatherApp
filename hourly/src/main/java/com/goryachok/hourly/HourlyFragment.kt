@@ -34,8 +34,20 @@ class HourlyFragment private constructor() : BaseFragment(R.layout.hourly_foreca
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.apply {
+            errorData.observe(viewLifecycleOwner, Observer { error ->
+                hourlyLoadingProgressBar.visibility = View.GONE
+                contentGroup.visibility = View.GONE
+                error_textView.text = error.exception.message
+                errorGroup.visibility = View.VISIBLE
+            })
+            loadData.observe(viewLifecycleOwner, Observer {
+                errorGroup.visibility = View.GONE
+                hourlyLoadingProgressBar.visibility = View.VISIBLE
+            })
             data.forEach { liveData ->
                 liveData.observe(viewLifecycleOwner, Observer {
+                    errorGroup.visibility = View.GONE
+                    contentGroup.visibility = View.VISIBLE
                     hourlyForecast_cityName_textView.text =
                         getString(R.string.location_template, it.city, it.country)
                     forecastAdapter = HourlyForecastAdapter().apply {
@@ -48,20 +60,6 @@ class HourlyFragment private constructor() : BaseFragment(R.layout.hourly_foreca
                     hourlyLoadingProgressBar.visibility = ProgressBar.GONE
                 })
             }
-            loadData.observe(viewLifecycleOwner, Observer {
-                hourlyLoadingProgressBar.visibility = View.VISIBLE
-            })
-            errorData.observe(viewLifecycleOwner, Observer { error ->
-                hourlyLoadingProgressBar.visibility = View.GONE
-                this@HourlyFragment.context?.let {
-                    AlertDialog.Builder(it).setTitle(getString(R.string.error))
-                        .setMessage(error.exception.message)
-                        .setPositiveButton(getString(R.string.close_button)) { dialog, _ ->
-                            dialog.dismiss()
-                        }
-                        .show()
-                }
-            })
         }
     }
 
