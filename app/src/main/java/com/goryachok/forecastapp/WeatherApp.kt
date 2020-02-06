@@ -1,13 +1,13 @@
 package com.goryachok.forecastapp
 
-import android.app.Application
 import android.content.Context
-import com.goryachok.core.ApplicationProvider
-import com.goryachok.core.base.App
-import com.goryachok.forecastapp.di.DaggerApplicationComponent
+import androidx.multidex.MultiDexApplication
+import com.goryachok.core.App
+import com.goryachok.core.di.ApplicationProvider
+import com.goryachok.forecastapp.di.ApplicationComponent
 import timber.log.Timber
 
-class WeatherApp : Application(), App {
+class WeatherApp : MultiDexApplication(), App {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
@@ -15,7 +15,7 @@ class WeatherApp : Application(), App {
 
     override fun getContext(): Context = this
 
-    override val component: ApplicationProvider =
-        DaggerApplicationComponent.builder().application(this).build()
-
+    override val component: ApplicationProvider by lazy {
+        ApplicationComponent.Initializer().init(this)
+    }
 }

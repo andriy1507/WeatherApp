@@ -33,6 +33,9 @@ def materialVersion = "1.2.0-alpha04"
 //Dagger
 def daggerVersion = "2.25.4"
 
+//MutliDex
+def multidexVersion = "2.0.1"
+
 //Tests
 def junitVersion = "4.13-rc-2"
 def junitAndroidVersion = "1.1.2-alpha03"
@@ -98,6 +101,8 @@ ext.appDependencies = [
                 ["com.google.android.material:material:$materialVersion"],
         "dagger"               :
                 ["com.google.dagger:dagger:$daggerVersion"],
+        "multidex"             :
+                ["androidx.multidex:multidex:$multidexVersion"],
         "daggerCompiler"       :
                 ["com.google.dagger:dagger-compiler:$daggerVersion"],
         "test"                 :

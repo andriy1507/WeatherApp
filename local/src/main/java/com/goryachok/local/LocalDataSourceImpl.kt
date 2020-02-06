@@ -2,7 +2,7 @@ package com.goryachok.local
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.goryachok.core.base.App
+import com.goryachok.core.App
 import com.goryachok.local.model.*
 import javax.inject.Inject
 

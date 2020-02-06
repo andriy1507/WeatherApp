@@ -13,6 +13,7 @@ android {
         versionName versionName
         testInstrumentationRunner testRunner
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled = true
     }
     buildTypes {
         release {
@@ -49,6 +50,7 @@ dependencies {
     implementation project(":core-ui")
     implementation project(":repository")
     implementation project(":main")
+    implementation project(":splash")
 
     implementation appDependencies.kotlin
     implementation appDependencies.android
@@ -62,6 +64,7 @@ dependencies {
     implementation appDependencies.fusedLocationProvider
     implementation appDependencies.material
     implementation appDependencies.dagger
+    implementation appDependencies.multidex
     kapt appDependencies.daggerCompiler
 
     testImplementation appDependencies.test

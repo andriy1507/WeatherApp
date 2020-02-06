@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Forecast App</string>
+    <string name="speed">SPD</string>
+    <string name="direction">DIR</string>
+    <string name="hum">HUM</string>
+    <string name="pres">PRES</string>
+    <string name="hourly_forecast">Hourly forecast</string>
+    <string name="daily_forecast">Daily Forecast</string>
+    <string name="logo">Logo</string>
+    <string name="search">Search</string>
+    <string name="location">location</string>
+
+    <!--    Templates-->
+    <string name="temperature_template">%.0f \u00B0</string>
+    <string name="windSpeed_template">%.0f m/s</string>
+    <string name="pressure_template">%d hPa</string>
+    <string name="humidity_template">%d %%</string>
+    <string name="location_template">%s, %s</string>
+
+    <!--    Buttons-->
+    <string name="ok_button">OK</string>
+    <string name="yes_button">Yes</string>
+    <string name="no_button">No</string>
+    <string name="close_button">Close</string>
+
+    <!--    Titles-->
+    <string name="error">Error</string>
+    <string name="lost_connection">"Connection lost"</string>
+    <string name="info_title">Information</string>
+
+    <!--    Texts-->
+    <string name="permission_message">Please provide your location so we can get precise data for you</string>
+    <string name="default_location_message">Without location will be show data for default location</string>
+    <string name="unavailable_location_message">Your location is turn off. Do you want to turn it on?</string>
+    <string name="location_usage_text">App needs your location to get precise data. Please grant location permission.</string>
+    <string name="default_location_text">Without available location will be used default location.</string>
+</resources>
