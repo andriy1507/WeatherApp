@@ -1,26 +1,8 @@
 apply plugin: "com.android.application"
-apply plugin: "kotlin-android"
-apply plugin: "kotlin-android-extensions"
-apply plugin: "kotlin-kapt"
+apply from: "../common_dependencies.gradle"
 android {
-    compileSdkVersion = targetSdkVer
-    buildToolsVersion = toolsVer
     defaultConfig {
-        minSdkVersion(minimalSdkVer)
-        targetSdkVersion(targetSdkVer)
-        versionCode(versionCode)
-        versionName(versionName)
-        testInstrumentationRunner(testRunner)
-        consumerProguardFiles("consumer-rules.pro")
         multiDexEnabled = true
-    }
-    buildTypes {
-        release {
-            minifyEnabled = true
-        }
-        debug {
-            minifyEnabled = false
-        }
     }
     compileOptions {
         sourceCompatibility = javaVersion
@@ -36,8 +18,6 @@ androidExtensions {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-
     implementation(project(":core"))
     implementation(project(":core-util"))
     implementation(project(":core-ui"))
@@ -45,13 +25,9 @@ dependencies {
     implementation(project(":main"))
     implementation(project(":splash"))
 
-    implementation(appDependencies.kotlin)
     implementation(appDependencies.android)
     implementation(appDependencies.logging)
     implementation(appDependencies.dagger)
     implementation(appDependencies.multidex)
     kapt(appDependencies.daggerCompiler)
-
-    testImplementation(appDependencies.test)
-    androidTestImplementation(appDependencies.androidTest)
 }

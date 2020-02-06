@@ -1,45 +1,15 @@
 apply plugin: "com.android.library"
-apply plugin: "kotlin-android"
-apply plugin: "kotlin-android-extensions"
-apply plugin: "kotlin-kapt"
-android {
-    compileSdkVersion = targetSdkVer
-    buildToolsVersion = toolsVer
-    defaultConfig {
-        minSdkVersion(minimalSdkVer)
-        targetSdkVersion(targetSdkVer)
-        versionCode(versionCode)
-        versionName(versionName)
-        testInstrumentationRunner(testRunner)
-        consumerProguardFiles("consumer-rules.pro")
-    }
-    buildTypes {
-        release {
-            minifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-        debug {
-            minifyEnabled = false
-        }
-    }
-}
-
+apply from: "../common_dependencies.gradle"
 dependencies {
-    implementation(fileTree(dir: "libs", include: ["*.jar"]))
-
     implementation(project(":core"))
     implementation(project(":core-ui"))
     implementation(project(":current"))
     implementation(project(":hourly"))
     implementation(project(":daily"))
 
-    implementation(appDependencies.kotlin)
     implementation(appDependencies.android)
     implementation(appDependencies.dagger)
     implementation(appDependencies.ui)
     implementation(appDependencies.material)
     kapt(appDependencies.daggerCompiler)
-
-    testImplementation(appDependencies.test)
-    androidTestImplementation(appDependencies.androidTest)
 }
