@@ -45,9 +45,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //TODO use no action bar theme
-
-        supportActionBar?.title = ""
+        supportActionBar?.setDisplayShowTitleEnabled(false)
         initViewPager()
         viewModel.setTaskForLocationProvider {
             (pagerAdapter.getItem(forecast_viewPager.currentItem) as? BaseFragment)
@@ -152,7 +150,6 @@ class MainActivity : BaseActivity() {
                                 )
                             } ?: passCoordinates()
                     }
-
                 }, true)
             }
         }
