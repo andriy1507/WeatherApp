@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -45,6 +46,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setSupportActionBar(toolbar_activity_main)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         initViewPager()
         viewModel.setTaskForLocationProvider {
@@ -56,6 +58,26 @@ class MainActivity : BaseActivity() {
                 stopLocationProvider()
             }
         }
+        tryAgain_button.setOnClickListener {
+            val fragment: BaseFragment? = pagerAdapter.getItem(forecast_viewPager.currentItem)
+            if (viewModel.requestCache.isNotBlank())
+                fragment?.onSearchRequest(viewModel.requestCache)
+            else
+                viewModel.locationCache?.let {
+                    fragment?.onLocationRequest(it)
+                } ?: passCoordinates()
+
+        }
+        error.observe(this, Observer {
+            if (it.first) {
+                forecast_viewPager.visibility = View.GONE
+                errorGroup.visibility = View.VISIBLE
+                error_textView.text = it.second?.message
+            } else {
+                errorGroup.visibility = View.GONE
+                forecast_viewPager.visibility = View.VISIBLE
+            }
+        })
     }
 
     override fun onStart() {

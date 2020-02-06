@@ -4,9 +4,9 @@ import android.location.Location
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.goryachok.core_ui.BaseActivity
 import com.goryachok.core_ui.base.BaseFragment
 import com.goryachok.daily.di.DailyFragmentComponent
 import kotlinx.android.synthetic.main.daily_forecast_fragment.*
@@ -36,18 +36,15 @@ class DailyFragment private constructor() : BaseFragment(R.layout.daily_forecast
         viewModel.apply {
             errorData.observe(viewLifecycleOwner, Observer { error ->
                 dailyLoading_progressBar.visibility = View.GONE
-                contentGroup.visibility = View.GONE
-                error_textView.text = error.exception.message
-                errorGroup.visibility = View.VISIBLE
+                (activity as? BaseActivity)?.error?.postValue(Pair(true, error.exception))
+
             })
             loadData.observe(viewLifecycleOwner, Observer {
-                errorGroup.visibility = View.GONE
+                (activity as? BaseActivity)?.error?.postValue(Pair(false, null))
                 dailyLoading_progressBar.visibility = View.VISIBLE
             })
             data.forEach { liveData ->
                 liveData.observe(viewLifecycleOwner, Observer {
-                    errorGroup.visibility = View.GONE
-                    contentGroup.visibility = View.VISIBLE
                     dailyForecast_cityName_textView.text =
                         getString(R.string.location_template, it.city, it.country)
                     forecastAdapter = DailyForecastAdapter().apply {

@@ -4,9 +4,9 @@ import android.location.Location
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.goryachok.core_ui.BaseActivity
 import com.goryachok.core_ui.base.BaseFragment
 import com.goryachok.hourly.di.HourlyFragmentComponent
 import kotlinx.android.synthetic.main.hourly_forecast_fragment.*
@@ -36,18 +36,15 @@ class HourlyFragment private constructor() : BaseFragment(R.layout.hourly_foreca
         viewModel.apply {
             errorData.observe(viewLifecycleOwner, Observer { error ->
                 hourlyLoadingProgressBar.visibility = View.GONE
-                contentGroup.visibility = View.GONE
-                error_textView.text = error.exception.message
-                errorGroup.visibility = View.VISIBLE
+                (activity as? BaseActivity)?.error?.postValue(Pair(true, error.exception))
+
             })
             loadData.observe(viewLifecycleOwner, Observer {
-                errorGroup.visibility = View.GONE
+                (activity as? BaseActivity)?.error?.postValue(Pair(false, null))
                 hourlyLoadingProgressBar.visibility = View.VISIBLE
             })
             data.forEach { liveData ->
                 liveData.observe(viewLifecycleOwner, Observer {
-                    errorGroup.visibility = View.GONE
-                    contentGroup.visibility = View.VISIBLE
                     hourlyForecast_cityName_textView.text =
                         getString(R.string.location_template, it.city, it.country)
                     forecastAdapter = HourlyForecastAdapter().apply {

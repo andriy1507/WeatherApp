@@ -3,14 +3,12 @@ package com.goryachok.current
 import android.location.Location
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import com.goryachok.core_ui.BaseActivity
 import com.goryachok.core_ui.base.BaseFragment
 import com.goryachok.current.di.CurrentFragmentComponent
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 class CurrentFragment private constructor() : BaseFragment(R.layout.current_weather_fragment) {
 
@@ -21,21 +19,17 @@ class CurrentFragment private constructor() : BaseFragment(R.layout.current_weat
         super.onViewCreated(view, savedInstanceState)
         viewModel.apply {
             errorData.observe(viewLifecycleOwner, Observer { error ->
-                error_textView.text = error.exception.message
                 currentLoadingProgressBar.visibility = View.GONE
-                contentGroup.visibility = View.GONE
-                errorGroup.visibility = View.VISIBLE
+                (activity as? BaseActivity)?.error?.postValue(Pair(true, error.exception))
             })
             loadData.observe(viewLifecycleOwner, Observer {
-                errorGroup.visibility = View.GONE
+                (activity as? BaseActivity)?.error?.postValue(Pair(false, null))
                 currentLoadingProgressBar.visibility = View.VISIBLE
             })
             data.forEach { liveData ->
                 liveData.observe(viewLifecycleOwner, Observer {
-                    errorGroup.visibility = View.GONE
-                    contentGroup.visibility = View.VISIBLE
                     curLocation.text = it.city
-                    currentTemp_textView.text = it.temp.roundToInt().toString()
+                    currentTemp_textView.text = getString(R.string.temperature_template, it.temp)
                     curWindSpeed_textView.text = getString(R.string.windSpeed_template, it.windSpd)
                     curWindDir_textView.text = convertDegreesToDirection(it.windDir)
                     curHumid_textView.text = getString(R.string.humidity_template, it.humidity)
