@@ -54,15 +54,7 @@ dependencies {
 
     implementation appDependencies.kotlin
     implementation appDependencies.android
-    implementation appDependencies.livedata
-    implementation appDependencies.ui
-    implementation appDependencies.gson
-    implementation appDependencies.retrofit
-    implementation appDependencies.okhttp
-    implementation appDependencies.coroutines
     implementation appDependencies.logging
-    implementation appDependencies.fusedLocationProvider
-    implementation appDependencies.material
     implementation appDependencies.dagger
     implementation appDependencies.multidex
     kapt appDependencies.daggerCompiler
