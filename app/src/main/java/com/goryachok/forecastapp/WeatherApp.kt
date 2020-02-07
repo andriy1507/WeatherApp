@@ -8,6 +8,7 @@ import com.goryachok.forecastapp.di.ApplicationComponent
 import timber.log.Timber
 
 class WeatherApp : MultiDexApplication(), App {
+
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())

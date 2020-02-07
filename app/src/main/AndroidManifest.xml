@@ -20,22 +20,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
-        <!--            TODO Solve view model binding on app recreation-->
-        <activity
-            android:name="com.goryachok.splash.SplashActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Splash">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <!-- TODO Solve view model binding on app recreation -->
-        <activity
-            android:name="com.goryachok.main.MainActivity"
-            android:screenOrientation="portrait" />
-    </application>
+        tools:ignore="GoogleAppIndexingWarning" />
 
 </manifest>

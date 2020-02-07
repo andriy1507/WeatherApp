@@ -4,9 +4,9 @@ import android.location.Location
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.goryachok.core_ui.BaseActivity
 import com.goryachok.core_ui.base.BaseFragment
 import com.goryachok.hourly.di.HourlyFragmentComponent
 import kotlinx.android.synthetic.main.hourly_forecast_fragment.*
@@ -34,6 +34,15 @@ class HourlyFragment private constructor() : BaseFragment(R.layout.hourly_foreca
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.apply {
+            errorData.observe(viewLifecycleOwner, Observer { error ->
+                hourlyLoadingProgressBar.visibility = View.GONE
+                (activity as? BaseActivity)?.error?.postValue(Pair(true, error.exception))
+
+            })
+            loadData.observe(viewLifecycleOwner, Observer {
+                (activity as? BaseActivity)?.error?.postValue(Pair(false, null))
+                hourlyLoadingProgressBar.visibility = View.VISIBLE
+            })
             data.forEach { liveData ->
                 liveData.observe(viewLifecycleOwner, Observer {
                     hourlyForecast_cityName_textView.text =
@@ -48,20 +57,6 @@ class HourlyFragment private constructor() : BaseFragment(R.layout.hourly_foreca
                     hourlyLoadingProgressBar.visibility = ProgressBar.GONE
                 })
             }
-            loadData.observe(viewLifecycleOwner, Observer {
-                hourlyLoadingProgressBar.visibility = View.VISIBLE
-            })
-            errorData.observe(viewLifecycleOwner, Observer { error ->
-                hourlyLoadingProgressBar.visibility = View.GONE
-                this@HourlyFragment.context?.let {
-                    AlertDialog.Builder(it).setTitle(getString(R.string.error))
-                        .setMessage(error.exception.message)
-                        .setPositiveButton(getString(R.string.close_button)) { dialog, _ ->
-                            dialog.dismiss()
-                        }
-                        .show()
-                }
-            })
         }
     }
 
