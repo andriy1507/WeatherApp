@@ -11,13 +11,14 @@ import com.goryachok.core_ui.base.BaseFragment
 import com.goryachok.daily.di.DailyFragmentComponent
 import kotlinx.android.synthetic.main.daily_forecast_fragment.*
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 class DailyFragment private constructor() : BaseFragment(R.layout.daily_forecast_fragment) {
 
     @Inject
     lateinit var viewModel: DailyViewModel
 
-    private lateinit var forecastAdapter: DailyForecastAdapter
+    private val forecastAdapter: DailyForecastAdapter by lazy { DailyForecastAdapter() }
 
     override fun setupDependencies() {
         DailyFragmentComponent.Initializer().init(this).inject(this)
@@ -44,17 +45,18 @@ class DailyFragment private constructor() : BaseFragment(R.layout.daily_forecast
                 dailyLoading_progressBar.visibility = View.VISIBLE
             })
             data.forEach { liveData ->
-                liveData.observe(viewLifecycleOwner, Observer {
+                liveData.observe(viewLifecycleOwner, Observer { forecast ->
                     dailyForecast_cityName_textView.text =
-                        getString(R.string.location_template, it.city, it.country)
-                    forecastAdapter = DailyForecastAdapter().apply {
-                        setNewItemList(it.weatherList)
-                    }
+                        getString(R.string.location_template, forecast.city, forecast.country)
+                    forecastAdapter.setNewItemList(forecast.weatherList)
+                    val temp = arrayListOf<Double>()
+                    forecast.weatherList.forEach { temp.add(it.temp) }
                     dailyForecast_recyclerView.apply {
                         adapter = forecastAdapter
                         layoutManager = LinearLayoutManager(this@DailyFragment.context)
                     }
                     dailyLoading_progressBar.visibility = ProgressBar.GONE
+                    (activity as? BaseActivity)?.animateColors(temp.average().roundToInt())
                 })
             }
         }

@@ -56,7 +56,7 @@
         android:background="@color/colorPrimary"
         android:padding="@dimen/medium"
         android:text="@string/try_again"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/textColor"
         android:textSize="@dimen/normal_textSize"
         app:layout_constraintBottom_toTopOf="@id/error_textView"
         app:layout_constraintEnd_toEndOf="parent"

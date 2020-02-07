@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
@@ -14,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.goryachok.core_ui.BaseActivity
 import com.goryachok.core_ui.ErrorSnackBar
 import com.goryachok.core_ui.base.BaseFragment
+import com.goryachok.core_ui.startBackgroundAnimation
 import com.goryachok.current.CurrentFragment
 import com.goryachok.daily.DailyFragment
 import com.goryachok.hourly.HourlyFragment
@@ -25,6 +27,8 @@ class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var viewModel: MainViewModel
+    private var currentBgColor: Int? = null
+    private var currentTbColor: Int? = null
 
     private val connectionLostSnackBar by lazy {
         ErrorSnackBar.Builder(this)
@@ -42,10 +46,61 @@ class MainActivity : BaseActivity() {
         MainActivityComponent.Initializer().init(this).inject(this)
     }
 
+    override fun animateColors(temp: Int) {
+        when (temp) {
+            in 5..15 -> {
+                constraintLayout_activityMain.startBackgroundAnimation(
+                    currentBgColor ?: R.color.colorPrimary, R.color.greenLight
+                )
+                toolbar_activity_main.startBackgroundAnimation(
+                    currentTbColor ?: R.color.colorMaterial, R.color.green
+                )
+                tryAgain_button.apply {
+                    backgroundTintList =
+                        ContextCompat.getColorStateList(this@MainActivity, R.color.green)
+                    strokeColor =
+                        ContextCompat.getColorStateList(this@MainActivity, R.color.greenDark)
+                }
+                currentBgColor = R.color.greenLight
+                currentTbColor = R.color.green
+            }
+            else -> if (temp < 5) {
+                constraintLayout_activityMain.startBackgroundAnimation(
+                    currentBgColor ?: R.color.colorPrimary, R.color.blueLight
+                )
+                toolbar_activity_main.startBackgroundAnimation(
+                    currentTbColor ?: R.color.colorMaterial, R.color.blue
+                )
+                currentBgColor = R.color.blueLight
+                currentTbColor = R.color.blue
+                tryAgain_button.apply {
+                    backgroundTintList =
+                        ContextCompat.getColorStateList(this@MainActivity, R.color.blue)
+                    strokeColor =
+                        ContextCompat.getColorStateList(this@MainActivity, R.color.blueDark)
+                }
+            } else {
+                constraintLayout_activityMain.startBackgroundAnimation(
+                    currentBgColor ?: R.color.colorPrimary, R.color.yellowLight
+                )
+                toolbar_activity_main.startBackgroundAnimation(
+                    currentTbColor ?: R.color.colorMaterial, R.color.yellow
+                )
+                currentBgColor = R.color.yellowLight
+                currentTbColor = R.color.yellow
+                tryAgain_button.apply {
+                    backgroundTintList =
+                        ContextCompat.getColorStateList(this@MainActivity, R.color.yellow)
+                    strokeColor =
+                        ContextCompat.getColorStateList(this@MainActivity, R.color.yellowDark)
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         setSupportActionBar(toolbar_activity_main)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         initViewPager()

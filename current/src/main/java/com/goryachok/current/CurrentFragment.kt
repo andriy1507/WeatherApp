@@ -9,6 +9,7 @@ import com.goryachok.core_ui.base.BaseFragment
 import com.goryachok.current.di.CurrentFragmentComponent
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 class CurrentFragment private constructor() : BaseFragment(R.layout.current_weather_fragment) {
 
@@ -35,6 +36,7 @@ class CurrentFragment private constructor() : BaseFragment(R.layout.current_weat
                     curHumid_textView.text = getString(R.string.humidity_template, it.humidity)
                     curPress_textView.text = getString(R.string.pressure_template, it.pressure)
                     currentLoadingProgressBar.visibility = View.GONE
+                    (activity as? BaseActivity)?.animateColors(it.temp.roundToInt())
                 })
             }
         }

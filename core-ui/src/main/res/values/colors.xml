@@ -6,4 +6,18 @@
     <color name="colorAccent">#D81B60</color>
     <color name="lostSnackBarBackground">#F54242</color>
     <color name="lostSnackBarTextColor">#E0E0E0</color>
+
+    <color name="yellowDark">#c9bc1f</color>
+    <color name="yellow">#ffee58</color>
+    <color name="yellowLight">#ffff8b</color>
+
+    <color name="greenDark">#6b9b37</color>
+    <color name="green">#9ccc65</color>
+    <color name="greenLight">#cfff95</color>
+
+    <color name="blueDark">#0086c3</color>
+    <color name="blue">#29b6f6</color>
+    <color name="blueLight">#73e8ff</color>
+
+    <color name="textColor">#424242</color>
 </resources>
