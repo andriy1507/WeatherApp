@@ -8,7 +8,7 @@
     </style>
 
     <style name="WeatherText">
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/textColor</item>
     </style>
 
     <style name="WeatherText.SmallParameters">
@@ -17,7 +17,7 @@
     </style>
 
     <style name="PageStyle">
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
 </resources>

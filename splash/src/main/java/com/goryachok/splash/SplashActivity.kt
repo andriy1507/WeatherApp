@@ -64,6 +64,9 @@ class SplashActivity : BaseActivity() {
             }
     }
 
+
+    override fun animateColors(temp: Int) {}
+
     override fun setupDependencies() {
         SplashActivityComponent.Initializer().init(this).inject(this)
     }

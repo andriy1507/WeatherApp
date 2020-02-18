@@ -11,13 +11,14 @@ import com.goryachok.core_ui.base.BaseFragment
 import com.goryachok.hourly.di.HourlyFragmentComponent
 import kotlinx.android.synthetic.main.hourly_forecast_fragment.*
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 class HourlyFragment private constructor() : BaseFragment(R.layout.hourly_forecast_fragment) {
 
     @Inject
     lateinit var viewModel: HourlyViewModel
 
-    private lateinit var forecastAdapter: HourlyForecastAdapter
+    private val forecastAdapter: HourlyForecastAdapter by lazy { HourlyForecastAdapter() }
 
     override fun setupDependencies() {
         HourlyFragmentComponent.Initializer().init(this).inject(this)
@@ -33,6 +34,10 @@ class HourlyFragment private constructor() : BaseFragment(R.layout.hourly_foreca
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        hourlyForecast_recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@HourlyFragment.context)
+            adapter = forecastAdapter
+        }
         viewModel.apply {
             errorData.observe(viewLifecycleOwner, Observer { error ->
                 hourlyLoadingProgressBar.visibility = View.GONE
@@ -47,14 +52,11 @@ class HourlyFragment private constructor() : BaseFragment(R.layout.hourly_foreca
                 liveData.observe(viewLifecycleOwner, Observer {
                     hourlyForecast_cityName_textView.text =
                         getString(R.string.location_template, it.city, it.country)
-                    forecastAdapter = HourlyForecastAdapter().apply {
-                        setNewItemList(it.weatherList)
-                    }
-                    hourlyForecast_recyclerView.apply {
-                        layoutManager = LinearLayoutManager(this@HourlyFragment.context)
-                        adapter = forecastAdapter
-                    }
+                    val temp = arrayListOf<Double>()
+                    it.weatherList.forEach { temp.add(it.temp) }
+                    forecastAdapter.setNewItemList(it.weatherList)
                     hourlyLoadingProgressBar.visibility = ProgressBar.GONE
+                    (activity as? BaseActivity)?.animateColors(temp.average().roundToInt())
                 })
             }
         }

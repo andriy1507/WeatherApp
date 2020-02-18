@@ -14,4 +14,6 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setupDependencies()
     }
+
+    abstract fun animateColors(temp: Int)
 }
